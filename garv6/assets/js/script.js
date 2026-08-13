@@ -795,27 +795,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 4. Live Instant Price & Material Cost Estimator
+    // 4. Space Area & Material Coverage Estimator
     const calcSpaceBtns = document.querySelectorAll("#calc-space-group .estimator-pill-btn");
     const calcSolutionBtns = document.querySelectorAll("#calc-solution-group .estimator-pill-btn");
     const calcSlider = document.getElementById("calc-sqft-slider");
     const calcSqftVal = document.getElementById("calc-sqft-val");
-    const calcPriceDisplay = document.getElementById("calc-price-display");
+    const calcAreaDisplay = document.getElementById("calc-area-display");
+    const calcSqmDisplay = document.getElementById("calc-sqm-display");
     const calcSummaryName = document.getElementById("calc-summary-name");
+    const calcSummaryLoad = document.getElementById("calc-summary-load");
+    const calcSummaryAnchors = document.getElementById("calc-summary-anchors");
     const calcSummaryWarranty = document.getElementById("calc-summary-warranty");
     const calcWhatsappBtn = document.getElementById("calc-whatsapp-btn");
 
-    if (calcSlider && calcPriceDisplay) {
-        let currentRate = 140;
+    if (calcSlider && calcAreaDisplay) {
         let currentSolutionName = "316 Marine Invisible Grill";
+        let currentLoad = "850+ kg Tensile Load";
         let currentWarranty = "10 - 15 Years";
         let currentSpace = "Balcony";
+        let anchorMultiplier = 2.4;
 
         calcSpaceBtns.forEach(btn => {
             btn.addEventListener("click", () => {
                 calcSpaceBtns.forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
-                currentSpace = btn.textContent.trim();
+                currentSpace = btn.textContent.replace(/^[^\s]+\s*/, "").trim();
                 updateCalculations();
             });
         });
@@ -824,9 +828,10 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.addEventListener("click", () => {
                 calcSolutionBtns.forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
-                currentRate = parseInt(btn.getAttribute("data-rate"), 10) || 140;
                 currentSolutionName = btn.getAttribute("data-name") || "316 Marine Invisible Grill";
+                currentLoad = btn.getAttribute("data-load") || "850+ kg Tensile Load";
                 currentWarranty = btn.getAttribute("data-warranty") || "10 - 15 Years";
+                anchorMultiplier = parseFloat(btn.getAttribute("data-anchors")) || 2.0;
                 updateCalculations();
             });
         });
@@ -837,17 +842,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function updateCalculations() {
             const sqft = parseInt(calcSlider.value, 10);
+            const sqm = (sqft * 0.092903).toFixed(1);
+            const estimatedAnchors = Math.max(12, Math.round(Math.sqrt(sqft) * 2.8 * anchorMultiplier));
+
             if (calcSqftVal) calcSqftVal.textContent = `${sqft} Sq. Ft`;
-
-            const estimatedCost = sqft * currentRate;
-            const formattedCost = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(estimatedCost);
-
-            if (calcPriceDisplay) calcPriceDisplay.textContent = formattedCost;
+            if (calcAreaDisplay) calcAreaDisplay.textContent = `${sqft} Sq. Ft`;
+            if (calcSqmDisplay) calcSqmDisplay.textContent = `≈ ${sqm} Sq. Meters`;
             if (calcSummaryName) calcSummaryName.textContent = currentSolutionName;
+            if (calcSummaryLoad) calcSummaryLoad.textContent = currentLoad;
+            if (calcSummaryAnchors) calcSummaryAnchors.textContent = `~${estimatedAnchors} High-Tensile Anchors`;
             if (calcSummaryWarranty) calcSummaryWarranty.textContent = currentWarranty;
 
             if (calcWhatsappBtn) {
-                const message = encodeURIComponent(`Hi, I calculated an estimate on your website for ${currentSpace}: ${sqft} Sq.Ft ${currentSolutionName} approx ${formattedCost}. Please schedule a free inspection.`);
+                const message = encodeURIComponent(`Hi, I estimated an area of ${sqft} Sq.Ft (${sqm} Sq.M) for ${currentSpace} with ${currentSolutionName}. Please schedule a free on-site engineering inspection and quotation.`);
                 calcWhatsappBtn.href = `https://wa.me/919392851602?text=${message}`;
             }
         }
