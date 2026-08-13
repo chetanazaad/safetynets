@@ -854,4 +854,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateCalculations();
     }
+
+    // 5. Mobile Nav Drawer Toggle
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+    const mobileNavDrawer = document.getElementById("mobileNavDrawer");
+    const drawerNavItems = document.querySelectorAll(".drawer-nav-item");
+
+    if (hamburgerBtn && mobileNavDrawer) {
+        hamburgerBtn.addEventListener("click", () => {
+            mobileNavDrawer.classList.add("open");
+            document.body.style.overflow = "hidden";
+        });
+    }
+
+    if (drawerCloseBtn && mobileNavDrawer) {
+        drawerCloseBtn.addEventListener("click", () => {
+            mobileNavDrawer.classList.remove("open");
+            document.body.style.overflow = "";
+        });
+    }
+
+    drawerNavItems.forEach(link => {
+        link.addEventListener("click", () => {
+            if (mobileNavDrawer) {
+                mobileNavDrawer.classList.remove("open");
+                document.body.style.overflow = "";
+            }
+        });
+    });
 });
