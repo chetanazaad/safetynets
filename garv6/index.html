@@ -58,8 +58,8 @@
             <nav class="capsule-nav-links">
                 <a href="#home" class="capsule-link active">Home</a>
                 <a href="#spaces" class="capsule-link">Spaces & Solutions</a>
-                <a href="#estimator" class="capsule-link">Area Estimator</a>
                 <a href="#cities" class="capsule-link">City Hubs</a>
+                <a href="about.html" class="capsule-link">About Us</a>
                 <a href="why-us.html" class="capsule-link">Why Us</a>
                 <a href="safety-advisor.html" class="capsule-link">Safety Advisor</a>
             </nav>
@@ -67,7 +67,7 @@
             <!-- Actions -->
             <div class="capsule-actions">
                 <a href="https://wa.me/919392851602" class="btn btn-wp btn-sm flex-center"><i class="fab fa-whatsapp"></i> Chat</a>
-                <a href="#estimator" class="btn btn-gold btn-sm flex-center">📐 Estimate Area</a>
+                <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20a%20free%20site%20inspection%20and%20quote." class="btn btn-gold btn-sm flex-center" target="_blank">📋 Get Quote</a>
                 <button class="capsule-hamburger" id="hamburgerBtn" aria-label="Open Navigation Menu">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -83,7 +83,7 @@
         <div class="drawer-links">
             <a href="#home" class="drawer-link drawer-nav-item"><span>Home</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="#spaces" class="drawer-link drawer-nav-item"><span>Spaces & Solutions</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
-            <a href="#estimator" class="drawer-link drawer-nav-item"><span>Space Area & Material Estimator</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
+            <a href="about.html" class="drawer-link"><span>About Us</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="#cities" class="drawer-link drawer-nav-item"><span>City Service Hubs</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="invisible-grills.html" class="drawer-link"><span>Invisible Balcony Grills</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="child-safety-nets.html" class="drawer-link"><span>Child Safety Nets</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
@@ -121,8 +121,8 @@
 
                     <!-- CTAs -->
                     <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
-                        <a href="#estimator" class="btn btn-gold btn-lg">
-                            <span class="btn-text">Estimate Area <i class="fa-solid fa-ruler-combined"></i></span>
+                        <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20a%20free%20site%20inspection%20and%20quote%20for%20my%20apartment." class="btn btn-gold btn-lg" target="_blank">
+                            <span class="btn-text">Get Free Quote <i class="fab fa-whatsapp"></i></span>
                         </a>
                         <a href="tel:+919392851602" class="btn btn-secondary btn-lg">
                             <span class="btn-text"><i class="fa-solid fa-phone"></i> Instant Call</span>
@@ -316,98 +316,7 @@
         </div>
     </section>
 
-    <!-- ==========================================================================
-       4. Interactive Space Area & Material Coverage Estimator
-       ========================================================================== -->
-    <section id="estimator" class="cost-estimator-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="bento-tag">📐 Engineering Measurement Tool</span>
-                <h2>Space Area & Material Estimator</h2>
-                <p>Calculate your space dimensions and material requirements. Our safety engineer will visit for precision on-site measurements and an accurate custom quote.</p>
-            </div>
 
-            <div class="estimator-console">
-                <div class="estimator-left">
-                    <!-- Step 1: Space -->
-                    <div>
-                        <div class="step-title"><span>1</span> Select Space Location</div>
-                        <div class="estimator-btn-grid" id="calc-space-group">
-                            <button type="button" class="estimator-pill-btn active" data-type="balcony">🏢 Balcony</button>
-                            <button type="button" class="estimator-pill-btn" data-type="windows">🪟 Windows</button>
-                            <button type="button" class="estimator-pill-btn" data-type="terrace">🏡 Terrace</button>
-                            <button type="button" class="estimator-pill-btn" data-type="staircase">🪜 Staircase</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Solution -->
-                    <div>
-                        <div class="step-title"><span>2</span> Select Solution Type</div>
-                        <div class="estimator-btn-grid" id="calc-solution-group">
-                            <button type="button" class="estimator-pill-btn active" data-solution="invisible" data-name="316 Marine Invisible Grill" data-load="850+ kg Tensile Load" data-warranty="10 - 15 Years" data-anchors="2.4">✨ Invisible Grill</button>
-                            <button type="button" class="estimator-pill-btn" data-solution="child" data-name="High-Tension Child Net" data-load="140+ kg Impact Load" data-warranty="5 - 8 Years" data-anchors="1.8">👶 Child Net</button>
-                            <button type="button" class="estimator-pill-btn" data-solution="pigeon" data-name="Translucent Pigeon Net" data-load="Weatherproof UV Shield" data-warranty="3 - 5 Years" data-anchors="1.5">🕊️ Pigeon Net</button>
-                            <button type="button" class="estimator-pill-btn" data-solution="sports" data-name="Heavy-Duty Sports Net" data-load="Heavy Ball Impact" data-warranty="5 - 7 Years" data-anchors="2.0">🏏 Sports Net</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Area Slider -->
-                    <div>
-                        <div class="step-title"><span>3</span> Approximate Area Size (Sq. Ft)</div>
-                        <div class="slider-container">
-                            <div class="slider-val-display">
-                                <span>Estimated Area Coverage:</span>
-                                <strong id="calc-sqft-val">120 Sq. Ft</strong>
-                            </div>
-                            <input type="range" min="30" max="800" value="120" step="10" class="estimator-slider-track" id="calc-sqft-slider">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Material Breakdown Card -->
-                <div class="estimator-price-card">
-                    <div>
-                        <div class="price-header">
-                            <span>Estimated Space Coverage</span>
-                            <div class="price-amount" id="calc-area-display">120 Sq. Ft</div>
-                            <span id="calc-sqm-display" style="font-size: 0.85rem; color: var(--accent-light); font-family: 'JetBrains Mono', monospace; display: block; margin-top: 4px;">≈ 11.15 Sq. Meters</span>
-                        </div>
-                        <div class="price-specs" style="margin-top: 20px;">
-                            <div class="price-spec-row">
-                                <span>Selected Solution:</span>
-                                <strong id="calc-summary-name">316 Marine Invisible Grill</strong>
-                            </div>
-                            <div class="price-spec-row">
-                                <span>Load Rating:</span>
-                                <strong id="calc-summary-load">850+ kg Tensile Load</strong>
-                            </div>
-                            <div class="price-spec-row">
-                                <span>Est. Anchor Hardware:</span>
-                                <strong id="calc-summary-anchors">~28 SS 316 Anchors</strong>
-                            </div>
-                            <div class="price-spec-row">
-                                <span>Warranty Coverage:</span>
-                                <strong id="calc-summary-warranty">10 - 15 Years</strong>
-                            </div>
-                            <div class="price-spec-row">
-                                <span>Site Measurement Fee:</span>
-                                <strong style="color: #4ade80;">FREE (₹0)</strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <a href="https://wa.me/919392851602?text=Hi%2C%20I%20estimated%20an%20area%20of%20120%20Sq.Ft%20for%20316%20Marine%20Invisible%20Grill.%20Please%20schedule%20a%20free%20inspection%20and%20quote." class="btn btn-gold btn-lg flex-center" id="calc-whatsapp-btn" target="_blank" style="width: 100%;">
-                            <span class="btn-text">Schedule Free Inspection <i class="fab fa-whatsapp"></i></span>
-                        </a>
-                        <p style="font-size: 0.72rem; color: #94a3b8; line-height: 1.4; margin-top: 10px; text-align: center;">
-                            * Final pricing is confirmed on-site based on exact architectural anchoring substrate & elevation height.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- ==========================================================================
        5. Regional City Matrix Section
