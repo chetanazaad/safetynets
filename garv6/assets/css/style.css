@@ -468,14 +468,14 @@ img {
 }
 
 /* ==========================================================================
-   Buttons — Premium Glass System
+   Buttons — Unified & Clean Solid/Gradient Palette
    ========================================================================== */
 .btn, .btn-liquid {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     padding: 12px 24px;
     border-radius: 8px;
     font-weight: 600;
@@ -485,53 +485,26 @@ img {
     text-decoration: none;
     overflow: hidden;
     will-change: transform;
-    isolation: isolate; /* keeps mix-blend-mode isolated to the button */
-    
-    /* Premium 3D Glass / Gel Look using Multiple Backgrounds and Clip */
-    border: 2px solid transparent;
-    background: 
-        /* 1. Top white glossy sheen highlight */
-        radial-gradient(circle at 50% -250%, rgba(255, 255, 255, 0.75) 45%, rgba(255, 255, 255, 0.15) 60%, rgba(255, 255, 255, 0) 62%) padding-box,
-        /* 2. Bottom vibrant radial glow */
-        radial-gradient(circle at 50% 100%, var(--btn-glow-color, rgba(255,255,255,0.4)) 12%, rgba(255, 255, 255, 0) 58%) padding-box,
-        /* 3. Main inner gradient body */
-        linear-gradient(to bottom, var(--btn-inner-start, #009dcd), var(--btn-inner-end, #00526a)) padding-box,
-        /* 4. Outer 3D borders */
-        linear-gradient(to bottom, var(--btn-border-start, #6dc8e8), var(--btn-border-end, #073080)) border-box;
-
-    /* Text & Icon styling */
+    border: none;
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.45);
-    
-    /* 3D Shadows & Inner Sheen */
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25), 
-                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.45);
-                
-    transition: transform var(--transition-normal),
-                box-shadow var(--transition-normal),
-                filter var(--transition-normal);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
 }
 
 .btn:hover, .btn-liquid:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.25),
-                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.4),
-                var(--btn-hover-glow, 0 0 0 rgba(0,0,0,0));
-    filter: brightness(1.06);
+    filter: brightness(1.08);
 }
 
 .btn:active, .btn-liquid:active {
     transform: translateY(1px);
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2),
-                inset 0px 2px 5px rgba(0, 0, 0, 0.3);
-    filter: brightness(0.96);
+    filter: brightness(0.95);
 }
 
 /* Icon micro-slide */
 .btn i, .btn-liquid i {
     transition: transform var(--transition-fast);
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 .btn:hover i, .btn-liquid:hover i {
     transform: translateX(3px);
@@ -539,74 +512,71 @@ img {
 
 .btn .btn-text, .btn-liquid .btn-text {
     position: relative;
-    z-index: 3;
+    z-index: 2;
     color: inherit;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 100%;
-    height: 100%;
 }
 
-/* 1. Vibrant Gold / Primary / Liquid (CTAs) */
+/* 1. Architectural Gold (CTAs) */
 .btn-gold, .btn-primary, .btn-liquid {
-    --btn-border-start: #fff3cc;
-    --btn-border-end: #b38600;
-    --btn-inner-start: #e6b800; /* Vibrant Brand Gold */
-    --btn-inner-end: #997300;   /* Rich Deep Gold */
-    --btn-glow-color: #fffbdf;
-    --btn-hover-glow: 0 0 18px rgba(230, 184, 0, 0.45);
+    background: linear-gradient(135deg, #c59333 0%, #a6741e 100%);
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
+    border: 1px solid #d4a03d;
+    box-shadow: 0 4px 14px rgba(180, 131, 40, 0.35);
+}
+.btn-gold:hover, .btn-primary:hover, .btn-liquid:hover {
+    box-shadow: 0 6px 20px rgba(180, 131, 40, 0.5);
 }
 
-/* 2. Vibrant Deep Navy / Teal Secondary Button */
+/* 2. Deep Slate Secondary Button */
 .btn-secondary {
-    --btn-border-start: #a5f3fc; /* Light Cyan */
-    --btn-border-end: #073080;   /* Deep Navy */
-    --btn-inner-start: #009dcd;  /* Brand Teal/Sky Blue */
-    --btn-inner-end: #00526a;    /* Deep Ocean Blue */
-    --btn-glow-color: #30f8f8;
-    --btn-hover-glow: 0 0 18px rgba(48, 248, 248, 0.35);
+    background: #0f172a;
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+.btn-secondary:hover {
+    background: #1e293b;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3);
 }
 
-/* 3. Vibrant Green WhatsApp Button */
+/* 3. Solid Green WhatsApp Button */
 .btn-wp {
-    --btn-border-start: #dcfce7; /* Light Green */
-    --btn-border-end: #166534;   /* Deep Green */
-    --btn-inner-start: #22c55e;  /* WhatsApp Green */
-    --btn-inner-end: #15803d;    /* Forest Green */
-    --btn-glow-color: #4ade80;
-    --btn-hover-glow: 0 0 18px rgba(34, 197, 94, 0.45);
+    background: #22c55e;
     color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
+    border: none;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+}
+.btn-wp:hover {
+    background: #16a34a;
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
 }
 
-/* 4. White Glassy Button */
+/* 4. White Clean Button */
 .btn-white {
-    --btn-border-start: #ffffff;
-    --btn-border-end: #cbd5e1;
-    --btn-inner-start: rgba(255, 255, 255, 0.95);
-    --btn-inner-end: rgba(226, 232, 240, 0.9);
-    --btn-glow-color: #ffffff;
-    --btn-hover-glow: 0 0 15px rgba(255, 255, 255, 0.5);
-    color: #0b192e;
-    text-shadow: none;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* 5. Outline Glass Button */
+/* 5. Outline Gold Button */
 .btn-outline {
-    --btn-border-start: #ffe599;
-    --btn-border-end: #b38600;
-    --btn-inner-start: rgba(255, 255, 255, 0.12);
-    --btn-inner-end: rgba(255, 255, 255, 0.03);
-    --btn-glow-color: rgba(255, 255, 255, 0.20);
-    --btn-hover-glow: 0 0 15px rgba(230, 184, 0, 0.20);
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    background: transparent;
+    color: #b48328;
+    border: 2px solid #b48328;
+    box-shadow: none;
+}
+.btn-outline:hover {
+    background: rgba(180, 131, 40, 0.1);
+}
+
+/* Ensure no stray SVG layers can ever inflate buttons */
+.liquid-wrapper, .liquid-layer {
+    display: none !important;
 }
 
 .btn-sm {
@@ -4065,14 +4035,50 @@ img {
     }
     .capsule-dock {
         padding: 8px 16px;
-        gap: 10px;
+        gap: 12px;
+        justify-content: space-between;
+    }
+    .capsule-logo {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
     }
     .capsule-logo img {
-        height: 50px;
+        height: 52px;
+        max-height: 52px;
+        width: auto;
+        object-fit: contain;
+    }
+    .capsule-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 }
 
 @media (max-width: 768px) {
+    .capsule-dock {
+        padding: 6px 14px;
+        width: 94%;
+        max-width: 440px;
+        gap: 10px;
+    }
+    .capsule-logo {
+        flex: 1;
+        min-width: 110px;
+    }
+    .capsule-logo img {
+        height: 48px;
+        max-height: 48px;
+        max-width: 140px;
+    }
+    .capsule-actions .btn-gold {
+        display: none !important;
+    }
+    .capsule-actions .btn-wp {
+        padding: 6px 12px;
+        font-size: 0.82rem;
+    }
     body {
         padding-bottom: 70px;
     }
