@@ -415,7 +415,7 @@ img {
     color: var(--text-light);
 }
 .logo img {
-    height: 60px;
+    height: 85px;
     width: auto;
     object-fit: contain;
     filter: drop-shadow(0 0 6px rgba(180, 131, 40, 0.3));
@@ -512,45 +512,19 @@ img {
                 filter var(--transition-normal);
 }
 
-.btn::before, .btn-liquid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(-65deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 65%);
-    background-size: 200% 100%;
-    background-repeat: no-repeat;
-    background-position: 150% 0;
-    pointer-events: none;
-    z-index: 4; /* On top of liquid (z-index 1) and text (z-index 3) */
-    transition: none;
-}
-
-.btn:hover::before, .btn-liquid:hover::before {
-    animation: thing 2s ease infinite;
-}
-
-@keyframes thing {
-    0% {
-        background-position: 150% 0;
-    }
-    100% {
-        background-position: -150% 0;
-    }
-}
-
 .btn:hover, .btn-liquid:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.35),
-                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.55),
+    box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.25),
+                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.4),
                 var(--btn-hover-glow, 0 0 0 rgba(0,0,0,0));
-    filter: brightness(1.05);
+    filter: brightness(1.06);
 }
 
 .btn:active, .btn-liquid:active {
     transform: translateY(1px);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2),
-                inset 0px 2px 5px rgba(0, 0, 0, 0.4);
-    filter: brightness(0.95);
+                inset 0px 2px 5px rgba(0, 0, 0, 0.3);
+    filter: brightness(0.96);
 }
 
 /* Icon micro-slide */
@@ -561,131 +535,6 @@ img {
 }
 .btn:hover i, .btn-liquid:hover i {
     transform: translateX(3px);
-}
-
-/* Dynamic Liquid Animation Layers */
-.btn .liquid-wrapper, .btn-liquid .liquid-wrapper, .mobile-sticky-item .liquid-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1; /* sits behind text and shimmer */
-    pointer-events: none;
-    overflow: hidden;
-    border-radius: inherit;
-    opacity: 1;
-    transition: opacity var(--transition-normal);
-}
-
-.btn-white .liquid-wrapper, .btn-outline .liquid-wrapper {
-    opacity: 0;
-}
-.btn-white:hover .liquid-wrapper, .btn-outline:hover .liquid-wrapper {
-    opacity: 1;
-}
-
-.btn .liquid-layer, .btn-liquid .liquid-layer, .mobile-sticky-item .liquid-layer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: center;
-    will-change: transform;
-    backface-visibility: hidden;
-}
-
-.layer-0 {
-    width: 130px;
-    height: 130px;
-    transform: translate(-50%, -50%);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-0 20s linear infinite;
-}
-.layer-1 {
-    width: 130px;
-    height: 130px;
-    transform: translate(-50%, -50%) rotate(164.97deg);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-1 25s linear infinite;
-}
-.layer-2 {
-    width: 130px;
-    height: 130px;
-    transform: translate(-53%, -53%) rotate(-11.61deg);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-2 22s linear infinite;
-}
-.layer-3 {
-    width: 220px;
-    height: 220px;
-    transform: translate(-50%, -57%) rotate(-179.01deg);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-3 30s linear infinite;
-}
-.layer-4 {
-    width: 220px;
-    height: 220px;
-    transform: translate(-57%, -50%) rotate(-29.72deg);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-4 28s linear infinite;
-}
-.layer-5 {
-    width: 220px;
-    height: 220px;
-    transform: translate(-62%, -24%) rotate(160.22deg);
-    mix-blend-mode: difference;
-    animation: rotate-liquid-5 35s linear infinite;
-}
-.layer-6 {
-    width: 220px;
-    height: 220px;
-    transform: translate(-67%, -29%) rotate(180deg);
-    mix-blend-mode: hard-light;
-    animation: rotate-liquid-6 18s linear infinite;
-}
-
-:hover .layer-0 { animation-duration: 6s; }
-:hover .layer-1 { animation-duration: 8s; }
-:hover .layer-2 { animation-duration: 7s; }
-:hover .layer-3 { animation-duration: 9s; }
-:hover .layer-4 { animation-duration: 8s; }
-:hover .layer-5 { animation-duration: 10s; }
-:hover .layer-6 { animation-duration: 5s; }
-
-@keyframes rotate-liquid-0 {
-    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.15); }
-    100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-}
-@keyframes rotate-liquid-1 {
-    0% { transform: translate(-50%, -50%) rotate(164.97deg) scale(1.1); }
-    50% { transform: translate(-50%, -50%) rotate(344.97deg) scale(0.9); }
-    100% { transform: translate(-50%, -50%) rotate(524.97deg) scale(1.1); }
-}
-@keyframes rotate-liquid-2 {
-    0% { transform: translate(-53%, -53%) rotate(-11.61deg) scale(1.2); }
-    50% { transform: translate(-53%, -53%) rotate(168.39deg) scale(0.85); }
-    100% { transform: translate(-53%, -53%) rotate(348.39deg) scale(1.2); }
-}
-@keyframes rotate-liquid-3 {
-    0% { transform: translate(-50%, -57%) rotate(-179.01deg) scale(1); }
-    50% { transform: translate(-50%, -57%) rotate(0.99deg) scale(1.1); }
-    100% { transform: translate(-50%, -57%) rotate(180.99deg) scale(1); }
-}
-@keyframes rotate-liquid-4 {
-    0% { transform: translate(-57%, -50%) rotate(-29.72deg) scale(1.15); }
-    50% { transform: translate(-57%, -50%) rotate(150.28deg) scale(0.95); }
-    100% { transform: translate(-57%, -50%) rotate(330.28deg) scale(1.15); }
-}
-@keyframes rotate-liquid-5 {
-    0% { transform: translate(-62%, -24%) rotate(160.22deg) scale(0.9); }
-    50% { transform: translate(-62%, -24%) rotate(340.22deg) scale(1.2); }
-    100% { transform: translate(-62%, -24%) rotate(520.22deg) scale(0.9); }
-}
-@keyframes rotate-liquid-6 {
-    0% { transform: translate(-67%, -29%) rotate(180deg) scale(1); }
-    50% { transform: translate(-67%, -29%) rotate(360deg) scale(1.1); }
-    100% { transform: translate(-67%, -29%) rotate(540deg) scale(1); }
 }
 
 .btn .btn-text, .btn-liquid .btn-text {
@@ -1682,6 +1531,11 @@ img {
 .footer-logo {
     color: white;
     margin-bottom: 20px;
+}
+.footer-logo img {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
 }
 .footer-logo .logo-net-icon {
     box-shadow: none;
@@ -2800,17 +2654,17 @@ img {
 
 /* Logo Resizing */
 .logo img {
-    height: 80px !important;
+    height: 104px !important;
     transition: transform var(--transition-normal), filter var(--transition-normal);
     transform-origin: left center;
     will-change: transform;
 }
 .header-main.scrolled .logo img {
-    transform: scale(0.75); /* Smooth visual resize (80px * 0.75 = 60px) without layout reflow */
+    transform: scale(0.75); /* Smooth visual resize (104px * 0.75 = 78px) without layout reflow */
 }
 @media (max-width: 992px) {
     .logo img {
-        height: 58px !important;
+        height: 76px !important;
         transform: none !important;
     }
 }
@@ -2899,7 +2753,7 @@ img {
         justify-content: center !important;
     }
     .logo img {
-        height: 70px !important; /* Increased by ~20% from 58px */
+        height: 91px !important; /* Increased from 70px */
     }
     .mobile-nav-toggle {
         position: absolute !important;
@@ -3471,7 +3325,7 @@ img {
     border-color: var(--accent);
 }
 .capsule-logo img {
-    height: 52px;
+    height: 68px;
     width: auto;
     object-fit: contain;
     filter: drop-shadow(0 0 6px rgba(180, 131, 40, 0.3));
@@ -4214,7 +4068,7 @@ img {
         gap: 10px;
     }
     .capsule-logo img {
-        height: 38px;
+        height: 50px;
     }
 }
 
