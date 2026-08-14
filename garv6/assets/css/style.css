@@ -1921,7 +1921,7 @@ img {
     box-sizing: border-box;
 }
 
-/* Gooey blob button base */
+/* Mobile Sticky Bottom Bar Buttons */
 .mobile-sticky-item {
     position: relative;
     display: flex;
@@ -1929,7 +1929,7 @@ img {
     justify-content: center;
     gap: 8px;
     height: 48px; /* Fixed height for sticky bar */
-    padding: 0 24px;
+    padding: 0 20px;
     border-radius: 30px; /* Capsule shape */
     font-weight: 700;
     font-size: 0.95rem;
@@ -1939,92 +1939,50 @@ img {
     cursor: pointer;
     overflow: hidden;
     will-change: transform;
-    isolation: isolate;
     box-sizing: border-box;
-    
-    /* 3D Glass/Gel Look border-clip backgrounds */
-    border: 2px solid transparent;
-    background: 
-        radial-gradient(circle at 50% -250%, rgba(255, 255, 255, 0.75) 45%, rgba(255, 255, 255, 0.15) 60%, rgba(255, 255, 255, 0) 62%) padding-box,
-        radial-gradient(circle at 50% 100%, var(--btn-glow-color, rgba(255,255,255,0.4)) 12%, rgba(255, 255, 255, 0) 58%) padding-box,
-        linear-gradient(to bottom, var(--btn-inner-start, #009dcd), var(--btn-inner-end, #00526a)) padding-box,
-        linear-gradient(to bottom, var(--btn-border-start, #6dc8e8), var(--btn-border-end, #073080)) border-box;
-
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.45);
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.25), 
-                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.45);
-                
-    transition: transform 0.2s ease, box-shadow var(--transition-normal), filter var(--transition-normal);
-}
-
-.mobile-sticky-item::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(-65deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 65%);
-    background-size: 200% 100%;
-    background-repeat: no-repeat;
-    background-position: 150% 0;
-    pointer-events: none;
-    z-index: 4;
-}
-
-.mobile-sticky-item:hover::before {
-    animation: thing 2s ease infinite;
+    border: none;
+    transition: transform 0.2s ease, box-shadow var(--transition-fast), filter var(--transition-fast);
 }
 
 .mobile-sticky-item:hover {
     transform: translateY(-1px);
-    box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.3),
-                inset 0px 1px 1px 0px rgba(255, 255, 255, 0.55),
-                var(--btn-hover-glow, 0 0 0 rgba(0,0,0,0));
-    filter: brightness(1.05);
+    filter: brightness(1.08);
 }
 
 .mobile-sticky-item:active {
     transform: scale(0.97);
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2),
-                inset 0px 2px 5px rgba(0, 0, 0, 0.4);
     filter: brightness(0.95);
 }
 
-/* Gooey background container - hidden */
-.mobile-sticky-item .gooey-bg {
-    display: none !important;
+/* Call Standard Blue color scheme */
+.mobile-sticky-item-call {
+    order: 1;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
 }
-
-/* Individual blobs - hidden */
-.mobile-sticky-item .blob {
-    display: none !important;
+.mobile-sticky-item-call:hover {
+    background: #1d4ed8;
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
 }
 
 /* WhatsApp Green color scheme */
 .mobile-sticky-item-wp {
     order: 2;
-    --btn-border-start: #dcfce7;
-    --btn-border-end: #166534;
-    --btn-inner-start: #22c55e;
-    --btn-inner-end: #15803d;
-    --btn-glow-color: #4ade80;
-    --btn-hover-glow: 0 0 18px rgba(34, 197, 94, 0.45);
+    background: #22c55e;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+}
+.mobile-sticky-item-wp:hover {
+    background: #16a34a;
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.5);
 }
 
-/* Call Brand Blue color scheme */
-.mobile-sticky-item-call {
-    order: 1;
-    --btn-border-start: #a5f3fc;
-    --btn-border-end: #073080;
-    --btn-inner-start: #009dcd;
-    --btn-inner-end: #00526a;
-    --btn-glow-color: #30f8f8;
-    --btn-hover-glow: 0 0 18px rgba(48, 248, 248, 0.35);
-}
-
-/* Icon & text z-index */
+/* Icon & text */
 .mobile-sticky-item i,
 .mobile-sticky-item span {
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 @media (max-width: 992px) {
