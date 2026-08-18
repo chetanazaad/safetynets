@@ -1,83 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Syne:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Poppins:wght@500;600;700;800;900&display=swap');
 
 /* ==========================================================================
-   GAR Safety Nets CSS Design System (v6 Next-Gen Luxury Light Bento Architecture)
+   GAR Safety Nets CSS Design System (Invissafe High-Contrast Modern Edition)
    ========================================================================== */
 
 :root {
-    /* Luxury Light Architectural Palette */
-    --primary-h: 222;
-    --primary-s: 47%;
-    --primary-l: 11%;
-    --primary: #0f172a; /* Deep Slate Charcoal for high contrast */
-    --primary-dark: #020617;
-    --primary-light: #1e293b;
-    --navy-700: #1e293b;
-    --navy-800: #0f172a;
-    --navy-900: #020617;
+    /* Invissafe Clean Architectural & Safety Palette */
+    --primary-h: 207;
+    --primary-s: 79%;
+    --primary-l: 21%;
+    --primary: #0b3b60; /* Invissafe Deep Royal Blue */
+    --primary-dark: #062238;
+    --primary-light: #144e7c;
+    --navy-700: #144e7c;
+    --navy-800: #0b3b60;
+    --navy-900: #062238;
 
-    --accent-h: 38;
-    --accent-s: 64%;
-    --accent-l: 43%;
-    --accent: #b48328; /* Rich Architectural Amber Gold */
-    --accent-dark: #8c6014;
-    --accent-light: #dfba6b;
-    --accent-soft: rgba(180, 131, 40, 0.1);
-    --accent-glow: rgba(180, 131, 40, 0.35);
-    --accent-glow-light: rgba(180, 131, 40, 0.12);
-    --accent-gradient: linear-gradient(135deg, #dfba6b 0%, #b48328 50%, #8c6014 100%);
+    --accent-h: 25;
+    --accent-s: 100%;
+    --accent-l: 50%;
+    --accent: #ff6b00; /* Invissafe High-Visibility Safety Orange */
+    --accent-dark: #d95700;
+    --accent-light: #ff8833;
+    --accent-soft: rgba(255, 107, 0, 0.1);
+    --accent-glow: rgba(255, 107, 0, 0.35);
+    --accent-glow-light: rgba(255, 107, 0, 0.12);
+    --accent-gradient: linear-gradient(135deg, #ff8833 0%, #ff6b00 50%, #d95700 100%);
 
-    --teal-h: 199;
-    --teal-s: 89%;
-    --teal-l: 40%;
-    --teal: #0284c7; /* Vibrant Sky Cyan */
-    --teal-glow: rgba(2, 132, 199, 0.25);
+    --teal-h: 200;
+    --teal-s: 100%;
+    --teal-l: 41%;
+    --teal: #0084d1; /* Crisp Sky Cyan */
+    --teal-glow: rgba(0, 132, 209, 0.25);
 
-    --blue-cobalt: #2563eb;
-    --blue-glow: rgba(37, 99, 235, 0.25);
+    --blue-cobalt: #0b5ed7; /* Invissafe Standard Call Blue */
+    --blue-glow: rgba(11, 94, 215, 0.25);
 
     --steel: #475569; /* Slate 600 */
     --steel-light: #64748b; /* Slate 500 */
 
-    --light-bg: #f8fafc; /* Crisp Pearl/Alabaster Background */
+    --light-bg: #f4f8fb; /* Clean Crisp Ice-White Background */
     --light-card: #ffffff;
-    --dark-bg: #f1f5f9;
+    --dark-bg: #edf3f8;
     --dark-card: #ffffff;
-    --border-color: rgba(180, 131, 40, 0.22);
-    --border-dark: rgba(15, 23, 42, 0.08);
+    --border-color: rgba(11, 59, 96, 0.14);
+    --border-dark: rgba(11, 59, 96, 0.08);
 
     /* Text Colors */
     --text-main: #0f172a; /* Deep Slate Charcoal */
-    --text-muted: #64748b; /* Slate Gray */
-    --text-light: #0f172a; /* Headings */
+    --text-muted: #526071; /* Slate Gray */
+    --text-light: #0b3b60; /* Headings */
 
     /* Radius Scale */
     --radius-sm: 8px;
     --radius-md: 14px;
-    --radius-lg: 22px;
-    --radius-xl: 30px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
     --radius-full: 999px;
 
-    /* Glassmorphism System (Crisp Frosted Alabaster) */
+    /* Glassmorphism System (Invissafe Frosted Blue/White) */
     --glass-blur: 20px;
-    --glass-bg: rgba(255, 255, 255, 0.88);
-    --glass-bg-strong: rgba(255, 255, 255, 0.95);
-    --glass-border: rgba(180, 131, 40, 0.25);
-    --glass-shadow: 0 12px 35px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-    --glass-navy-bg: rgba(255, 255, 255, 0.92);
-    --glass-navy-border: rgba(226, 232, 240, 0.8);
-    --glass-gold-glow: 0 0 0 1px rgba(180, 131, 40, 0.4), 0 12px 30px rgba(180, 131, 40, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-bg-strong: rgba(255, 255, 255, 0.98);
+    --glass-border: rgba(11, 59, 96, 0.14);
+    --glass-shadow: 0 10px 30px rgba(11, 59, 96, 0.06), 0 1px 3px rgba(11, 59, 96, 0.04);
+    --glass-navy-bg: rgba(255, 255, 255, 0.95);
+    --glass-navy-border: rgba(203, 213, 225, 0.8);
+    --glass-gold-glow: 0 0 0 1px rgba(255, 107, 0, 0.4), 0 12px 30px rgba(255, 107, 0, 0.15);
 
     /* Transitions & Curves */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
     
-    --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06);
-    --shadow-md: 0 4px 12px -1px rgba(15, 23, 42, 0.08);
-    --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.1);
-    --shadow-xl: 0 24px 48px -8px rgba(15, 23, 42, 0.12);
-    --shadow-glow: 0 0 30px rgba(180, 131, 40, 0.25);
+    --shadow-sm: 0 1px 3px 0 rgba(11, 59, 96, 0.06);
+    --shadow-md: 0 4px 14px -1px rgba(11, 59, 96, 0.08);
+    --shadow-lg: 0 12px 28px -4px rgba(11, 59, 96, 0.1);
+    --shadow-xl: 0 24px 48px -8px rgba(11, 59, 96, 0.12);
+    --shadow-glow: 0 0 30px rgba(255, 107, 0, 0.25);
 }
 
 /* Glass Surface Utility */
@@ -92,7 +92,7 @@
     background: #ffffff;
     -webkit-backdrop-filter: blur(var(--glass-blur));
     backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    border: 1px solid rgba(203, 213, 225, 0.8);
     box-shadow: var(--glass-shadow);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -105,15 +105,18 @@ body {
     color: var(--text-main);
 }
 
-h1, h2, h3, h4, .section-header h2, .footer-heading, .quote-form-card h3, .bento-title, .space-tab-btn, .spec-title {
-    font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+h1, h2, h3, h4, .section-header h2, .footer-heading, .quote-form-card h3, .bento-title, .space-tab-btn, .spec-title, .mixit-filter-btn {
+    font-family: 'Poppins', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #0f172a;
+    color: #0b3b60;
 }
 
-.mono-spec, .spec-value, .calculator-price-val, .counter-value, .radar-stat {
-    font-family: 'JetBrains Mono', monospace;
+.text-gradient-gold, .text-gradient-orange {
+    background: linear-gradient(135deg, #ff8833 0%, #ff6b00 50%, #0b5ed7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
 }
 
 .mono-spec, .spec-value, .calculator-price-val, .counter-value, .radar-stat {
@@ -520,27 +523,28 @@ img {
     gap: 8px;
 }
 
-/* 1. Architectural Gold (CTAs) */
-.btn-gold, .btn-primary, .btn-liquid {
-    background: linear-gradient(135deg, #c59333 0%, #a6741e 100%);
+/* 1. Invissafe Safety Orange (CTAs & Primary Actions) */
+.btn-gold, .btn-primary, .btn-liquid, .btn-orange {
+    background: linear-gradient(135deg, #ff8533 0%, #ff5500 100%);
     color: #ffffff;
-    border: 1px solid #d4a03d;
-    box-shadow: 0 4px 14px rgba(180, 131, 40, 0.35);
+    border: 1px solid #ff944d;
+    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.35);
 }
-.btn-gold:hover, .btn-primary:hover, .btn-liquid:hover {
-    box-shadow: 0 6px 20px rgba(180, 131, 40, 0.5);
+.btn-gold:hover, .btn-primary:hover, .btn-liquid:hover, .btn-orange:hover {
+    box-shadow: 0 6px 22px rgba(255, 107, 0, 0.5);
+    background: linear-gradient(135deg, #ff944d 0%, #ff6600 100%);
 }
 
-/* 2. Standard Blue Call / Secondary Button */
-.btn-secondary, .btn-call {
-    background: #2563eb;
+/* 2. Invissafe Standard Royal Blue Call / Secondary Button */
+.btn-secondary, .btn-call, .btn-blue {
+    background: #0b5ed7;
     color: #ffffff;
-    border: 1px solid #3b82f6;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    border: 1px solid #2b7cf6;
+    box-shadow: 0 4px 14px rgba(11, 94, 215, 0.35);
 }
-.btn-secondary:hover, .btn-call:hover {
-    background: #1d4ed8;
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+.btn-secondary:hover, .btn-call:hover, .btn-blue:hover {
+    background: #094eb5;
+    box-shadow: 0 6px 20px rgba(11, 94, 215, 0.5);
 }
 
 /* 3. Solid Green WhatsApp Button */
@@ -558,20 +562,25 @@ img {
 /* 4. White Clean Button */
 .btn-white {
     background: #ffffff;
-    color: #0f172a;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: #0b3b60;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.btn-white:hover {
+    background: #f8fafc;
+    color: #ff6b00;
+    border-color: #ff6b00;
 }
 
-/* 5. Outline Gold Button */
+/* 5. Outline Button */
 .btn-outline {
     background: transparent;
-    color: #b48328;
-    border: 2px solid #b48328;
+    color: #ff6b00;
+    border: 2px solid #ff6b00;
     box-shadow: none;
 }
 .btn-outline:hover {
-    background: rgba(180, 131, 40, 0.1);
+    background: rgba(255, 107, 0, 0.1);
 }
 
 /* Ensure no stray SVG layers can ever inflate buttons */
@@ -4201,3 +4210,274 @@ img {
         box-sizing: border-box;
     }
 }
+
+/* ==========================================================================
+   MixItUp Filterable Works Gallery (Mobile-First & Responsive)
+   ========================================================================== */
+.gallery-mixit-section {
+    padding: 90px 0 100px;
+    background: linear-gradient(180deg, #f4f8fb 0%, #edf4f9 100%);
+    position: relative;
+}
+
+.mixit-filter-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 auto 40px auto;
+    max-width: 1000px;
+}
+
+.mixit-filter-btn {
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #0b3b60;
+    background: #ffffff;
+    border: 1px solid rgba(11, 59, 96, 0.16);
+    box-shadow: 0 2px 8px rgba(11, 59, 96, 0.05);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mixit-filter-btn i {
+    color: #ff6b00;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.mixit-filter-btn:hover {
+    color: #ff6b00;
+    border-color: #ff6b00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.18);
+}
+
+.mixit-filter-btn.mixitup-control-active,
+.mixit-filter-btn.active {
+    background: linear-gradient(135deg, #ff8833 0%, #ff6b00 100%);
+    color: #ffffff !important;
+    border-color: #ff6b00 !important;
+    box-shadow: 0 4px 18px rgba(255, 107, 0, 0.4) !important;
+    transform: translateY(-1px);
+}
+
+.mixit-filter-btn.mixitup-control-active i,
+.mixit-filter-btn.active i {
+    color: #ffffff !important;
+}
+
+.mixit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    min-height: 400px;
+}
+
+.mixit-card {
+    background: #ffffff;
+    border: 1px solid rgba(11, 59, 96, 0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(11, 59, 96, 0.06);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.mixit-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(11, 59, 96, 0.12);
+    border-color: rgba(255, 107, 0, 0.45);
+}
+
+.mixit-card.mix {
+    display: flex;
+}
+
+.mixit-img-box {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.mixit-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mixit-card:hover .mixit-img-box img {
+    transform: scale(1.06);
+}
+
+.mixit-card-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(11, 59, 96, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.mixit-verified-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(34, 197, 94, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.mixit-card-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.mixit-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0b3b60;
+    margin-bottom: 6px;
+    line-height: 1.35;
+}
+
+.mixit-card-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #526071;
+    margin-bottom: 14px;
+}
+
+.mixit-card-location i {
+    color: #ff6b00;
+}
+
+.mixit-card-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.mixit-spec-pill {
+    background: #f0f5fa;
+    color: #0b3b60;
+    border: 1px solid rgba(11, 59, 96, 0.08);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.mixit-spec-pill i {
+    color: #ff6b00;
+    font-size: 0.7rem;
+}
+
+.mixit-card-actions {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+@media (max-width: 992px) {
+    .mixit-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .gallery-mixit-section {
+        padding: 60px 0 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mixit-filter-bar {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 12px 14px;
+        margin-bottom: 24px;
+        scrollbar-width: none;
+    }
+    .mixit-filter-bar::-webkit-scrollbar {
+        display: none;
+    }
+    .mixit-filter-btn {
+        padding: 8px 16px;
+        font-size: 0.84rem;
+        flex-shrink: 0;
+    }
+    .mixit-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+    .mixit-img-box {
+        height: 200px;
+    }
+    .mixit-card-body {
+        padding: 18px;
+    }
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: var(--steel, #94a3b8);
+}
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+

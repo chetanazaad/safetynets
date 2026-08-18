@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOUR — Safety as Couture</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@200;300;400&display=swap');
+
+:root {
+  --ivory: #f5f0e8;
+  --warm: #ede8de;
+  --cream: #d8d0c0;
+  --forest: #1c2e22;
+  --forest-mid: #2d4a36;
+  --moss: #4a6b50;
+  --bronze: #8b6d42;
+  --text: #1c1c1c;
+  --text-light: rgba(28,28,28,0.55);
+  --white: #ffffff;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ivory);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.cur-dot {
+  position: fixed; width:10px; height:10px;
+  background: var(--forest); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  mix-blend-mode: multiply;
+}
+.cur-trail {
+  position:fixed; width:40px; height:40px;
+  border:1.5px solid var(--forest);
+  border-radius:50%; pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition: all 0.2s ease;
+  mix-blend-mode: multiply;
+}
+.cur-trail.big { width:70px;height:70px; opacity:0.4; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:800;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.5rem 2rem;
+  mix-blend-mode: normal;
+  background: rgba(245,240,232,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(28,46,34,0.1);
+}
+.nav-logo {
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem; font-weight:900; letter-spacing:0.1em;
+  color:var(--forest);
+}
+.nav-logo sub { font-size:0.55rem; letter-spacing:0.3em; font-weight:400; display:block; color:var(--moss); font-family:'DM Sans',sans-serif; }
+.nav-center {
+  display:none; gap:2.5rem; list-style:none;
+}
+@media(min-width:768px){ .nav-center{ display:flex; } }
+.nav-center a {
+  font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--text-light); text-decoration:none; transition:color 0.3s; cursor:none;
+  font-weight:400;
+}
+.nav-center a:hover { color:var(--forest); }
+.nav-right {
+  font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--forest); text-decoration:none; cursor:none;
+  display:none;
+}
+@media(min-width:768px){ .nav-right{ display:block; } }
+.hamburger-v {
+  display:flex; flex-direction:column; gap:5px; cursor:none;
+  background:none; border:none;
+}
+@media(min-width:768px){ .hamburger-v{ display:none; } }
+.hamburger-v span { width:22px; height:1.5px; background:var(--forest); display:block; }
+
+.mob-menu {
+  position:fixed; inset:0; background:var(--forest); z-index:700;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3rem;
+  transform:translateY(-100%); transition:transform 0.6s cubic-bezier(0.77,0,0.175,1);
+}
+.mob-menu.show { transform:translateY(0); }
+.mob-menu a {
+  font-family:'Playfair Display',serif; font-size:2.5rem; font-style:italic;
+  color:var(--ivory); text-decoration:none; cursor:none;
+  transition: color 0.3s;
+}
+.mob-menu a:hover { color:var(--cream); }
+
+/* ── SECTIONS ── */
+section { display:none; min-height:100dvh; }
+section.active { display:block; }
+
+/* ── HERO ── */
+#home {
+  padding-top:80px;
+  display:none;
+  flex-direction:column;
+}
+#home.active { display:flex; }
+
+.hero-editorial {
+  display:grid; grid-template-columns:1fr;
+  min-height:calc(100dvh - 80px);
+}
+@media(min-width:768px){ .hero-editorial { grid-template-columns: 1fr 1fr; } }
+
+.hero-text-panel {
+  background:var(--forest);
+  padding:4rem 3rem;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  position:relative; overflow:hidden;
+  order:2;
+}
+@media(min-width:768px){ .hero-text-panel{ order:1; padding:6rem 4rem; } }
+
+.woven-bg {
+  position:absolute; inset:0; opacity:0.08;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(245,240,232,0.5) 0, rgba(245,240,232,0.5) 1px, transparent 1px, transparent 20px),
+    repeating-linear-gradient(90deg, rgba(245,240,232,0.5) 0, rgba(245,240,232,0.5) 1px, transparent 1px, transparent 20px);
+  animation:weaveShift 8s linear infinite;
+}
+@keyframes weaveShift {
+  0%{ background-position:0 0, 0 0; }
+  100%{ background-position:20px 20px, 20px 20px; }
+}
+
+.hero-tag {
+  font-size:0.6rem; letter-spacing:0.4em; text-transform:uppercase;
+  color:var(--moss); margin-bottom:3rem; font-weight:400;
+  position:relative;
+}
+.hero-h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,8vw,5.5rem);
+  font-weight:900; line-height:0.95;
+  color:var(--ivory); letter-spacing:-0.01em;
+  margin-bottom:2rem; position:relative;
+}
+.hero-h1 em { font-style:italic; color:var(--cream); display:block; }
+.hero-sub-v {
+  font-size:0.8rem; color:rgba(245,240,232,0.55); line-height:1.9;
+  max-width:340px; margin-bottom:3rem; position:relative;
+}
+.hero-btns { display:flex; flex-direction:column; gap:1rem; width:fit-content; position:relative; }
+@media(min-width:400px){ .hero-btns{ flex-direction:row; } }
+
+.btn-v-primary {
+  background:var(--ivory); color:var(--forest);
+  padding:0.9rem 2rem; border:none; cursor:none;
+  font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  font-family:'DM Sans',sans-serif; font-weight:400;
+  transition:all 0.3s;
+}
+.btn-v-primary:hover { background:var(--cream); transform:translateY(-2px); }
+.btn-v-ghost {
+  background:transparent; color:var(--ivory);
+  padding:0.9rem 2rem; border:1px solid rgba(245,240,232,0.3); cursor:none;
+  font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  font-family:'DM Sans',sans-serif; font-weight:300;
+  transition:all 0.3s;
+}
+.btn-v-ghost:hover { border-color:var(--ivory); }
+
+.hero-image-panel {
+  background:var(--warm);
+  position:relative; overflow:hidden;
+  min-height:50vw; display:flex; align-items:center; justify-content:center;
+  order:1;
+}
+@media(min-width:768px){ .hero-image-panel{ order:2; min-height:auto; } }
+
+/* Net visual */
+.net-art {
+  width:100%; height:100%; position:absolute; inset:0;
+}
+.net-label {
+  position:absolute; bottom:2rem; right:2rem;
+  font-family:'Playfair Display',serif; font-size:5rem; font-weight:900;
+  color:rgba(28,46,34,0.06); line-height:1; text-align:right;
+  font-style:italic; pointer-events:none;
+}
+
+/* ── ABOUT ── */
+#about { display:none; padding:80px 0 0; }
+#about.active { display:block; }
+
+.about-strip {
+  background:var(--forest); color:var(--ivory);
+  padding:5rem 2rem;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+}
+.about-strip h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,4rem); font-weight:400; font-style:italic;
+  max-width:700px; margin-bottom:2rem;
+}
+.about-strip p {
+  max-width:560px; font-size:0.85rem; color:rgba(245,240,232,0.65);
+  line-height:2; margin-bottom:3rem;
+}
+.about-cards {
+  display:grid; grid-template-columns:1fr;
+  gap:2px; width:100%; max-width:900px; margin-top:1rem;
+}
+@media(min-width:600px){ .about-cards{ grid-template-columns:repeat(3,1fr); } }
+.about-card {
+  background:var(--forest-mid); padding:3rem 2rem; text-align:left;
+  border-top:2px solid var(--moss);
+  transition:background 0.3s;
+}
+.about-card:hover { background:var(--moss); }
+.ac-num {
+  font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700;
+  color:var(--cream); margin-bottom:0.5rem;
+}
+.ac-title { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cream); margin-bottom:1rem; }
+.ac-text { font-size:0.75rem; color:rgba(245,240,232,0.6); line-height:1.9; }
+
+.manifesto {
+  padding:6rem 2rem; max-width:900px; margin:0 auto;
+}
+.manifesto blockquote {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem,4vw,2.8rem); font-weight:400; font-style:italic;
+  color:var(--forest); line-height:1.3;
+  border-left:3px solid var(--moss); padding-left:2rem;
+}
+.manifesto cite {
+  display:block; margin-top:1.5rem; font-size:0.65rem; letter-spacing:0.3em;
+  text-transform:uppercase; color:var(--text-light); font-style:normal;
+}
+
+/* ── PRODUCTS ── */
+#products { display:none; padding-top:80px; }
+#products.active { display:block; }
+
+.products-masthead {
+  background:var(--warm); padding:5rem 2rem 3rem; text-align:center;
+  border-bottom:1px solid var(--cream);
+}
+.products-masthead h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,4rem); font-style:italic;
+  color:var(--forest);
+}
+.products-masthead p {
+  font-size:0.75rem; color:var(--text-light); max-width:500px; margin:1rem auto 0; line-height:2;
+}
+.collection-list {
+  max-width:1000px; margin:0 auto;
+}
+.collection-item {
+  display:grid; grid-template-columns:1fr;
+  border-bottom:1px solid var(--cream);
+  transition:background 0.3s;
+  cursor:none;
+}
+@media(min-width:700px){ .collection-item{ grid-template-columns:1fr 2fr; } }
+.collection-item:hover { background:var(--warm); }
+.ci-left {
+  padding:3rem 2rem;
+  border-right:none; border-bottom:1px solid var(--cream);
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+@media(min-width:700px){
+  .ci-left{ border-right:1px solid var(--cream); border-bottom:none; }
+}
+.ci-num {
+  font-family:'Playfair Display',serif; font-size:4rem; font-weight:900;
+  color:var(--cream); line-height:1;
+}
+.ci-category {
+  font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--moss);
+}
+.ci-right { padding:3rem 2rem; }
+.ci-name {
+  font-family:'Playfair Display',serif; font-size:1.8rem; font-style:italic;
+  color:var(--forest); margin-bottom:1rem;
+}
+.ci-desc { font-size:0.78rem; color:var(--text-light); line-height:2; max-width:500px; }
+.ci-specs {
+  margin-top:1.5rem; display:flex; gap:1.5rem; flex-wrap:wrap;
+}
+.ci-spec {
+  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--bronze); border-bottom:1px solid var(--bronze); padding-bottom:2px;
+}
+
+/* ── PROCESS ── */
+#process { display:none; padding-top:80px; }
+#process.active { display:block; }
+
+.process-hero {
+  background:var(--forest); color:var(--ivory);
+  padding:5rem 2rem; text-align:center;
+}
+.process-hero h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,4rem); font-style:italic; margin-bottom:1rem;
+}
+.process-hero p { font-size:0.8rem; color:rgba(245,240,232,0.6); max-width:500px; margin:0 auto; line-height:2; }
+
+.process-timeline {
+  max-width:900px; margin:0 auto; padding:4rem 2rem;
+  display:flex; flex-direction:column; gap:0;
+}
+.pt-item {
+  display:grid; grid-template-columns:60px 1fr;
+  gap:0; padding:3rem 0; border-bottom:1px solid var(--cream);
+  opacity:0; transform:translateX(-20px);
+  transition:all 0.5s ease;
+}
+.pt-item.vis { opacity:1; transform:translateX(0); }
+.pt-line {
+  position:relative; display:flex; flex-direction:column; align-items:center;
+}
+.pt-dot {
+  width:12px; height:12px; border-radius:50%; background:var(--forest);
+  position:relative; z-index:1; margin-top:6px;
+  transition:background 0.3s;
+}
+.pt-item:hover .pt-dot { background:var(--moss); }
+.pt-connector {
+  flex:1; width:1px; background:var(--cream); margin:4px 0;
+}
+.pt-content { padding-left:1.5rem; }
+.pt-label {
+  font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--moss); margin-bottom:0.5rem;
+}
+.pt-title {
+  font-family:'Playfair Display',serif; font-size:1.4rem; font-style:italic;
+  color:var(--forest); margin-bottom:1rem;
+}
+.pt-text { font-size:0.78rem; color:var(--text-light); line-height:2; }
+
+/* ── CONTACT ── */
+#contact { display:none; padding-top:80px; }
+#contact.active { display:block; }
+
+.contact-split {
+  display:grid; grid-template-columns:1fr;
+  min-height:calc(100dvh - 80px);
+}
+@media(min-width:768px){ .contact-split{ grid-template-columns:1fr 1fr; } }
+.contact-info {
+  background:var(--forest); padding:5rem 3rem;
+  display:flex; flex-direction:column; justify-content:center;
+}
+@media(min-width:768px){ .contact-info{ padding:6rem 4rem; } }
+.contact-info h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,5vw,3.5rem); font-style:italic; color:var(--ivory);
+  margin-bottom:2rem;
+}
+.contact-info p { font-size:0.8rem; color:rgba(245,240,232,0.6); line-height:2; max-width:360px; }
+.contact-details { margin-top:3rem; display:flex; flex-direction:column; gap:1.5rem; }
+.cd-item {
+  display:flex; flex-direction:column; gap:0.3rem;
+  border-left:2px solid var(--moss); padding-left:1.2rem;
+}
+.cd-label { font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--moss); }
+.cd-value { font-size:0.85rem; color:var(--ivory); }
+
+.contact-form-panel {
+  background:var(--warm); padding:5rem 3rem;
+  display:flex; flex-direction:column; justify-content:center;
+}
+@media(min-width:768px){ .contact-form-panel{ padding:6rem 4rem; } }
+.cf-title {
+  font-family:'Playfair Display',serif; font-size:1.5rem; font-style:italic;
+  color:var(--forest); margin-bottom:2.5rem;
+}
+.cf-form { display:flex; flex-direction:column; gap:1.5rem; }
+.cf-field { display:flex; flex-direction:column; gap:0.5rem; }
+.cf-label {
+  font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-light);
+}
+.cf-input {
+  background:transparent;
+  border:none; border-bottom:1px solid var(--cream);
+  padding:0.8rem 0; font-family:'DM Sans',sans-serif;
+  font-size:0.85rem; color:var(--text); outline:none;
+  transition:border-color 0.3s; font-weight:300;
+}
+.cf-input:focus { border-color:var(--forest); }
+.cf-input::placeholder { color:var(--text-light); }
+textarea.cf-input { min-height:100px; resize:none; }
+.cf-submit {
+  margin-top:0.5rem; align-self:flex-start;
+  background:var(--forest); color:var(--ivory);
+  padding:0.9rem 2.5rem; border:none; cursor:none;
+  font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+  font-family:'DM Sans',sans-serif; font-weight:400;
+  transition:background 0.3s; position:relative; overflow:hidden;
+}
+.cf-submit:hover { background:var(--forest-mid); }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--text); color:var(--ivory);
+  padding:2.5rem 2rem;
+  display:flex; flex-direction:column; align-items:center;
+  gap:1rem; text-align:center;
+}
+.footer-v-logo {
+  font-family:'Playfair Display',serif; font-size:1rem; font-style:italic; letter-spacing:0.1em;
+}
+.footer-v-copy { font-size:0.6rem; letter-spacing:0.1em; color:rgba(245,240,232,0.4); }
+
+/* ── TRANSITIONS ── */
+.veil {
+  position:fixed; inset:0;
+  background:var(--forest);
+  z-index:8000;
+  transform:translateY(100%);
+  pointer-events:none;
+}
+.veil.in { animation:veilIn 0.45s cubic-bezier(0.77,0,0.175,1) forwards; }
+.veil.out { animation:veilOut 0.45s cubic-bezier(0.77,0,0.175,1) forwards; }
+@keyframes veilIn { to{ transform:translateY(0); } }
+@keyframes veilOut { from{transform:translateY(0);} to{transform:translateY(-100%);} }
+
+/* Click ripple */
+.vripple {
+  position:fixed; border-radius:50%; pointer-events:none; z-index:9000;
+  background:rgba(28,46,34,0.12); transform:translate(-50%,-50%);
+  animation:vRippleOut 0.7s ease-out forwards;
+}
+@keyframes vRippleOut {
+  from{width:0;height:0;opacity:1;}
+  to{width:180px;height:180px;opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-trail" id="curTrail"></div>
+<div class="veil" id="veil"></div>
+
+<nav>
+  <div class="nav-logo">VELOUR<sub>Safety Couture</sub></div>
+  <ul class="nav-center">
+    <li><a href="#" onclick="goTo('home');return false">Maison</a></li>
+    <li><a href="#" onclick="goTo('about');return false">Story</a></li>
+    <li><a href="#" onclick="goTo('products');return false">Collections</a></li>
+    <li><a href="#" onclick="goTo('process');return false">Craft</a></li>
+    <li><a href="#" onclick="goTo('contact');return false">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-right" onclick="goTo('contact');return false">Consult Us</a>
+  <button class="hamburger-v" onclick="toggleMob()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="#" onclick="goTo('home');toggleMob();return false">Maison</a>
+  <a href="#" onclick="goTo('about');toggleMob();return false">Story</a>
+  <a href="#" onclick="goTo('products');toggleMob();return false">Collections</a>
+  <a href="#" onclick="goTo('process');toggleMob();return false">Craft</a>
+  <a href="#" onclick="goTo('contact');toggleMob();return false">Contact</a>
+</div>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="hero-editorial">
+    <div class="hero-text-panel">
+      <div class="woven-bg"></div>
+      <div class="hero-tag">Safety Reimagined — Since 2001</div>
+      <h1 class="hero-h1">Wear Your<br>Protection<br><em>With Pride</em></h1>
+      <p class="hero-sub-v">We believe safety should never be an afterthought. VELOUR designs safety net systems with the same deliberate craft that goes into haute couture — every thread chosen, every tension considered.</p>
+      <div class="hero-btns">
+        <button class="btn-v-primary" onclick="goTo('products')">View Collections</button>
+        <button class="btn-v-ghost" onclick="goTo('about')">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-image-panel">
+      <canvas class="net-art" id="netCanvas"></canvas>
+      <div class="net-label">NET<br>WORK</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-strip">
+    <div style="font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--moss);margin-bottom:1.5rem">Our Philosophy</div>
+    <h2>"Protection Is the Highest Form of Care"</h2>
+    <p>From fashion capitals to construction sites, VELOUR brings a couturier's eye to industrial safety. We don't manufacture nets. We architect protection systems that respect the space they inhabit and the lives they guard.</p>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="ac-num">20+</div>
+        <div class="ac-title">Years of Craft</div>
+        <div class="ac-text">Two decades of mastery, built on a foundation of material science and human intuition.</div>
+      </div>
+      <div class="about-card">
+        <div class="ac-num">340K</div>
+        <div class="ac-title">Installations</div>
+        <div class="ac-text">From Mumbai to Manhattan, our systems grace the world's most ambitious projects.</div>
+      </div>
+      <div class="about-card">
+        <div class="ac-num">Zero</div>
+        <div class="ac-title">Compromises</div>
+        <div class="ac-text">We have never shipped a product that doesn't meet our own standard — which exceeds any regulation.</div>
+      </div>
+    </div>
+  </div>
+  <div class="manifesto">
+    <blockquote>
+      "The net that saves a life should be as thoughtfully made as the garment that graces a body. Both deserve the same devotion."
+      <cite>— Founder, VELOUR Safety</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-masthead">
+    <div style="font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--moss);margin-bottom:1rem">Collections 2026</div>
+    <h2>The Safety Edit</h2>
+    <p>Six systems, one standard. Explore our range of precision-engineered safety net collections, each tailored to a distinct environment and aesthetic.</p>
+  </div>
+  <div class="collection-list">
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">I</div>
+        <div class="ci-category">Vertical Protection</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">La Façade</div>
+        <p class="ci-desc">Façade safety netting for high-rise construction and renovation. Woven in a herringbone pattern that references traditional textile craft while delivering uncompromised fall arrest performance.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">EN 1263-1 Class B</span>
+          <span class="ci-spec">HDPE · UV Grade V</span>
+          <span class="ci-spec">Load: 6kJ</span>
+        </div>
+      </div>
+    </div>
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">II</div>
+        <div class="ci-category">Horizontal Systems</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">Le Plafond</div>
+        <p class="ci-desc">Overhead debris and tool-drop nets for industrial facilities. The invisible guardian — fine-mesh geometry that disappears into the space while catching anything that falls.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">Mesh: 10×10mm</span>
+          <span class="ci-spec">SWL: 500kg/m²</span>
+          <span class="ci-spec">Fire Retardant</span>
+        </div>
+      </div>
+    </div>
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">III</div>
+        <div class="ci-category">Architectural</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">L'Atrium</div>
+        <p class="ci-desc">Permanent architectural safety installations for atriums, staircases and galleries. Custom colour-matched polyamide or stainless — invisible at a glance, beautiful on inspection.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">Custom Geometry</span>
+          <span class="ci-spec">Powder-Coated Fittings</span>
+          <span class="ci-spec">20yr Guarantee</span>
+        </div>
+      </div>
+    </div>
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">IV</div>
+        <div class="ci-category">Sports & Leisure</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">Le Court</div>
+        <p class="ci-desc">Premium sports facility enclosures for tennis courts, football cages and golf ranges. Engineered for aesthetic harmony and structural longevity across decades of use.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">Knotless Design</span>
+          <span class="ci-spec">Colour Range: 12</span>
+          <span class="ci-spec">Span: up to 50m</span>
+        </div>
+      </div>
+    </div>
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">V</div>
+        <div class="ci-category">Marine</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">La Mer</div>
+        <p class="ci-desc">Offshore and port safety nets built for saltwater environments. Monel alloy fittings, UV-stabilised polyester, rated for Category 5 wind loads.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">Monel Fittings</span>
+          <span class="ci-spec">Cat-5 Rated</span>
+          <span class="ci-spec">DNV GL Certified</span>
+        </div>
+      </div>
+    </div>
+    <div class="collection-item">
+      <div class="ci-left">
+        <div class="ci-num">VI</div>
+        <div class="ci-category">Sur Mesure</div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-name">La Bespoke</div>
+        <p class="ci-desc">Our atelier service for projects with no precedent. We design, test and certify systems from first principles, working directly with your engineers and architects.</p>
+        <div class="ci-specs">
+          <span class="ci-spec">Full Consultation</span>
+          <span class="ci-spec">Custom Testing</span>
+          <span class="ci-spec">Co-Certified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-hero">
+    <div style="font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--moss);margin-bottom:1rem">The Craft</div>
+    <h2>From Thread to Installation</h2>
+    <p>Five acts of precision that transform raw fibre into a system that carries people's lives.</p>
+  </div>
+  <div class="process-timeline">
+    <div class="pt-item">
+      <div class="pt-line"><div class="pt-dot"></div><div class="pt-connector"></div></div>
+      <div class="pt-content">
+        <div class="pt-label">Act I</div>
+        <div class="pt-title">The Brief</div>
+        <p class="pt-text">Every VELOUR engagement begins with a deep listening session. We ask the questions other suppliers don't — about the space, the people, the life of the project after handover.</p>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-line"><div class="pt-dot"></div><div class="pt-connector"></div></div>
+      <div class="pt-content">
+        <div class="pt-label">Act II</div>
+        <div class="pt-title">The Pattern</div>
+        <p class="pt-text">Our engineers draft the geometry — load paths, attachment schedules, mesh density maps — in proprietary 3D modelling software developed exclusively for flexible safety systems.</p>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-line"><div class="pt-dot"></div><div class="pt-connector"></div></div>
+      <div class="pt-content">
+        <div class="pt-label">Act III</div>
+        <div class="pt-title">The Weave</div>
+        <p class="pt-text">In our fabrication studio, master technicians produce every panel on precision knotting looms. Tension is checked at every junction — not by machine alone, but by trained hands.</p>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-line"><div class="pt-dot"></div><div class="pt-connector"></div></div>
+      <div class="pt-content">
+        <div class="pt-label">Act IV</div>
+        <div class="pt-title">The Proof</div>
+        <p class="pt-text">Every system is proof-loaded in our in-house accredited facility. A certificate of conformity accompanies every delivery. No exceptions.</p>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-line"><div class="pt-dot"></div></div>
+      <div class="pt-content">
+        <div class="pt-label">Act V</div>
+        <div class="pt-title">The Fitting</div>
+        <p class="pt-text">Like a couturier who attends every fitting, our installation supervisors are present for every deployment. The system is not complete until it performs exactly as modelled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-split">
+    <div class="contact-info">
+      <div style="font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--moss);margin-bottom:1.5rem">Open Atelier</div>
+      <h2>Let's Make Something Together</h2>
+      <p>Whether you need a standard solution or something entirely new, our atelier is open. Tell us your project and we'll respond within 24 hours.</p>
+      <div class="contact-details">
+        <div class="cd-item">
+          <span class="cd-label">Email</span>
+          <span class="cd-value">atelier@veloursafety.com</span>
+        </div>
+        <div class="cd-item">
+          <span class="cd-label">Phone</span>
+          <span class="cd-value">+44 20 7946 0958</span>
+        </div>
+        <div class="cd-item">
+          <span class="cd-label">Studio</span>
+          <span class="cd-value">London · Mumbai · Dubai</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-panel">
+      <div class="cf-title">Begin Your Brief</div>
+      <div class="cf-form">
+        <div class="cf-field">
+          <label class="cf-label">Your Name</label>
+          <input class="cf-input" type="text" placeholder="Full name">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Organisation</label>
+          <input class="cf-input" type="text" placeholder="Company or project">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Email</label>
+          <input class="cf-input" type="email" placeholder="your@email.com">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Project Description</label>
+          <textarea class="cf-input" placeholder="Tell us about your project…"></textarea>
+        </div>
+        <button class="cf-submit">Send to Atelier</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-v-logo">VELOUR Safety Couture</div>
+  <div class="footer-v-copy">© 2026 Velour Safety Ltd. All rights reserved. Designed with intention.</div>
+</footer>
+
+<script>
+// CURSOR
+const dot = document.getElementById('curDot');
+const trail = document.getElementById('curTrail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+});
+setInterval(()=>{
+  tx+=(mx-tx)*0.1; ty+=(my-ty)*0.1;
+  trail.style.left=tx+'px'; trail.style.top=ty+'px';
+},16);
+document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>trail.classList.add('big'));
+  el.addEventListener('mouseleave',()=>trail.classList.remove('big'));
+});
+
+// CLICK RIPPLE
+document.addEventListener('click',e=>{
+  const r=document.createElement('div');
+  r.className='vripple';
+  r.style.left=e.clientX+'px'; r.style.top=e.clientY+'px';
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),800);
+});
+
+// MOBILE MENU
+function toggleMob(){ document.getElementById('mobMenu').classList.toggle('show'); }
+
+// NAVIGATION
+let cur='home';
+function goTo(id){
+  if(id===cur) return;
+  const veil=document.getElementById('veil');
+  veil.className='veil in';
+  setTimeout(()=>{
+    document.querySelectorAll('section').forEach(s=>{s.classList.remove('active');});
+    const t=document.getElementById(id);
+    if(t){ t.classList.add('active'); window.scrollTo(0,0); }
+    cur=id;
+    veil.className='veil out';
+    setTimeout(()=>{ veil.className='veil'; animPT(); },460);
+  },440);
+}
+
+function animPT(){
+  document.querySelectorAll('.pt-item').forEach((el,i)=>{
+    el.classList.remove('vis');
+    setTimeout(()=>el.classList.add('vis'),i*120);
+  });
+}
+
+// NET CANVAS
+const nc = document.getElementById('netCanvas');
+const nctx = nc.getContext('2d');
+let nW,nH,pts=[];
+function nResize(){
+  nW=nc.width=nc.offsetWidth;
+  nH=nc.height=nc.offsetHeight;
+  makePts();
+}
+function makePts(){
+  pts=[];
+  const cols=12, rows=14;
+  for(let r=0;r<=rows;r++){
+    for(let c=0;c<=cols;c++){
+      pts.push({ x:(c/cols)*nW, y:(r/rows)*nH, ox:(c/cols)*nW, oy:(r/rows)*nH, vx:0, vy:0, phase:Math.random()*Math.PI*2 });
+    }
+  }
+}
+let nt=0;
+function drawNet(){
+  nctx.clearRect(0,0,nW,nH);
+  const cols=12;
+  const rows=14;
+  pts.forEach((p,i)=>{
+    p.x = p.ox + Math.sin(nt*0.8+p.phase)*8;
+    p.y = p.oy + Math.cos(nt*0.6+p.phase*1.3)*6;
+  });
+  nctx.strokeStyle='rgba(28,46,34,0.35)';
+  nctx.lineWidth=1;
+  for(let r=0;r<=rows;r++){
+    nctx.beginPath();
+    for(let c=0;c<=cols;c++){
+      const p=pts[r*(cols+1)+c];
+      c===0?nctx.moveTo(p.x,p.y):nctx.lineTo(p.x,p.y);
+    }
+    nctx.stroke();
+  }
+  for(let c=0;c<=cols;c++){
+    nctx.beginPath();
+    for(let r=0;r<=rows;r++){
+      const p=pts[r*(cols+1)+c];
+      r===0?nctx.moveTo(p.x,p.y):nctx.lineTo(p.x,p.y);
+    }
+    nctx.stroke();
+  }
+  // nodes
+  pts.forEach(p=>{
+    nctx.beginPath();
+    nctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+    nctx.fillStyle='rgba(74,107,80,0.6)';
+    nctx.fill();
+  });
+  nt+=0.015;
+  requestAnimationFrame(drawNet);
+}
+window.addEventListener('resize',nResize);
+nResize(); drawNet();
+</script>
+</body>
+</html>

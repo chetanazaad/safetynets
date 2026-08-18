@@ -1,0 +1,3513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Premium Safety-Net Ateliers — Altitude · Sukima · Filet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@300;400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js"></script>
+    <style>
+        /* ========== TOKENS ========== */
+        :root {
+            --bg: #EAE4D9;
+            --cream: #F3F0EB;
+            --charcoal: #1C1C1C;
+            --earth: #2A2A2A;
+            --accent: #8C7B6B;
+            --text: #1C1C1C;
+            --text-dim: rgba(28, 28, 28, .55);
+            --rule: rgba(28, 28, 28, .12);
+            --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+            --ease-emphasis: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        body[data-site="altitude"] {
+            --bg: #F4F7FA;
+            --cream: #FFFFFF;
+            --charcoal: #1C2733;
+            --earth: #2A3540;
+            --accent: #4A90E2;
+            --text: #1C2733;
+            --text-dim: rgba(28, 39, 51, .55);
+            --rule: rgba(28, 39, 51, .1);
+        }
+
+        body[data-site="sukima"] {
+            --bg: #FDFBF7;
+            --cream: #F5F2EC;
+            --charcoal: #1A1A1A;
+            --earth: #3A3530;
+            --accent: #8C9F8C;
+            --text: #1A1A1A;
+            --text-dim: rgba(26, 26, 26, .55);
+            --rule: rgba(26, 26, 26, .08);
+        }
+
+        body[data-site="filet"] {
+            --bg: #0F0E0D;
+            --cream: #1A1918;
+            --charcoal: #050505;
+            --earth: #141312;
+            --accent: #C5A572;
+            --text: #F4EDE0;
+            --text-dim: rgba(244, 237, 224, .5);
+            --rule: rgba(244, 237, 224, .1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100vw
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            transition: background .6s var(--ease-quiet), color .6s var(--ease-quiet)
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font-family: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer
+        }
+
+        ul {
+            list-style: none
+        }
+
+        input,
+        select {
+            font-family: inherit
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--cream)
+        }
+
+        /* ========== BRAND BAR ========== */
+        .brand-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--cream);
+            border-bottom: 1px solid var(--rule);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            transition: background .6s var(--ease-quiet), border-color .6s var(--ease-quiet)
+        }
+
+        .brand-bar__left {
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .5;
+            color: var(--text)
+        }
+
+        .brand-bar__center {
+            display: flex;
+            gap: .4rem
+        }
+
+        .brand-bar__right {
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            text-align: right;
+            color: var(--text)
+        }
+
+        .brand-tab {
+            border: 1px solid transparent;
+            cursor: pointer;
+            padding: .5rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--text);
+            opacity: .4;
+            transition: opacity .4s var(--ease-quiet), border-color .4s var(--ease-quiet)
+        }
+
+        .brand-tab:hover {
+            opacity: .75
+        }
+
+        .brand-tab.active {
+            opacity: 1;
+            border-color: var(--text)
+        }
+
+        @media(max-width:768px) {
+            .brand-bar {
+                padding: .6rem .8rem;
+                grid-template-columns: 1fr;
+                gap: .4rem
+            }
+
+            .brand-bar__left,
+            .brand-bar__right {
+                display: none
+            }
+
+            .brand-bar__center {
+                justify-content: center
+            }
+
+            .brand-tab {
+                padding: .35rem .55rem;
+                font-size: .55rem;
+                letter-spacing: .1em
+            }
+        }
+
+        /* ========== SITES ========== */
+        .site {
+            display: none;
+            padding-top: 60px;
+            min-height: 100vh
+        }
+
+        .site.active {
+            display: block;
+            animation: siteFade .8s var(--ease-quiet)
+        }
+
+        @keyframes siteFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @media(max-width:768px) {
+            .site {
+                padding-top: 64px
+            }
+        }
+
+        /* ========== CURSORS ========== */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            will-change: transform
+        }
+
+        @media(pointer:fine) {
+
+            body[data-site="altitude"] .cursor[data-for="altitude"],
+            body[data-site="sukima"] .cursor[data-for="sukima"],
+            body[data-site="filet"] .cursor[data-for="filet"] {
+                display: block
+            }
+
+            body[data-site="altitude"],
+            body[data-site="sukima"],
+            body[data-site="filet"] {
+                cursor: none
+            }
+
+            body[data-site="altitude"] a,
+            body[data-site="sukima"] a,
+            body[data-site="filet"] a,
+            body[data-site="altitude"] button,
+            body[data-site="sukima"] button,
+            body[data-site="filet"] button,
+            body[data-site="altitude"] input,
+            body[data-site="sukima"] input,
+            body[data-site="filet"] input,
+            body[data-site="altitude"] select,
+            body[data-site="sukima"] select,
+            body[data-site="filet"] select {
+                cursor: none
+            }
+        }
+
+        .cursor .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+            margin-left: -3px;
+            margin-top: -3px
+        }
+
+        .cursor-1 .cross {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            margin-left: -12px;
+            margin-top: -12px;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .cursor-1 .cross::before,
+        .cursor-1 .cross::after {
+            content: '';
+            position: absolute;
+            background: var(--accent)
+        }
+
+        .cursor-1 .cross::before {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%)
+        }
+
+        .cursor-1 .cross::after {
+            width: 1px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%)
+        }
+
+        .cursor-1 .cross.hover {
+            opacity: 1
+        }
+
+        .cursor-2 .ring {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--text);
+            border-radius: 50%;
+            margin-left: -16px;
+            margin-top: -16px;
+            opacity: .3;
+            transition: width .4s var(--ease-quiet), height .4s var(--ease-quiet), opacity .4s var(--ease-quiet)
+        }
+
+        .cursor-2 .ring.hover {
+            width: 8px;
+            height: 8px;
+            margin-left: -4px;
+            margin-top: -4px;
+            opacity: 1;
+            background: var(--text)
+        }
+
+        .cursor-3 .aura {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            margin-left: -25px;
+            margin-top: -25px;
+            opacity: .4;
+            transition: width .5s var(--ease-quiet), height .5s var(--ease-quiet), opacity .5s var(--ease-quiet)
+        }
+
+        .cursor-3 .aura.hover {
+            width: 90px;
+            height: 90px;
+            margin-left: -45px;
+            margin-top: -45px;
+            opacity: .8
+        }
+
+        /* ========== REVEALS ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-quiet), transform 1s var(--ease-quiet)
+        }
+
+        .reveal.is-in {
+            opacity: 1;
+            transform: none
+        }
+
+        .reveal--delay-1 {
+            transition-delay: .15s
+        }
+
+        .reveal--delay-2 {
+            transition-delay: .3s
+        }
+
+        /* ========== ALTITUDE ========== */
+        .altitude .display {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            letter-spacing: -.02em;
+            line-height: 1.05
+        }
+
+        .altitude .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300
+        }
+
+        .alt-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(244, 247, 250, .9);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--rule);
+            padding: .8rem 2rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 2rem
+        }
+
+        .alt-nav__logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: .9rem;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .alt-nav__logo span {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .55rem;
+            opacity: .5;
+            margin-left: .5rem
+        }
+
+        .alt-nav__links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center
+        }
+
+        .alt-nav__links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .alt-nav__links a:hover {
+            opacity: 1
+        }
+
+        .alt-nav__cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .5rem 1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .alt-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .alt-nav {
+                padding: .6rem 1rem;
+                grid-template-columns: 1fr;
+                gap: .4rem;
+                text-align: center
+            }
+
+            .alt-nav__links {
+                justify-content: center;
+                gap: .6rem;
+                order: 3;
+                padding-top: .3rem
+            }
+
+            .alt-nav__links a {
+                font-size: .5rem
+            }
+
+            .alt-nav__cta {
+                justify-self: center;
+                padding: .35rem .7rem;
+                font-size: .5rem
+            }
+
+            .altitude {
+                padding-top: 130px
+            }
+        }
+
+        .alt-hero {
+            padding: 6rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .alt-hero__grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .4
+        }
+
+        .alt-hero__grid svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .alt-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .alt-hero__title {
+            font-size: clamp(2.5rem, 8vw, 7rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .alt-hero__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .alt-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .alt-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.4s var(--ease-emphasis)
+        }
+
+        .is-loaded .alt-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .alt-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .2s
+        }
+
+        .alt-hero__lede {
+            max-width: 36rem;
+            margin: 2rem 0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .6s, transform 1s var(--ease-quiet) .6s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .alt-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .alt-hero__specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .alt-hero__spec {
+            background: var(--cream);
+            padding: 1.2rem
+        }
+
+        .alt-hero__spec .lab {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            display: block;
+            margin-bottom: .3rem
+        }
+
+        .alt-hero__spec .val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            display: block
+        }
+
+        .alt-hero__spec .unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            opacity: .5;
+            margin-left: .2rem
+        }
+
+        @media(max-width:768px) {
+            .alt-hero {
+                padding: 2rem 1.2rem
+            }
+
+            .alt-hero__meta {
+                margin-bottom: 1.5rem;
+                font-size: .5rem
+            }
+
+            .alt-hero__specs {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .alt-hero__spec {
+                padding: .8rem
+            }
+
+            .alt-hero__spec .val {
+                font-size: 1rem
+            }
+        }
+
+        .alt-section {
+            padding: 6rem 2rem;
+            position: relative
+        }
+
+        .alt-section__head {
+            max-width: 1100px;
+            margin: 0 auto 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: end;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1.5rem
+        }
+
+        .alt-section__num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            color: var(--accent);
+            white-space: nowrap
+        }
+
+        .alt-section__title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            line-height: 1.1
+        }
+
+        .alt-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .alt-section__lede {
+            font-family: 'Inter', sans-serif;
+            font-size: .95rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin: 1rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .alt-section {
+                padding: 4rem 1.2rem
+            }
+
+            .alt-section__head {
+                grid-template-columns: 1fr;
+                gap: .5rem
+            }
+        }
+
+        /* Wind Tunnel */
+        .alt-tunnel {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            background: var(--cream);
+            border: 1px solid var(--rule)
+        }
+
+        .alt-tunnel__main {
+            padding: 2rem
+        }
+
+        .alt-tunnel__canvas-wrap {
+            background: linear-gradient(180deg, #E3EAF3 0%, #F4F7FA 100%);
+            border: 1px solid var(--rule);
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            position: relative
+        }
+
+        .alt-tunnel__canvas {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        .alt-tunnel__readout {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            color: var(--charcoal);
+            background: rgba(255, 255, 255, .8);
+            padding: .5rem .8rem;
+            border: 1px solid var(--rule)
+        }
+
+        .alt-tunnel__readout span {
+            color: var(--accent);
+            font-weight: 400
+        }
+
+        .alt-tunnel__controls {
+            padding: 1.5rem 0 0
+        }
+
+        .alt-tunnel__control {
+            margin-bottom: 1.5rem
+        }
+
+        .alt-tunnel__control-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: .5rem
+        }
+
+        .alt-tunnel__control-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .6
+        }
+
+        .alt-tunnel__control-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: var(--accent)
+        }
+
+        .alt-tunnel__slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2px;
+            background: var(--rule);
+            outline: none
+        }
+
+        .alt-tunnel__slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--cream);
+            box-shadow: 0 0 0 1px var(--accent)
+        }
+
+        .alt-tunnel__slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--cream);
+            box-shadow: 0 0 0 1px var(--accent)
+        }
+
+        .alt-tunnel__panel {
+            background: var(--bg);
+            border-left: 1px solid var(--rule);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column
+        }
+
+        .alt-tunnel__panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .8rem
+        }
+
+        .alt-tunnel__panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem
+        }
+
+        .alt-tunnel__panel-stats {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem
+        }
+
+        .alt-tunnel__panel-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .alt-tunnel__panel-stat dt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .alt-tunnel__panel-stat dd {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem;
+            font-weight: 400
+        }
+
+        .alt-tunnel__panel-note {
+            font-family: 'Inter', sans-serif;
+            font-size: .8rem;
+            line-height: 1.5;
+            color: var(--text-dim);
+            margin-top: auto;
+            padding-top: 1.5rem
+        }
+
+        @media(max-width:900px) {
+            .alt-tunnel {
+                grid-template-columns: 1fr
+            }
+
+            .alt-tunnel__panel {
+                border-left: none;
+                border-top: 1px solid var(--rule)
+            }
+        }
+
+        /* Specs Table */
+        .alt-specs {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .alt-specs__table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .alt-specs__table th,
+        .alt-specs__table td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--rule);
+            vertical-align: middle
+        }
+
+        .alt-specs__table th {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .alt-specs__table td {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .85rem
+        }
+
+        .alt-specs__table td:first-child {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: .9rem
+        }
+
+        .alt-specs__bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: .6rem
+        }
+
+        .alt-specs__bar {
+            display: inline-block;
+            height: 4px;
+            background: var(--accent);
+            min-width: 4px
+        }
+
+        @media(max-width:768px) {
+            .alt-specs__table {
+                font-size: .75rem
+            }
+
+            .alt-specs__table th,
+            .alt-specs__table td {
+                padding: .7rem .5rem
+            }
+
+            .alt-specs__table th:nth-child(5),
+            .alt-specs__table td:nth-child(5) {
+                display: none
+            }
+        }
+
+        .alt-contact {
+            padding: 6rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream)
+        }
+
+        .alt-contact__inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .alt-contact__title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .alt-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .alt-contact__lede {
+            font-family: 'Inter', sans-serif;
+            font-size: .95rem;
+            line-height: 1.6;
+            opacity: .6;
+            margin: 1.5rem auto 2.5rem;
+            max-width: 34rem
+        }
+
+        .alt-contact__form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 44rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .alt-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .alt-contact__field--full {
+            grid-column: span 2
+        }
+
+        .alt-contact__label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .alt-contact__input,
+        .alt-contact__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid rgba(244, 237, 224, .2);
+            padding: .5rem 0;
+            color: var(--cream);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem;
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .alt-contact__input:focus,
+        .alt-contact__select:focus {
+            outline: none;
+            border-color: var(--cream)
+        }
+
+        .alt-contact__select option {
+            background: var(--charcoal)
+        }
+
+        .alt-contact__submit {
+            grid-column: span 2;
+            justify-self: center;
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--cream);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .alt-contact__submit:hover {
+            background: var(--cream);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .alt-contact {
+                padding: 4rem 1.2rem
+            }
+
+            .alt-contact__form {
+                grid-template-columns: 1fr
+            }
+
+            .alt-contact__field--full {
+                grid-column: auto
+            }
+        }
+
+        /* ========== SUKIMA ========== */
+        .sukima .display {
+            font-family: 'Spectral', serif;
+            font-weight: 300;
+            letter-spacing: -.01em;
+            line-height: 1.2
+        }
+
+        .sukima .jp {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 300
+        }
+
+        .suk-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(253, 251, 247, .88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .suk-nav__logo {
+            font-family: 'Spectral', serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.3rem
+        }
+
+        .suk-nav__links {
+            display: flex;
+            gap: 2rem
+        }
+
+        .suk-nav__links a {
+            font-family: 'Spectral', serif;
+            font-weight: 400;
+            font-size: .75rem;
+            letter-spacing: .05em;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .suk-nav__links a:hover {
+            opacity: 1
+        }
+
+        .suk-nav__cta {
+            font-family: 'Spectral', serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .05em;
+            border-bottom: 1px solid var(--text);
+            padding-bottom: .2rem;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .suk-nav__cta:hover {
+            opacity: .6
+        }
+
+        @media(max-width:768px) {
+            .suk-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .suk-nav__links {
+                gap: .8rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .suk-nav__links a {
+                font-size: .6rem
+            }
+
+            .suk-nav__cta {
+                font-size: .6rem
+            }
+
+            .sukima {
+                padding-top: 130px
+            }
+        }
+
+        .suk-hero {
+            padding: 10rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center
+        }
+
+        .suk-hero__bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(140, 159, 140, .06) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        .suk-hero__inner {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .suk-hero__jp {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 300;
+            font-size: .9rem;
+            letter-spacing: .3em;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s var(--ease-quiet)
+        }
+
+        .is-loaded .suk-hero__jp {
+            opacity: 1;
+            transform: none
+        }
+
+        .suk-hero__title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            margin: 2rem 0;
+            letter-spacing: -.02em
+        }
+
+        .suk-hero__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .suk-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .suk-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.6s var(--ease-emphasis)
+        }
+
+        .is-loaded .suk-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .suk-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .25s
+        }
+
+        .suk-hero__lede {
+            font-family: 'Spectral', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 32rem;
+            margin: 2rem auto 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s var(--ease-quiet) .8s
+        }
+
+        .is-loaded .suk-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        @media(max-width:768px) {
+            .suk-hero {
+                padding: 4rem 1.2rem 2rem
+            }
+
+            .suk-hero__jp {
+                font-size: .7rem
+            }
+
+            .suk-hero__lede {
+                font-size: 1.05rem
+            }
+        }
+
+        .suk-section {
+            padding: 8rem 2rem;
+            position: relative
+        }
+
+        .suk-section__head {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 5rem
+        }
+
+        .suk-section__eyebrow {
+            font-family: 'Noto Serif JP', serif;
+            font-size: .7rem;
+            letter-spacing: .3em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: inline-block
+        }
+
+        .suk-section__title {
+            font-family: 'Spectral', serif;
+            font-weight: 300;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.2
+        }
+
+        .suk-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .suk-section__lede {
+            font-family: 'Spectral', serif;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            max-width: 32rem;
+            margin: 1.5rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .suk-section {
+                padding: 4rem 1.2rem
+            }
+
+            .suk-section__head {
+                margin-bottom: 3rem
+            }
+        }
+
+        /* Void Selector */
+        .suk-void {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            padding: 3rem
+        }
+
+        .suk-void__selector {
+            display: flex;
+            justify-content: center;
+            gap: .5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap
+        }
+
+        .suk-void__chip {
+            font-family: 'Spectral', serif;
+            font-weight: 400;
+            font-size: .75rem;
+            padding: .6rem 1.2rem;
+            border: 1px solid var(--rule);
+            background: var(--bg);
+            color: var(--text);
+            opacity: .6;
+            transition: all .4s var(--ease-quiet)
+        }
+
+        .suk-void__chip:hover {
+            opacity: .9
+        }
+
+        .suk-void__chip.active {
+            background: var(--text);
+            color: var(--cream);
+            border-color: var(--text);
+            opacity: 1
+        }
+
+        .suk-void__display {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            align-items: center
+        }
+
+        .suk-void__svg-wrap {
+            background: var(--bg);
+            aspect-ratio: 4/3;
+            border: 1px solid var(--rule);
+            position: relative;
+            overflow: hidden
+        }
+
+        .suk-void__svg {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        .suk-void__svg .layer {
+            transition: opacity .6s var(--ease-quiet)
+        }
+
+        .suk-void__svg .layer.is-hidden {
+            opacity: 0
+        }
+
+        .suk-void__info {
+            padding: 1rem 0
+        }
+
+        .suk-void__info-label {
+            font-family: 'Noto Serif JP', serif;
+            font-size: .6rem;
+            letter-spacing: .2em;
+            color: var(--accent);
+            margin-bottom: .8rem;
+            display: block
+        }
+
+        .suk-void__info-name {
+            font-family: 'Spectral', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            margin-bottom: 1.2rem
+        }
+
+        .suk-void__info-desc {
+            font-family: 'Spectral', serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin-bottom: 2rem
+        }
+
+        .suk-void__info-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .8rem 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--rule)
+        }
+
+        .suk-void__info-spec dt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .15rem
+        }
+
+        .suk-void__info-spec dd {
+            font-family: 'Spectral', serif;
+            font-size: .9rem
+        }
+
+        @media(max-width:768px) {
+            .suk-void {
+                padding: 1.5rem
+            }
+
+            .suk-void__chip {
+                font-size: .65rem;
+                padding: .4rem .8rem
+            }
+
+            .suk-void__display {
+                grid-template-columns: 1fr;
+                gap: 1.5rem
+            }
+
+            .suk-void__info-name {
+                font-size: 1.4rem
+            }
+        }
+
+        /* Philosophy / Ma */
+        .suk-ma {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center
+        }
+
+        .suk-ma__text {
+            font-family: 'Spectral', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 3rem
+        }
+
+        .suk-ma__text em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .suk-ma__divider {
+            width: 1px;
+            height: 60px;
+            background: var(--rule);
+            margin: 0 auto
+        }
+
+        .suk-ma__quote {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+            margin-top: 3rem;
+            font-style: italic
+        }
+
+        /* Materials */
+        .suk-materials {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem
+        }
+
+        .suk-material {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border: 1px solid var(--rule);
+            background: var(--cream);
+            transition: transform .5s var(--ease-quiet)
+        }
+
+        .suk-material:hover {
+            transform: translateY(-4px)
+        }
+
+        .suk-material__name {
+            font-family: 'Spectral', serif;
+            font-style: italic;
+            font-size: 1.4rem;
+            margin-bottom: .5rem
+        }
+
+        .suk-material__jp {
+            font-family: 'Noto Serif JP', serif;
+            font-size: .7rem;
+            color: var(--accent);
+            letter-spacing: .2em;
+            margin-bottom: 1.5rem;
+            display: block
+        }
+
+        .suk-material__desc {
+            font-family: 'Spectral', serif;
+            font-size: .95rem;
+            line-height: 1.6;
+            color: var(--text-dim)
+        }
+
+        @media(max-width:768px) {
+            .suk-materials {
+                grid-template-columns: 1fr;
+                gap: 1rem
+            }
+        }
+
+        .suk-contact {
+            padding: 8rem 2rem;
+            background: var(--cream);
+            text-align: center
+        }
+
+        .suk-contact__inner {
+            max-width: 600px;
+            margin: 0 auto
+        }
+
+        .suk-contact__title {
+            font-family: 'Spectral', serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.2
+        }
+
+        .suk-contact__lede {
+            font-family: 'Spectral', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin: 1.5rem auto 3rem;
+            max-width: 28rem
+        }
+
+        .suk-contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 28rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .suk-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .suk-contact__label {
+            font-family: 'Noto Serif JP', serif;
+            font-size: .6rem;
+            letter-spacing: .2em;
+            opacity: .5
+        }
+
+        .suk-contact__input,
+        .suk-contact__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            font-family: 'Spectral', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .suk-contact__input:focus,
+        .suk-contact__select:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .suk-contact__select option {
+            font-family: 'Inter', sans-serif
+        }
+
+        .suk-contact__submit {
+            margin-top: 1rem;
+            align-self: center;
+            font-family: 'Spectral', serif;
+            font-size: .8rem;
+            border: 1px solid var(--text);
+            padding: .8rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .suk-contact__submit:hover {
+            background: var(--text);
+            color: var(--cream)
+        }
+
+        @media(max-width:768px) {
+            .suk-contact {
+                padding: 4rem 1.2rem
+            }
+        }
+
+        /* ========== FILET ========== */
+        .filet .display {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            letter-spacing: -.02em;
+            line-height: 1.05
+        }
+
+        .filet .sans {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300
+        }
+
+        .fil-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(15, 14, 13, .9);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .fil-nav__logo {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: .2em;
+            text-transform: uppercase
+        }
+
+        .fil-nav__links {
+            display: flex;
+            gap: 2rem
+        }
+
+        .fil-nav__links a {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .fil-nav__links a:hover {
+            opacity: 1
+        }
+
+        .fil-nav__cta {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: .55rem 1.2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .fil-nav__cta:hover {
+            background: var(--accent);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .fil-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .fil-nav__links {
+                gap: .7rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .fil-nav__links a {
+                font-size: .5rem;
+                letter-spacing: .15em
+            }
+
+            .fil-nav__cta {
+                padding: .4rem .7rem;
+                font-size: .5rem
+            }
+
+            .filet {
+                padding-top: 130px
+            }
+        }
+
+        .fil-hero {
+            padding: 8rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .fil-hero__bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(197, 165, 114, .06) 0%, transparent 50%);
+            pointer-events: none
+        }
+
+        .fil-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: .65rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .fil-hero__title {
+            font-size: clamp(3.5rem, 12vw, 12rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .fil-hero__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .fil-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .fil-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.6s var(--ease-emphasis)
+        }
+
+        .is-loaded .fil-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .fil-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .25s
+        }
+
+        .fil-hero__lede {
+            max-width: 38rem;
+            margin: 3rem 0;
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s var(--ease-quiet) .8s, transform 1.2s var(--ease-quiet) .8s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .fil-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .fil-hero__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .75rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: .5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) 1s, transform 1s var(--ease-quiet) 1s;
+            position: relative;
+            z-index: 2;
+            align-self: flex-start
+        }
+
+        .is-loaded .fil-hero__cta {
+            opacity: 1;
+            transform: none
+        }
+
+        .fil-hero__cta .arrow {
+            transition: transform .4s var(--ease-quiet)
+        }
+
+        .fil-hero__cta:hover .arrow {
+            transform: translateX(8px)
+        }
+
+        @media(max-width:768px) {
+            .fil-hero {
+                padding: 3rem 1.2rem 2rem;
+                min-height: auto
+            }
+
+            .fil-hero__meta {
+                margin-bottom: 2rem;
+                font-size: .5rem
+            }
+
+            .fil-hero__lede {
+                font-size: 1.1rem;
+                margin: 2rem 0
+            }
+        }
+
+        .fil-section {
+            padding: 7rem 2rem;
+            position: relative
+        }
+
+        .fil-section__head {
+            max-width: 900px;
+            margin: 0 auto 5rem;
+            text-align: center
+        }
+
+        .fil-section__eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .65rem;
+            letter-spacing: .4em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: inline-block
+        }
+
+        .fil-section__title {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.05
+        }
+
+        .fil-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .fil-section__lede {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.55;
+            color: var(--text-dim);
+            max-width: 34rem;
+            margin: 1.5rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .fil-section {
+                padding: 4rem 1.2rem
+            }
+
+            .fil-section__head {
+                margin-bottom: 3rem
+            }
+        }
+
+        /* Bespoke Configurator */
+        .fil-bespoke {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            padding: 3rem
+        }
+
+        .fil-bespoke__visual {
+            background: var(--charcoal);
+            aspect-ratio: 4/5;
+            position: relative;
+            overflow: hidden
+        }
+
+        .fil-bespoke__visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: .8;
+            transition: opacity .5s var(--ease-quiet)
+        }
+
+        .fil-bespoke__visual-label {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--cream)
+        }
+
+        .fil-bespoke__visual-label span {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .6;
+            margin-top: .3rem
+        }
+
+        .fil-bespoke__controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .fil-bespoke__step {
+            margin-bottom: 2.5rem
+        }
+
+        .fil-bespoke__step-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .6rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .8rem;
+            display: block
+        }
+
+        .fil-bespoke__step-options {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap
+        }
+
+        .fil-bespoke__option {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: .9rem;
+            padding: .5rem 1rem;
+            border: 1px solid var(--rule);
+            background: var(--bg);
+            color: var(--text);
+            opacity: .6;
+            transition: all .3s var(--ease-quiet)
+        }
+
+        .fil-bespoke__option:hover {
+            opacity: .9
+        }
+
+        .fil-bespoke__option.active {
+            background: var(--text);
+            color: var(--cream);
+            border-color: var(--text);
+            opacity: 1
+        }
+
+        .fil-bespoke__summary {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--rule)
+        }
+
+        .fil-bespoke__summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: .8rem
+        }
+
+        .fil-bespoke__summary-row span {
+            opacity: .5
+        }
+
+        .fil-bespoke__summary-row strong {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-style: italic
+        }
+
+        .fil-bespoke__submit {
+            margin-top: 1.5rem;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            background: var(--accent);
+            color: var(--charcoal);
+            border: none;
+            padding: 1rem;
+            transition: background .4s var(--ease-quiet)
+        }
+
+        .fil-bespoke__submit:hover {
+            background: var(--cream)
+        }
+
+        @media(max-width:768px) {
+            .fil-bespoke {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem
+            }
+
+            .fil-bespoke__visual {
+                aspect-ratio: 4/3
+            }
+        }
+
+        /* Collection Lookbook */
+        .fil-lookbook {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            max-width: 1500px;
+            margin: 0 auto
+        }
+
+        .fil-look {
+            position: relative;
+            overflow: hidden;
+            background: var(--cream)
+        }
+
+        .fil-look:nth-child(1) {
+            grid-column: span 2;
+            aspect-ratio: 3/4
+        }
+
+        .fil-look:nth-child(2) {
+            grid-column: span 2;
+            aspect-ratio: 3/4;
+            margin-top: 4rem
+        }
+
+        .fil-look:nth-child(3) {
+            grid-column: span 2;
+            aspect-ratio: 3/4
+        }
+
+        .fil-look:nth-child(4) {
+            grid-column: span 3;
+            aspect-ratio: 4/3
+        }
+
+        .fil-look:nth-child(5) {
+            grid-column: span 3;
+            aspect-ratio: 4/3;
+            margin-top: 3rem
+        }
+
+        .fil-look__img {
+            width: 100%;
+            height: 100%;
+            overflow: hidden
+        }
+
+        .fil-look__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(.2);
+            transition: transform 1s var(--ease-quiet), filter 1s var(--ease-quiet)
+        }
+
+        .fil-look:hover .fil-look__img img {
+            transform: scale(1.05);
+            filter: grayscale(0)
+        }
+
+        .fil-look__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15, 14, 13, .85) 0%, transparent 50%);
+            pointer-events: none
+        }
+
+        .fil-look__body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.8rem;
+            z-index: 2
+        }
+
+        .fil-look__num {
+            font-family: 'Inter', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .5rem;
+            display: block
+        }
+
+        .fil-look__name {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-size: 1.6rem;
+            line-height: 1.1
+        }
+
+        .fil-look__name em {
+            font-style: italic
+        }
+
+        .fil-look__desc {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: .9rem;
+            opacity: .7;
+            margin-top: .3rem
+        }
+
+        @media(max-width:1024px) {
+            .fil-lookbook {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .fil-look:nth-child(n) {
+                grid-column: span 2;
+                margin-top: 0;
+                aspect-ratio: 4/5
+            }
+        }
+
+        @media(max-width:600px) {
+            .fil-lookbook {
+                grid-template-columns: 1fr
+            }
+
+            .fil-look:nth-child(n) {
+                grid-column: span 1;
+                aspect-ratio: 4/3
+            }
+        }
+
+        /* Atelier */
+        .fil-atelier {
+            background: var(--cream);
+            padding: 7rem 2rem
+        }
+
+        .fil-atelier__inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center
+        }
+
+        .fil-atelier__img {
+            aspect-ratio: 4/5;
+            overflow: hidden
+        }
+
+        .fil-atelier__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .fil-atelier__text h3 {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem
+        }
+
+        .fil-atelier__text h3 em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .fil-atelier__text p {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin-bottom: 1rem
+        }
+
+        .fil-atelier__signature {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 2rem
+        }
+
+        @media(max-width:768px) {
+            .fil-atelier {
+                padding: 4rem 1.2rem
+            }
+
+            .fil-atelier__inner {
+                grid-template-columns: 1fr;
+                gap: 2rem
+            }
+
+            .fil-atelier__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        .fil-contact {
+            padding: 8rem 2rem;
+            background: var(--charcoal);
+            text-align: center
+        }
+
+        .fil-contact__inner {
+            max-width: 700px;
+            margin: 0 auto
+        }
+
+        .fil-contact__title {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 1
+        }
+
+        .fil-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .fil-contact__lede {
+            font-family: 'Bodoni Moda', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin: 2rem auto 3rem;
+            max-width: 30rem
+        }
+
+        .fil-contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 30rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .fil-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .fil-contact__label {
+            font-family: 'Inter', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .fil-contact__input {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            font-family: 'Bodoni Moda', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .fil-contact__input:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .fil-contact__submit {
+            margin-top: 1.5rem;
+            align-self: center;
+            font-family: 'Inter', sans-serif;
+            font-size: .7rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .fil-contact__submit:hover {
+            background: var(--accent);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .fil-contact {
+                padding: 4rem 1.2rem
+            }
+        }
+
+        /* ========== FOOTER ========== */
+        .site-footer {
+            padding: 4rem 2rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            border-top: 1px solid var(--rule)
+        }
+
+        .site-footer__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem
+        }
+
+        .site-footer__col h5 {
+            font-family: 'Inter', sans-serif;
+            font-size: .6rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 1.5rem
+        }
+
+        .site-footer__col ul li {
+            margin-bottom: .7rem;
+            font-size: .85rem;
+            opacity: .7;
+            transition: opacity .3s var(--ease-quiet);
+            cursor: pointer
+        }
+
+        .site-footer__col ul li:hover {
+            opacity: 1
+        }
+
+        .site-footer__brand {
+            font-family: 'Bodoni Moda', serif;
+            font-weight: 400;
+            font-size: 1.5rem;
+            letter-spacing: .2em;
+            margin-bottom: 1rem
+        }
+
+        .site-footer__bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(244, 237, 224, .12);
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .4;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        @media(max-width:768px) {
+            .site-footer__inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem
+            }
+
+            .site-footer__bottom {
+                flex-direction: column;
+                text-align: center
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                animation-iteration-count: 1 !important
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none
+            }
+
+            .alt-hero__title .line-inner,
+            .suk-hero__title .line-inner,
+            .fil-hero__title .line-inner {
+                transform: none
+            }
+        }
+    </style>
+</head>
+
+<body data-site="altitude">
+
+    <header class="brand-bar">
+        <div class="brand-bar__left">Three Ateliers · One Craft</div>
+        <div class="brand-bar__center">
+            <button class="brand-tab active" data-brand="altitude">Altitude</button>
+            <button class="brand-tab" data-brand="sukima">Sukima</button>
+            <button class="brand-tab" data-brand="filet">Filet</button>
+        </div>
+        <div class="brand-bar__right">Safety Netting · Premium</div>
+    </header>
+
+    <div class="cursor cursor-1" data-for="altitude">
+        <div class="cross"></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-2" data-for="sukima">
+        <div class="ring"></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-3" data-for="filet">
+        <div class="aura"></div>
+        <div class="dot"></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ========== ALTITUDE ======================================== -->
+    <!-- ============================================================ -->
+    <main class="site site-altitude active" data-site="altitude">
+        <nav class="alt-nav">
+            <div class="alt-nav__logo">ALTITUDE<span>Engineering</span></div>
+            <ul class="alt-nav__links">
+                <li><a href="#alt-tunnel" data-link>Wind Tunnel</a></li>
+                <li><a href="#alt-specs" data-link>Specs</a></li>
+                <li><a href="#alt-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#alt-contact" class="alt-nav__cta" data-link>Request Data</a>
+        </nav>
+
+        <section class="alt-hero">
+            <div class="alt-hero__grid">
+                <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="alt-grid-pat" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.06" />
+                        </pattern>
+                    </defs>
+                    <rect width="1200" height="400" fill="url(#alt-grid-pat)" />
+                </svg>
+            </div>
+            <div class="alt-hero__meta">
+                <span>ATL / 2024.01</span>
+                <span>Aviation-Grade Safety Nets</span>
+                <span>Bangalore · India</span>
+            </div>
+            <h1 class="alt-hero__title display">
+                <span class="line"><span class="line-inner">The unseen</span></span>
+                <span class="line"><span class="line-inner"><em>airspace.</em></span></span>
+            </h1>
+            <p class="alt-hero__lede">Architectural netting engineered against wind loads, fall forces, and the passage
+                of birds. Every spec tested to failure, every installation logged to the anchor.</p>
+            <div class="alt-hero__specs">
+                <div class="alt-hero__spec"><span class="lab">Max Wind Load</span><span class="val">180<span
+                            class="unit">km/h</span></span></div>
+                <div class="alt-hero__spec"><span class="lab">Tensile Strength</span><span class="val">600<span
+                            class="unit">kg</span></span></div>
+                <div class="alt-hero__spec"><span class="lab">Anchor Depth</span><span class="val">96<span
+                            class="unit">mm</span></span></div>
+                <div class="alt-hero__spec"><span class="lab">Compliance</span><span class="val">EN<span
+                            class="unit">1263</span></span></div>
+            </div>
+        </section>
+
+        <!-- WIND TUNNEL -->
+        <section class="alt-section" id="alt-tunnel">
+            <div class="alt-section__head reveal">
+                <span class="alt-section__num">— 01 / SIMULATION</span>
+                <h2 class="alt-section__title">Wind <em>Tunnel.</em></h2>
+            </div>
+            <div class="alt-tunnel reveal">
+                <div class="alt-tunnel__main">
+                    <div class="alt-tunnel__canvas-wrap">
+                        <canvas class="alt-tunnel__canvas" id="alt-canvas"></canvas>
+                        <div class="alt-tunnel__readout">
+                            WIND: <span id="alt-wind-val">45</span> km/h · DRAG: <span id="alt-drag-val">0.8</span> kN
+                        </div>
+                    </div>
+                    <div class="alt-tunnel__controls">
+                        <div class="alt-tunnel__control">
+                            <div class="alt-tunnel__control-head">
+                                <span class="alt-tunnel__control-label">Wind Speed</span>
+                                <span class="alt-tunnel__control-value"><span id="alt-wind-display">45</span>
+                                    km/h</span>
+                            </div>
+                            <input type="range" min="0" max="180" value="45" class="alt-tunnel__slider"
+                                id="alt-wind-slider">
+                        </div>
+                        <div class="alt-tunnel__control">
+                            <div class="alt-tunnel__control-head">
+                                <span class="alt-tunnel__control-label">Mesh Density</span>
+                                <span class="alt-tunnel__control-value"><span id="alt-mesh-display">25</span> mm</span>
+                            </div>
+                            <input type="range" min="10" max="100" value="25" class="alt-tunnel__slider"
+                                id="alt-mesh-slider">
+                        </div>
+                    </div>
+                </div>
+                <div class="alt-tunnel__panel">
+                    <div class="alt-tunnel__panel-label">— Live Data</div>
+                    <div class="alt-tunnel__panel-title">Aerodynamic Response</div>
+                    <dl class="alt-tunnel__panel-stats">
+                        <div class="alt-tunnel__panel-stat">
+                            <dt>Wind Force</dt>
+                            <dd id="alt-force-val">0.80 kN</dd>
+                        </div>
+                        <div class="alt-tunnel__panel-stat">
+                            <dt>Mesh Permeability</dt>
+                            <dd id="alt-perm-val">65%</dd>
+                        </div>
+                        <div class="alt-tunnel__panel-stat">
+                            <dt>Anchor Load</dt>
+                            <dd id="alt-load-val">12 kg</dd>
+                        </div>
+                        <div class="alt-tunnel__panel-stat">
+                            <dt>Deflection</dt>
+                            <dd id="alt-defl-val">4.2 cm</dd>
+                        </div>
+                    </dl>
+                    <p class="alt-tunnel__panel-note">// Simulation based on HDPE 25mm mesh at standard tension. Actual
+                        site conditions vary. Use for comparative modeling only.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECS -->
+        <section class="alt-section" id="alt-specs" style="background:var(--cream)">
+            <div class="alt-section__head reveal">
+                <span class="alt-section__num">— 02 / SPECIFICATIONS</span>
+                <h2 class="alt-section__title">Full <em>data.</em></h2>
+            </div>
+            <div class="alt-specs reveal">
+                <table class="alt-specs__table">
+                    <thead>
+                        <tr>
+                            <th>Ref</th>
+                            <th>Application</th>
+                            <th>Mesh</th>
+                            <th>Material</th>
+                            <th>Tensile</th>
+                            <th>Wind Rating</th>
+                            <th>Standard</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AT-01</td>
+                            <td>Balcony Net</td>
+                            <td>25mm</td>
+                            <td>HDPE 60gsm</td>
+                            <td>
+                                <div class="alt-specs__bar-wrap"><span class="alt-specs__bar"
+                                        style="width:15px"></span>120kg</div>
+                            </td>
+                            <td>120 km/h</td>
+                            <td>IS-16333</td>
+                        </tr>
+                        <tr>
+                            <td>AT-02</td>
+                            <td>Fall Arrest</td>
+                            <td>32mm</td>
+                            <td>Nylon 600kg</td>
+                            <td>
+                                <div class="alt-specs__bar-wrap"><span class="alt-specs__bar"
+                                        style="width:75px"></span>600kg</div>
+                            </td>
+                            <td>150 km/h</td>
+                            <td>EN-1263-2</td>
+                        </tr>
+                        <tr>
+                            <td>AT-03</td>
+                            <td>Façade Net</td>
+                            <td>45mm</td>
+                            <td>HDPE UV</td>
+                            <td>
+                                <div class="alt-specs__bar-wrap"><span class="alt-specs__bar"
+                                        style="width:37px"></span>300kg</div>
+                            </td>
+                            <td>180 km/h</td>
+                            <td>EN-1263-2</td>
+                        </tr>
+                        <tr>
+                            <td>AT-04</td>
+                            <td>Child Safety</td>
+                            <td>40mm</td>
+                            <td>Nylon 250kg</td>
+                            <td>
+                                <div class="alt-specs__bar-wrap"><span class="alt-specs__bar"
+                                        style="width:31px"></span>250kg</div>
+                            </td>
+                            <td>100 km/h</td>
+                            <td>EN-13171</td>
+                        </tr>
+                        <tr>
+                            <td>AT-05</td>
+                            <td>Coconut Net</td>
+                            <td>100mm</td>
+                            <td>HDPE 4mm</td>
+                            <td>
+                                <div class="alt-specs__bar-wrap"><span class="alt-specs__bar"
+                                        style="width:100px"></span>800kg</div>
+                            </td>
+                            <td>140 km/h</td>
+                            <td>IS-16333</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="alt-contact" id="alt-contact">
+            <div class="alt-contact__inner reveal">
+                <h2 class="alt-contact__title">Request <em>data.</em></h2>
+                <p class="alt-contact__lede">// For architects, contractors, and facility managers. Send your drawing or
+                    BOQ — we'll respond with a data sheet, a tensile certificate, and a fabrication schedule within five
+                    working days.</p>
+                <form class="alt-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.alt-contact__submit').textContent='// Received — 5 day response'">
+                    <div class="alt-contact__field">
+                        <label class="alt-contact__label">Name</label>
+                        <input class="alt-contact__input" type="text" required>
+                    </div>
+                    <div class="alt-contact__field">
+                        <label class="alt-contact__label">Organisation</label>
+                        <input class="alt-contact__input" type="text">
+                    </div>
+                    <div class="alt-contact__field">
+                        <label class="alt-contact__label">Email</label>
+                        <input class="alt-contact__input" type="email" required>
+                    </div>
+                    <div class="alt-contact__field">
+                        <label class="alt-contact__label">Phone</label>
+                        <input class="alt-contact__input" type="tel">
+                    </div>
+                    <div class="alt-contact__field alt-contact__field--full">
+                        <label class="alt-contact__label">Project type</label>
+                        <select class="alt-contact__select">
+                            <option>High-rise balcony</option>
+                            <option>Construction fall arrest</option>
+                            <option>Façade debris</option>
+                            <option>Staircase safety</option>
+                            <option>Coconut palm</option>
+                        </select>
+                    </div>
+                    <button class="alt-contact__submit" type="submit">Submit request</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand">ALTITUDE</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2018</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Engineering</h5>
+                    <ul>
+                        <li>Tunnel</li>
+                        <li>Specs</li>
+                        <li>Certificates</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Products</h5>
+                    <ul>
+                        <li>AT-01 Balcony</li>
+                        <li>AT-02 Fall Arrest</li>
+                        <li>AT-03 Façade</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>data@altitude.in</li>
+                        <li>+91 80 4120 2018</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Altitude Engineering 2024</span><span>The unseen airspace</span>
+            </div>
+        </footer>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- ========== SUKIMA ========================================== -->
+    <!-- ============================================================ -->
+    <main class="site site-sukima" data-site="sukima">
+        <nav class="suk-nav">
+            <div class="suk-nav__logo">Sukima</div>
+            <ul class="suk-nav__links">
+                <li><a href="#suk-void" data-link>Void</a></li>
+                <li><a href="#suk-ma" data-link>Ma</a></li>
+                <li><a href="#suk-materials" data-link>Materials</a></li>
+                <li><a href="#suk-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#suk-contact" class="suk-nav__cta" data-link>Enquire</a>
+        </nav>
+
+        <section class="suk-hero">
+            <div class="suk-hero__bg"></div>
+            <div class="suk-hero__inner">
+                <div class="suk-hero__jp">隙間</div>
+                <h1 class="suk-hero__title display">
+                    <span class="line"><span class="line-inner">The space</span></span>
+                    <span class="line"><span class="line-inner"><em>between.</em></span></span>
+                </h1>
+                <p class="suk-hero__lede">Sukima — the Japanese word for a gap, a void, an opening. We weave safety nets
+                    for the spaces between floor and ceiling, inside and outside, presence and absence.</p>
+            </div>
+        </section>
+
+        <!-- VOID SELECTOR -->
+        <section class="suk-section" id="suk-void">
+            <div class="suk-section__head reveal">
+                <div class="suk-section__eyebrow">— Section 01 / The Void</div>
+                <h2 class="suk-section__title">Select your <em>void.</em></h2>
+                <p class="suk-section__lede">Every architectural gap asks for a different weave. Choose your void to see
+                    how Sukima holds it — the mesh, the material, the way it disappears into the architecture.</p>
+            </div>
+            <div class="suk-void reveal">
+                <div class="suk-void__selector">
+                    <button class="suk-void__chip active" data-void="stair">Stairwell</button>
+                    <button class="suk-void__chip" data-void="atrium">Atrium</button>
+                    <button class="suk-void__chip" data-void="balcony">Balcony</button>
+                </div>
+                <div class="suk-void__display">
+                    <div class="suk-void__svg-wrap">
+                        <svg class="suk-void__svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                            <!-- Background -->
+                            <rect width="400" height="300" fill="#FDFBF7" />
+
+                            <!-- Stairwell SVG -->
+                            <g class="layer layer-stair">
+                                <rect x="50" y="20" width="300" height="260" fill="none" stroke="#1A1A1A"
+                                    stroke-width="1.5" opacity="0.2" />
+                                <!-- Net lines -->
+                                <path d="M50,100 L350,100 M50,150 L350,150 M50,200 L350,200" stroke="#8C9F8C"
+                                    stroke-width="1" opacity="0.6" />
+                                <path d="M120,20 L120,280 M190,20 L190,280 M260,20 L260,280" stroke="#8C9F8C"
+                                    stroke-width="1" opacity="0.6" />
+                                <path d="M50,100 L350,100 M50,150 L350,150 M50,200 L350,200" stroke="#8C9F8C"
+                                    stroke-width="0.5" opacity="0.4" stroke-dasharray="2,4" />
+                                <!-- Stairs graphic -->
+                                <path
+                                    d="M60,260 L60,240 L100,240 L100,220 L140,220 L140,200 L180,200 L180,180 L220,180 L220,160 L260,160 L260,140 L300,140 L300,120 L340,120"
+                                    fill="none" stroke="#1A1A1A" stroke-width="1" opacity="0.4" />
+                            </g>
+
+                            <!-- Atrium SVG -->
+                            <g class="layer layer-atrium is-hidden">
+                                <rect x="80" y="40" width="240" height="220" fill="none" stroke="#1A1A1A"
+                                    stroke-width="1.5" opacity="0.2" />
+                                <!-- SkLight -->
+                                <line x1="80" y1="40" x2="320" y2="40" stroke="#1A1A1A" stroke-width="3"
+                                    opacity="0.4" />
+                                <line x1="80" y1="40" x2="80" y2="20" stroke="#1A1A1A" stroke-width="1" opacity="0.3" />
+                                <line x1="320" y1="40" x2="320" y2="20" stroke="#1A1A1A" stroke-width="1"
+                                    opacity="0.3" />
+                                <!-- Net -->
+                                <path d="M80,100 L320,100 M80,160 L320,160" stroke="#8C9F8C" stroke-width="1"
+                                    opacity="0.6" />
+                                <path d="M140,40 L140,260 M200,40 L200,260 M260,40 L260,260" stroke="#8C9F8C"
+                                    stroke-width="1" opacity="0.6" />
+                                <path d="M80,100 L320,100 M80,160 L320,160" stroke="#8C9F8C" stroke-width="0.5"
+                                    opacity="0.4" stroke-dasharray="2,4" />
+                            </g>
+
+                            <!-- Balcony SVG -->
+                            <g class="layer layer-balcony is-hidden">
+                                <rect x="50" y="150" width="300" height="100" fill="none" stroke="#1A1A1A"
+                                    stroke-width="1.5" opacity="0.2" />
+                                <!-- Railing -->
+                                <line x1="50" y1="150" x2="350" y2="150" stroke="#1A1A1A" stroke-width="2"
+                                    opacity="0.3" />
+                                <!-- Net -->
+                                <path d="M50,170 L350,170 M50,190 L350,190 M50,210 L350,210 M50,230 L350,230"
+                                    stroke="#8C9F8C" stroke-width="1" opacity="0.6" />
+                                <path
+                                    d="M100,150 L100,250 M150,150 L150,250 M200,150 L200,250 M250,150 L250,250 M300,150 L300,250"
+                                    stroke="#8C9F8C" stroke-width="1" opacity="0.6" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="suk-void__info">
+                        <div class="suk-void__info-label">— Selected Void</div>
+                        <div class="suk-void__info-name" id="suk-void-name">The <em>Stairwell</em></div>
+                        <p class="suk-void__info-desc" id="suk-void-desc">The vertical passage between floors. A space
+                            of movement, of transition. The net here must hold a falling body while remaining invisible
+                            to the climbing eye.</p>
+                        <dl class="suk-void__info-specs">
+                            <div class="suk-void__info-spec">
+                                <dt>Mesh</dt>
+                                <dd id="suk-void-mesh">40mm</dd>
+                            </div>
+                            <div class="suk-void__info-spec">
+                                <dt>Material</dt>
+                                <dd id="suk-void-mat">Nylon</dd>
+                            </div>
+                            <div class="suk-void__info-spec">
+                                <dt>Tensile</dt>
+                                <dd id="suk-void-tensile">250kg</dd>
+                            </div>
+                            <div class="suk-void__info-spec">
+                                <dt>Invisibility</dt>
+                                <dd id="suk-void-invis">88%</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MA / PHILOSOPHY -->
+        <section class="suk-section" id="suk-ma" style="background:var(--cream)">
+            <div class="suk-section__head reveal">
+                <div class="suk-section__eyebrow">— Section 02 / Philosophy</div>
+                <h2 class="suk-section__title">The philosophy of <em>Ma.</em></h2>
+            </div>
+            <div class="suk-ma reveal">
+                <p class="suk-ma__text">Ma (間) is the Japanese concept of negative space — the pause between notes, the
+                    silence between words, the void between walls. It is not emptiness, but presence. A space with its
+                    own weight.</p>
+                <div class="suk-ma__divider"></div>
+                <p class="suk-ma__quote">"A safety net is the architecture of Ma.<br>It holds the void without filling
+                    it."</p>
+            </div>
+        </section>
+
+        <!-- MATERIALS -->
+        <section class="suk-section" id="suk-materials">
+            <div class="suk-section__head reveal">
+                <div class="suk-section__eyebrow">— Section 03 / Materials</div>
+                <h2 class="suk-section__title">Three <em>weaves.</em></h2>
+                <p class="suk-section__lede">Each material chosen for its strength, its silence, and the way it ages
+                    against the architecture.</p>
+            </div>
+            <div class="suk-materials reveal">
+                <article class="suk-material">
+                    <h3 class="suk-material__name">Nylon</h3>
+                    <span class="suk-material__jp">ナイロン</span>
+                    <p class="suk-material__desc">Soft to the touch, elastic under load. The choice for spaces where
+                        bodies might fall — staircases, mezzanines, atriums. Holds 250kg without rupture.</p>
+                </article>
+                <article class="suk-material">
+                    <h3 class="suk-material__name">HDPE</h3>
+                    <span class="suk-material__jp">高密度ポリエチレン</span>
+                    <p class="suk-material__desc">High-density polyethylene. Stiff, weather-resistant, invisible from
+                        distance. The choice for exteriors — balconies, façades, roofs. Holds against wind and UV.</p>
+                </article>
+                <article class="suk-material">
+                    <h3 class="suk-material__name">Polyester</h3>
+                    <span class="suk-material__jp">ポリエステル</span>
+                    <p class="suk-material__desc">Finer than a hair. The choice for the smallest voids — windows, vents,
+                        the gaps where insects enter. Woven tight enough to stop a mosquito.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="suk-contact" id="suk-contact">
+            <div class="suk-contact__inner reveal">
+                <h2 class="suk-contact__title">Hold your <em>void.</em></h2>
+                <p class="suk-contact__lede">Tell us about the space between. We will visit, measure, and propose a
+                    weave that holds it quietly.</p>
+                <form class="suk-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.suk-contact__submit').textContent='Sent · ありがとうございました'">
+                    <div class="suk-contact__field">
+                        <label class="suk-contact__label">Name</label>
+                        <input class="suk-contact__input" type="text" required>
+                    </div>
+                    <div class="suk-contact__field">
+                        <label class="suk-contact__label">Email</label>
+                        <input class="suk-contact__input" type="email" required>
+                    </div>
+                    <div class="suk-contact__field">
+                        <label class="suk-contact__label">Your void</label>
+                        <select class="suk-contact__select">
+                            <option>Stairwell</option>
+                            <option>Atrium</option>
+                            <option>Balcony</option>
+                            <option>Window</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <button class="suk-contact__submit" type="submit">Send enquiry</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand"
+                        style="font-family:'Spectral',serif;font-style:italic;letter-spacing:0">Sukima</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2020</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Studio</h5>
+                    <ul>
+                        <li>The Void</li>
+                        <li>Ma</li>
+                        <li>Weaves</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Voids</h5>
+                    <ul>
+                        <li>Stairwell</li>
+                        <li>Atrium</li>
+                        <li>Balcony</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>hello@sukima.in</li>
+                        <li>+91 80 4120 2020</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Sukima 2024</span><span>The space between</span></div>
+        </footer>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- ========== FILET =========================================== -->
+    <!-- ============================================================ -->
+    <main class="site site-filet" data-site="filet">
+        <nav class="fil-nav">
+            <div class="fil-nav__logo">FILET</div>
+            <ul class="fil-nav__links">
+                <li><a href="#fil-bespoke" data-link>Bespoke</a></li>
+                <li><a href="#fil-lookbook" data-link>Collection</a></li>
+                <li><a href="#fil-atelier" data-link>Atelier</a></li>
+                <li><a href="#fil-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#fil-contact" class="fil-nav__cta" data-link>Commission</a>
+        </nav>
+
+        <section class="fil-hero">
+            <div class="fil-hero__bg"></div>
+            <div class="fil-hero__meta">
+                <span>FILET / PARIS</span>
+                <span>Bespoke Safety Nets</span>
+                <span>MMXXIV</span>
+            </div>
+            <h1 class="fil-hero__title display">
+                <span class="line"><span class="line-inner">Couture</span></span>
+                <span class="line"><span class="line-inner"><em>de sécurité.</em></span></span>
+            </h1>
+            <p class="fil-hero__lede">Bespoke architectural netting, hand-tailored in the Parisian tradition. Each piece
+                cut to the millimetre, edged in braided rope, and fitted by a single artisan from the first knot to the
+                last.</p>
+            <a href="#fil-bespoke" class="fil-hero__cta" data-link><span>Begin your commission</span><span
+                    class="arrow">→</span></a>
+        </section>
+
+        <!-- BESPOKE CONFIGURATOR -->
+        <section class="fil-section" id="fil-bespoke">
+            <div class="fil-section__head reveal">
+                <div class="fil-section__eyebrow">— Section 01 / Bespoke</div>
+                <h2 class="fil-section__title">Compose your <em>piece.</em></h2>
+                <p class="fil-section__lede">Three choices. One net, made to measure. Choose your space, your weave, and
+                    your edge — we will tailor it to the exact dimensions of your architecture.</p>
+            </div>
+            <div class="fil-bespoke reveal">
+                <div class="fil-bespoke__visual">
+                    <img src="https://picsum.photos/seed/filet-bespoke/800/1000" alt="">
+                    <div class="fil-bespoke__visual-label">Atelier N°<span id="fil-atelier-num">01</span><span>Your
+                            Composition</span></div>
+                </div>
+                <div class="fil-bespoke__controls">
+                    <div class="fil-bespoke__step">
+                        <span class="fil-bespoke__step-label">Step 01 — The Space</span>
+                        <div class="fil-bespoke__step-options">
+                            <button class="fil-bespoke__option active" data-space="balcony">Balcony</button>
+                            <button class="fil-bespoke__option" data-space="staircase">Staircase</button>
+                            <button class="fil-bespoke__option" data-space="atrium">Atrium</button>
+                        </div>
+                    </div>
+                    <div class="fil-bespoke__step">
+                        <span class="fil-bespoke__step-label">Step 02 — The Weave</span>
+                        <div class="fil-bespoke__step-options">
+                            <button class="fil-bespoke__option active" data-weave="hdpe">HDPE</button>
+                            <button class="fil-bespoke__option" data-weave="nylon">Nylon</button>
+                            <button class="fil-bespoke__option" data-weave="polyester">Polyester</button>
+                        </div>
+                    </div>
+                    <div class="fil-bespoke__step">
+                        <span class="fil-bespoke__step-label">Step 03 — The Edge</span>
+                        <div class="fil-bespoke__step-options">
+                            <button class="fil-bespoke__option active" data-edge="rope">Braided Rope</button>
+                            <button class="fil-bespoke__option" data-edge="pvc">PVC Bound</button>
+                            <button class="fil-bespoke__option" data-edge="steel">Steel Core</button>
+                        </div>
+                    </div>
+                    <div class="fil-bespoke__summary">
+                        <div class="fil-bespoke__summary-row"><span>Space</span><strong
+                                id="fil-sum-space">Balcony</strong></div>
+                        <div class="fil-bespoke__summary-row"><span>Weave</span><strong id="fil-sum-weave">HDPE</strong>
+                        </div>
+                        <div class="fil-bespoke__summary-row"><span>Edge</span><strong id="fil-sum-edge">Braided
+                                Rope</strong></div>
+                        <div class="fil-bespoke__summary-row"><span>Lead Time</span><strong id="fil-sum-time">4
+                                weeks</strong></div>
+                        <div class="fil-bespoke__summary-row"><span>Starting at</span><strong id="fil-sum-price">₹120 /
+                                m²</strong></div>
+                    </div>
+                    <button class="fil-bespoke__submit"
+                        onclick="alert('Composition saved. A tailor will contact you.')">Commission this piece</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOOKBOOK -->
+        <section class="fil-section" id="fil-lookbook">
+            <div class="fil-section__head reveal">
+                <div class="fil-section__eyebrow">— Section 02 / Collection</div>
+                <h2 class="fil-section__title">The <em>lookbook.</em></h2>
+                <p class="fil-section__lede">Five signature pieces from the autumn collection. Each one a different
+                    silhouette, a different architecture, a different way of holding the void.</p>
+            </div>
+            <div class="fil-lookbook reveal">
+                <article class="fil-look">
+                    <div class="fil-look__img"><img src="https://picsum.photos/seed/filet-look-01/600/800" alt=""></div>
+                    <div class="fil-look__overlay"></div>
+                    <div class="fil-look__body">
+                        <span class="fil-look__num">N° 01</span>
+                        <h3 class="fil-look__name">Le <em>Balcon</em></h3>
+                        <p class="fil-look__desc">Bird exclusion · 25mm</p>
+                    </div>
+                </article>
+                <article class="fil-look">
+                    <div class="fil-look__img"><img src="https://picsum.photos/seed/filet-look-02/600/800" alt=""></div>
+                    <div class="fil-look__overlay"></div>
+                    <div class="fil-look__body">
+                        <span class="fil-look__num">N° 02</span>
+                        <h3 class="fil-look__name">L'<em>Escalier</em></h3>
+                        <p class="fil-look__desc">Child safety · 40mm</p>
+                    </div>
+                </article>
+                <article class="fil-look">
+                    <div class="fil-look__img"><img src="https://picsum.photos/seed/filet-look-03/600/800" alt=""></div>
+                    <div class="fil-look__overlay"></div>
+                    <div class="fil-look__body">
+                        <span class="fil-look__num">N° 03</span>
+                        <h3 class="fil-look__name">Le <em>Puits</em></h3>
+                        <p class="fil-look__desc">Atrium span · 45mm</p>
+                    </div>
+                </article>
+                <article class="fil-look">
+                    <div class="fil-look__img"><img src="https://picsum.photos/seed/filet-look-04/1200/900" alt="">
+                    </div>
+                    <div class="fil-look__overlay"></div>
+                    <div class="fil-look__body">
+                        <span class="fil-look__num">N° 04</span>
+                        <h3 class="fil-look__name">La <em>Façade</em></h3>
+                        <p class="fil-look__desc">Exterior envelope · 50mm</p>
+                    </div>
+                </article>
+                <article class="fil-look">
+                    <div class="fil-look__img"><img src="https://picsum.photos/seed/filet-look-05/1200/900" alt="">
+                    </div>
+                    <div class="fil-look__overlay"></div>
+                    <div class="fil-look__body">
+                        <span class="fil-look__num">N° 05</span>
+                        <h3 class="fil-look__name">Le <em>Jardin</em></h3>
+                        <p class="fil-look__desc">Roof canopy · 50mm</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ATELIER -->
+        <section class="fil-atelier" id="fil-atelier">
+            <div class="fil-atelier__inner reveal">
+                <div class="fil-atelier__img"><img src="https://picsum.photos/seed/filet-atelier/800/1000" alt=""></div>
+                <div class="fil-atelier__text">
+                    <div class="fil-section__eyebrow">— Section 03 / Atelier</div>
+                    <h3 style="margin-top:1rem">The hand <em>behind the net.</em></h3>
+                    <p>Every Filet net is cut, woven, and edged by a single artisan. We do not subcontract the fitting,
+                        we do not automate the weaving. The hand that ties the first knot ties the last.</p>
+                    <p>This is slow work. A single balcony net takes four hours on the bench. A staircase takes a day.
+                        An atrium takes a week. We make 240 pieces a year, and we have never made more.</p>
+                    <div class="fil-atelier__signature">— Maison Filet, Paris</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="fil-contact" id="fil-contact">
+            <div class="fil-contact__inner reveal">
+                <h2 class="fil-contact__title">Commission <em>a piece.</em></h2>
+                <p class="fil-contact__lede">Send us the dimensions of your void. We will reply with a sketch, a swatch,
+                    and a quote within ten working days.</p>
+                <form class="fil-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.fil-contact__submit').textContent='Sent · Merci'">
+                    <div class="fil-contact__field">
+                        <label class="fil-contact__label">Your name</label>
+                        <input class="fil-contact__input" type="text" required>
+                    </div>
+                    <div class="fil-contact__field">
+                        <label class="fil-contact__label">Email</label>
+                        <input class="fil-contact__input" type="email" required>
+                    </div>
+                    <button class="fil-contact__submit" type="submit">Send enquiry</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand">FILET</div>
+                    <p style="font-size:.85rem;opacity:.6">Paris · since 2015</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Maison</h5>
+                    <ul>
+                        <li>Bespoke</li>
+                        <li>Lookbook</li>
+                        <li>Atelier</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Pieces</h5>
+                    <ul>
+                        <li>N°01 Le Balcon</li>
+                        <li>N°02 L'Escalier</li>
+                        <li>N°03 Le Puits</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>bonjour@filet.paris</li>
+                        <li>+33 1 42 60 15 20</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Filet MMXXIV</span><span>240 pieces per annum</span></div>
+        </footer>
+    </main>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+        /* Lenis */
+        let lenis = null;
+        if (!prefersReduce && typeof Lenis !== 'undefined') {
+            lenis = new Lenis({ duration: 1.1, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add(t => lenis.raf(t * 1000));
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        /* Smooth scroll for in-site nav */
+        document.addEventListener('click', e => {
+            const a = e.target.closest('a[data-link]');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (!target) return;
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+            if (lenis) lenis.scrollTo(top, { duration: 1.2 });
+            else window.scrollTo({ top, behavior: 'smooth' });
+        });
+
+        /* Reveals */
+        const revealIO = new IntersectionObserver(entries => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        function observeReveals() {
+            document.querySelectorAll('.reveal:not(.is-in)').forEach(el => revealIO.observe(el));
+        }
+        observeReveals();
+
+        function triggerHeroEntrance(site) {
+            const el = document.querySelector(`.site[data-site="${site}"]`);
+            if (!el) return;
+            el.classList.remove('is-loaded');
+            void el.offsetWidth;
+            requestAnimationFrame(() => el.classList.add('is-loaded'));
+        }
+
+        /* Cursors */
+        const cursors = {
+            altitude: { el: document.querySelector('.cursor-1'), x: 0, y: 0 },
+            sukima: { el: document.querySelector('.cursor-2'), x: 0, y: 0, rx: 0, ry: 0 },
+            filet: { el: document.querySelector('.cursor-3'), x: 0, y: 0, rx: 0, ry: 0 }
+        };
+
+        if (isFinePointer) {
+            window.addEventListener('mousemove', e => {
+                const site = document.body.dataset.site;
+                const c = cursors[site]; if (!c) return;
+                c.x = e.clientX; c.y = e.clientY;
+                const dot = c.el.querySelector('.dot');
+                if (dot) dot.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                if (site === 'altitude') {
+                    const cross = c.el.querySelector('.cross');
+                    if (cross) cross.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                }
+            });
+            function trailLoop() {
+                const site = document.body.dataset.site;
+                if (site === 'sukima') {
+                    const c = cursors.sukima;
+                    c.rx += (c.x - c.rx) * 0.15; c.ry += (c.y - c.ry) * 0.15;
+                    const ring = c.el.querySelector('.ring');
+                    if (ring) ring.style.transform = `translate(${c.rx}px, ${c.ry}px)`;
+                } else if (site === 'filet') {
+                    const c = cursors.filet;
+                    c.rx += (c.x - c.rx) * 0.12; c.ry += (c.y - c.ry) * 0.12;
+                    const aura = c.el.querySelector('.aura');
+                    if (aura) aura.style.transform = `translate(${c.rx}px, ${c.ry}px)`;
+                }
+                requestAnimationFrame(trailLoop);
+            }
+            trailLoop();
+            document.querySelectorAll('a, button, input, select').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.querySelector('.cursor-1 .cross')?.classList.add('hover');
+                    document.querySelector('.cursor-2 .ring')?.classList.add('hover');
+                    document.querySelector('.cursor-3 .aura')?.classList.add('hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.querySelector('.cursor-1 .cross')?.classList.remove('hover');
+                    document.querySelector('.cursor-2 .ring')?.classList.remove('hover');
+                    document.querySelector('.cursor-3 .aura')?.classList.remove('hover');
+                });
+            });
+        }
+
+        /* ========== ALTITUDE: WIND TUNNEL CANVAS ========== */
+        (function initWindTunnel() {
+            const canvas = document.getElementById('alt-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const windSlider = document.getElementById('alt-wind-slider');
+            const meshSlider = document.getElementById('alt-mesh-slider');
+
+            let W, H;
+            let particles = [];
+            let windSpeed = 45;
+            let meshSize = 25;
+
+            function resize() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * window.devicePixelRatio;
+                canvas.height = rect.height * window.devicePixelRatio;
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                W = rect.width;
+                H = rect.height;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < 80; i++) {
+                    particles.push({
+                        x: Math.random() * W,
+                        y: Math.random() * H,
+                        len: 10 + Math.random() * 20,
+                        speed: 0.5 + Math.random() * 1
+                    });
+                }
+            }
+            initParticles();
+
+            function drawNet() {
+                const gap = Math.max(8, meshSize * 1.5);
+                ctx.strokeStyle = 'rgba(74,144,226,0.4)';
+                ctx.lineWidth = 0.8;
+                for (let y = 20; y < H - 20; y += gap) {
+                    for (let x = 20; x < W - 20; x += gap) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x + gap, y);
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x, y + gap);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            function drawParticles() {
+                const windFactor = windSpeed / 45;
+                ctx.strokeStyle = 'rgba(28,39,51,0.6)';
+                ctx.lineWidth = 1;
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    const drag = (100 - meshSize) / 100; // smaller mesh = more drag
+                    const moveX = p.speed * windFactor * (1 - drag * 0.5);
+                    const bend = Math.sin((p.y + Date.now() * 0.01) * 0.05) * windFactor * 2 * drag;
+
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x + p.len * windFactor * (1 - drag * 0.3), p.y + bend);
+                    ctx.stroke();
+
+                    p.x += moveX;
+                    if (p.x > W) {
+                        p.x = -p.len;
+                        p.y = Math.random() * H;
+                    }
+                });
+            }
+
+            function updateStats() {
+                const force = (windSpeed * windSpeed * 0.0004).toFixed(2);
+                const perm = Math.round((100 - meshSize) * 0.8 + 20);
+                const load = Math.round(force * 15);
+                const defl = (windSpeed * 0.09 * (meshSize / 25)).toFixed(1);
+
+                document.getElementById('alt-wind-val').textContent = windSpeed;
+                document.getElementById('alt-drag-val').textContent = force;
+                document.getElementById('alt-wind-display').textContent = windSpeed;
+                document.getElementById('alt-mesh-display').textContent = meshSize;
+                document.getElementById('alt-force-val').textContent = force + ' kN';
+                document.getElementById('alt-perm-val').textContent = perm + '%';
+                document.getElementById('alt-load-val').textContent = load + ' kg';
+                document.getElementById('alt-defl-val').textContent = defl + ' cm';
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, W, H);
+                drawNet();
+                drawParticles();
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            windSlider.addEventListener('input', e => { windSpeed = +e.target.value; updateStats(); });
+            meshSlider.addEventListener('input', e => { meshSize = +e.target.value; updateStats(); });
+            updateStats();
+        })();
+
+        /* ========== SUKIMA: VOID SELECTOR ========== */
+        (function initVoidSelector() {
+            const chips = document.querySelectorAll('.suk-void__chip');
+            if (!chips.length) return;
+            const data = {
+                stair: { name: 'The <em>Stairwell</em>', desc: 'The vertical passage between floors. A space of movement, of transition. The net here must hold a falling body while remaining invisible to the climbing eye.', mesh: '40mm', mat: 'Nylon', tensile: '250kg', invis: '88%' },
+                atrium: { name: 'The <em>Atrium</em>', desc: 'The void at the heart of the house. A space of light, of air, of vertigo. The net here spans wide and disappears against the skylight.', mesh: '45mm', mat: 'Nylon', tensile: '250kg', invis: '92%' },
+                balcony: { name: 'The <em>Balcony</em>', desc: 'The edge between inside and outside. A space of air, of view, of birds. The net here must exclude without obstructing, hold without enclosing.', mesh: '25mm', mat: 'HDPE', tensile: '120kg', invis: '85%' }
+            };
+
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const v = chip.dataset.void;
+                    chips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+
+                    // Update SVG layers
+                    document.querySelectorAll('.suk-void__svg .layer').forEach(l => l.classList.add('is-hidden'));
+                    document.querySelector(`.layer-${v}`)?.classList.remove('is-hidden');
+
+                    // Update text
+                    const d = data[v];
+                    document.getElementById('suk-void-name').innerHTML = d.name;
+                    document.getElementById('suk-void-desc').textContent = d.desc;
+                    document.getElementById('suk-void-mesh').textContent = d.mesh;
+                    document.getElementById('suk-void-mat').textContent = d.mat;
+                    document.getElementById('suk-void-tensile').textContent = d.tensile;
+                    document.getElementById('suk-void-invis').textContent = d.invis;
+                });
+            });
+        })();
+
+        /* ========== FILET: BESPOKE CONFIGURATOR ========== */
+        (function initBespoke() {
+            const steps = document.querySelectorAll('.fil-bespoke__step');
+            if (!steps.length) return;
+
+            const data = {
+                space: { balcony: 'Balcony', staircase: 'Staircase', atrium: 'Atrium' },
+                weave: { hdpe: 'HDPE', nylon: 'Nylon', polyester: 'Polyester' },
+                edge: { rope: 'Braided Rope', pvc: 'PVC Bound', steel: 'Steel Core' }
+            };
+
+            const times = { balcony: '4 weeks', staircase: '5 weeks', atrium: '8 weeks' };
+            const prices = { hdpe: '₹120', nylon: '₹220', polyester: '₹180' };
+            const nums = { balcony: '01', staircase: '02', atrium: '03' };
+
+            let state = { space: 'balcony', weave: 'hdpe', edge: 'rope' };
+
+            steps.forEach(step => {
+                const options = step.querySelectorAll('.fil-bespoke__option');
+                const type = step.querySelector('.fil-bespoke__option').dataset.space || step.querySelector('.fil-bespoke__option').dataset.weave || step.querySelector('.fil-bespoke__option').dataset.edge;
+
+                options.forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        options.forEach(o => o.classList.remove('active'));
+                        opt.classList.add('active');
+
+                        if (opt.dataset.space) state.space = opt.dataset.space;
+                        if (opt.dataset.weave) state.weave = opt.dataset.weave;
+                        if (opt.dataset.edge) state.edge = opt.dataset.edge;
+
+                        // Update summary
+                        document.getElementById('fil-sum-space').textContent = data.space[state.space];
+                        document.getElementById('fil-sum-weave').textContent = data.weave[state.weave];
+                        document.getElementById('fil-sum-edge').textContent = data.edge[state.edge];
+                        document.getElementById('fil-sum-time').textContent = times[state.space];
+                        document.getElementById('fil-sum-price').textContent = prices[state.weave] + ' / m²';
+                        document.getElementById('fil-atelier-num').textContent = nums[state.space];
+                    });
+                });
+            });
+        })();
+
+        /* ========== SITE SWITCHER ========== */
+        let currentSite = 'altitude';
+        function activateSite(name) {
+            if (name === currentSite) return;
+            const cur = document.querySelector(`.site[data-site="${currentSite}"]`);
+            const next = document.querySelector(`.site[data-site="${name}"]`);
+            if (!next) return;
+            ScrollTrigger.getAll().forEach(t => t.kill());
+            cur.classList.remove('active');
+            next.classList.add('active');
+            document.body.dataset.site = name;
+            document.querySelectorAll('.brand-tab').forEach(t => t.classList.toggle('active', t.dataset.brand === name));
+            if (lenis) lenis.scrollTo(0, { immediate: true });
+            else window.scrollTo(0, 0);
+            observeReveals();
+            triggerHeroEntrance(name);
+            setTimeout(() => { ScrollTrigger.refresh(); }, 100);
+            currentSite = name;
+        }
+        document.querySelectorAll('.brand-tab').forEach(t => { t.addEventListener('click', () => activateSite(t.dataset.brand)); });
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('is-loaded');
+            document.querySelector('.site-altitude').classList.add('is-loaded');
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+
+</html>

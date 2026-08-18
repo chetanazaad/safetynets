@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — Safety in Essence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@100;200;300;400&display=swap');
+
+:root {
+  --midnight: #0d0e18;
+  --deep-blue: #13152a;
+  --navy: #1a1d3a;
+  --rose: #c4927a;
+  --rose-light: #d8b09c;
+  --rose-dim: rgba(196,146,122,0.15);
+  --silver: #a8aab8;
+  --silver-dim: rgba(168,170,184,0.2);
+  --pearl: #e8e6f0;
+  --white: #f4f2f8;
+  --text-muted: rgba(228,226,240,0.45);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--midnight);
+  color: var(--white);
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+.a-cursor {
+  position:fixed; pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  mix-blend-mode: screen;
+}
+.a-cursor-inner {
+  width:6px; height:6px; background:var(--rose);
+  border-radius:50%; transition:transform 0.1s;
+}
+.a-cursor-outer {
+  position:fixed; pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  width:32px; height:32px;
+  border:1px solid rgba(196,146,122,0.5);
+  border-radius:50%;
+  transition: all 0.25s ease;
+  mix-blend-mode: screen;
+}
+.a-cursor-outer.bloom {
+  width:60px; height:60px;
+  border-color:rgba(196,146,122,0.2);
+}
+
+/* ── PARTICLE CANVAS ── */
+#particleCanvas {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  opacity:0.6;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  padding:1.8rem 2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  background:linear-gradient(to bottom, rgba(13,14,24,0.9), transparent);
+}
+.a-logo {
+  font-family:'Libre Baskerville',serif;
+  font-size:1.3rem; letter-spacing:0.25em; font-weight:400;
+  color:var(--white);
+}
+.a-logo span { color:var(--rose); font-style:italic; }
+.a-logo sub {
+  display:block; font-size:0.45rem; letter-spacing:0.5em;
+  text-transform:uppercase; color:var(--silver); font-family:'Jost',sans-serif;
+  font-style:normal; margin-top:2px;
+}
+.a-nav-links {
+  display:none; list-style:none; gap:2.5rem;
+}
+@media(min-width:768px){ .a-nav-links{ display:flex; } }
+.a-nav-links a {
+  font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
+  color:var(--text-muted); text-decoration:none; transition:color 0.4s; cursor:none;
+}
+.a-nav-links a:hover { color:var(--rose); }
+.a-nav-btn {
+  font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:var(--rose); border:1px solid rgba(196,146,122,0.4);
+  padding:0.6rem 1.5rem; text-decoration:none; transition:all 0.4s;
+  cursor:none; display:none;
+}
+@media(min-width:768px){ .a-nav-btn{ display:block; } }
+.a-nav-btn:hover { background:var(--rose); color:var(--midnight); }
+.a-hamburger {
+  display:flex; flex-direction:column; gap:5px;
+  background:none; border:none; cursor:none;
+}
+@media(min-width:768px){ .a-hamburger{ display:none; } }
+.a-hamburger span { width:22px; height:1px; background:var(--rose); display:block; }
+
+/* MOBILE NAV */
+.a-mob-nav {
+  position:fixed; inset:0; z-index:499;
+  background:var(--midnight);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3rem;
+  clip-path:circle(0% at 95% 5%);
+  transition:clip-path 0.7s cubic-bezier(0.77,0,0.175,1);
+}
+.a-mob-nav.open { clip-path:circle(150% at 95% 5%); }
+.a-mob-nav a {
+  font-family:'Libre Baskerville',serif; font-size:2.2rem; font-style:italic;
+  color:var(--pearl); text-decoration:none; cursor:none;
+  transition:color 0.3s;
+}
+.a-mob-nav a:hover { color:var(--rose); }
+
+/* ── SECTIONS ── */
+section { display:none; min-height:100dvh; position:relative; z-index:1; }
+section.active { display:block; }
+
+/* ── HOME ── */
+#home { display:none; }
+#home.active { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+
+.home-inner {
+  position:relative; z-index:2;
+  padding:8rem 2rem 4rem;
+  max-width:800px; margin:0 auto;
+}
+.a-eyebrow {
+  font-size:0.55rem; letter-spacing:0.6em; text-transform:uppercase;
+  color:var(--rose); margin-bottom:3rem;
+  display:flex; align-items:center; justify-content:center; gap:1.5rem;
+}
+.a-eyebrow::before,.a-eyebrow::after {
+  content:''; flex:1; max-width:60px; height:1px;
+  background:linear-gradient(to right, transparent, var(--rose));
+}
+.a-eyebrow::after { background:linear-gradient(to left, transparent, var(--rose)); }
+
+h1.a-h1 {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(3rem,10vw,6.5rem);
+  font-weight:400; line-height:0.95; letter-spacing:-0.02em;
+  margin-bottom:2rem;
+}
+h1.a-h1 em { font-style:italic; color:var(--rose); display:block; }
+h1.a-h1 span { color:var(--silver); font-weight:400; font-size:0.7em; display:block; letter-spacing:0.1em; }
+
+.a-tagline {
+  font-size:0.75rem; letter-spacing:0.2em; color:var(--text-muted);
+  max-width:440px; margin:0 auto 3.5rem; line-height:2.2;
+}
+
+.a-hero-btns { display:flex; flex-direction:column; gap:1rem; align-items:center; }
+@media(min-width:400px){ .a-hero-btns{ flex-direction:row; justify-content:center; } }
+
+.a-btn-rose {
+  background:var(--rose); color:var(--midnight);
+  padding:0.9rem 2.5rem; border:none; cursor:none;
+  font-family:'Jost',sans-serif; font-size:0.65rem;
+  letter-spacing:0.25em; text-transform:uppercase; font-weight:400;
+  transition:all 0.4s;
+}
+.a-btn-rose:hover { background:var(--rose-light); transform:translateY(-2px); }
+.a-btn-ghost {
+  background:transparent; color:var(--silver);
+  padding:0.9rem 2.5rem;
+  border:1px solid rgba(168,170,184,0.3); cursor:none;
+  font-family:'Jost',sans-serif; font-size:0.65rem;
+  letter-spacing:0.25em; text-transform:uppercase; font-weight:200;
+  transition:all 0.4s;
+}
+.a-btn-ghost:hover { border-color:var(--rose); color:var(--rose); }
+
+.home-scroll {
+  margin-top:5rem;
+  display:flex; flex-direction:column; align-items:center; gap:0.8rem;
+}
+.scroll-orb {
+  width:1px; height:60px;
+  background:linear-gradient(to bottom, transparent, var(--rose));
+  animation:orbPulse 2.5s ease-in-out infinite;
+}
+@keyframes orbPulse {
+  0%,100%{ transform:scaleY(1); opacity:0.4; }
+  50%{ transform:scaleY(0.6); opacity:1; }
+}
+.scroll-txt {
+  font-size:0.5rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--text-muted);
+}
+
+/* ── ABOUT ── */
+#about { display:none; padding-top:80px; }
+#about.active { display:block; }
+
+.a-about-wrap { max-width:1100px; margin:0 auto; padding:4rem 2rem; }
+.a-section-eye {
+  font-size:0.55rem; letter-spacing:0.5em; text-transform:uppercase;
+  color:var(--rose); margin-bottom:2rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.a-section-eye::after { content:''; flex:1; max-width:80px; height:1px; background:var(--rose); opacity:0.3; }
+
+.a-about-grid {
+  display:grid; grid-template-columns:1fr;
+  gap:4rem;
+}
+@media(min-width:768px){ .a-about-grid{ grid-template-columns:1fr 1fr; align-items:center; } }
+
+.a-about-visual {
+  position:relative; aspect-ratio:1;
+  max-width:380px; margin:0 auto;
+}
+/* Perfume bottle silhouette made with CSS */
+.bottle {
+  position:absolute; inset:10%; border-radius:40% 40% 50% 50%;
+  border:1px solid rgba(196,146,122,0.3);
+  background:linear-gradient(135deg, rgba(196,146,122,0.05), rgba(168,170,184,0.05));
+  animation:bottleFloat 6s ease-in-out infinite;
+}
+@keyframes bottleFloat {
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-12px); }
+}
+.bottle::before {
+  content:''; position:absolute; top:-20%; left:35%; right:35%; bottom:100%;
+  border:1px solid rgba(196,146,122,0.2);
+  border-bottom:none;
+}
+.bottle::after {
+  content:''; position:absolute; inset:15%;
+  border-radius:50%;
+  border:1px solid rgba(196,146,122,0.15);
+}
+.mist-ring {
+  position:absolute; inset:-5%; border-radius:50%;
+  border:1px solid rgba(196,146,122,0.1);
+  animation:mistExpand 4s ease-out infinite;
+}
+.mist-ring:nth-child(2){ inset:-20%; animation-delay:1.3s; }
+.mist-ring:nth-child(3){ inset:-40%; animation-delay:2.6s; }
+@keyframes mistExpand {
+  0%{ opacity:0.4; transform:scale(0.9); }
+  100%{ opacity:0; transform:scale(1.1); }
+}
+
+h2.a-h2 {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(1.8rem,5vw,3rem); font-weight:400; line-height:1.15;
+  margin-bottom:1.5rem; color:var(--pearl);
+}
+h2.a-h2 em { font-style:italic; color:var(--rose); }
+.a-body { font-size:0.8rem; line-height:2.3; color:var(--text-muted); max-width:440px; }
+.a-stats {
+  display:flex; gap:3rem; margin-top:3rem; flex-wrap:wrap;
+}
+.a-stat-val {
+  font-family:'Libre Baskerville',serif;
+  font-size:2.5rem; color:var(--rose); font-weight:400;
+}
+.a-stat-label { font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--silver); margin-top:0.3rem; }
+
+/* Philosophy strip */
+.philosophy-strip {
+  background:var(--deep-blue);
+  padding:6rem 2rem;
+  text-align:center;
+  border-top:1px solid var(--silver-dim);
+  border-bottom:1px solid var(--silver-dim);
+  margin-top:6rem;
+}
+.philosophy-strip blockquote {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(1.3rem,4vw,2.2rem); font-style:italic;
+  color:var(--pearl); max-width:700px; margin:0 auto;
+  line-height:1.5;
+}
+.philosophy-strip cite {
+  display:block; margin-top:2rem; font-family:'Jost',sans-serif;
+  font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase;
+  color:var(--rose); font-style:normal;
+}
+
+/* ── PRODUCTS ── */
+#products { display:none; padding-top:80px; }
+#products.active { display:block; }
+
+.a-products-hero {
+  text-align:center; padding:5rem 2rem 4rem;
+  background:linear-gradient(to bottom, var(--deep-blue), var(--midnight));
+}
+.a-products-hero h2 {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(2rem,6vw,4rem); font-style:italic;
+  color:var(--pearl); margin-bottom:1rem;
+}
+.a-products-hero p { font-size:0.75rem; color:var(--text-muted); max-width:500px; margin:0 auto; line-height:2.2; }
+
+.a-products-grid {
+  max-width:1100px; margin:0 auto; padding:3rem 2rem;
+  display:grid; grid-template-columns:1fr;
+  gap:1px; background:var(--silver-dim);
+}
+@media(min-width:600px){ .a-products-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(min-width:900px){ .a-products-grid{ grid-template-columns:repeat(3,1fr); } }
+
+.a-product-card {
+  background:var(--midnight);
+  padding:3rem 2rem;
+  position:relative; overflow:hidden;
+  transition:background 0.4s;
+  cursor:none;
+}
+.a-product-card:hover { background:var(--deep-blue); }
+
+.apc-orb {
+  width:60px; height:60px; border-radius:50%;
+  margin-bottom:2rem;
+  position:relative;
+  transition:transform 0.4s;
+}
+.a-product-card:hover .apc-orb { transform:scale(1.15); }
+.apc-orb::after {
+  content:''; position:absolute; inset:0; border-radius:50%;
+  border:1px solid var(--rose); opacity:0.4;
+}
+.orb-1 { background:radial-gradient(circle at 40% 40%, rgba(196,146,122,0.4), rgba(196,146,122,0.05)); }
+.orb-2 { background:radial-gradient(circle at 40% 40%, rgba(168,170,184,0.4), rgba(168,170,184,0.05)); }
+.orb-3 { background:radial-gradient(circle at 40% 40%, rgba(196,146,122,0.25) 0%, rgba(168,170,184,0.15) 50%, transparent); }
+.orb-4 { background:radial-gradient(circle at 40% 40%, rgba(139,109,66,0.4), rgba(139,109,66,0.05)); }
+.orb-5 { background:radial-gradient(circle at 40% 40%, rgba(100,120,180,0.4), rgba(100,120,180,0.05)); }
+.orb-6 { background:radial-gradient(circle at 40% 40%, rgba(196,146,122,0.2) 0%, rgba(100,120,180,0.2) 100%); }
+
+.apc-name {
+  font-family:'Libre Baskerville',serif;
+  font-size:1.3rem; font-style:italic; color:var(--pearl);
+  margin-bottom:0.8rem;
+}
+.apc-note {
+  font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase;
+  color:var(--rose); margin-bottom:1rem;
+}
+.apc-desc { font-size:0.75rem; color:var(--text-muted); line-height:2.1; }
+.apc-spec {
+  margin-top:2rem; padding-top:1.5rem;
+  border-top:1px solid var(--silver-dim);
+  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--silver); opacity:0.7;
+}
+
+/* ── PROCESS ── */
+#process { display:none; padding-top:80px; }
+#process.active { display:block; }
+
+.a-process-wrap { max-width:900px; margin:0 auto; padding:5rem 2rem; }
+.a-process-hd { text-align:center; margin-bottom:5rem; }
+.a-process-hd h2 { font-family:'Libre Baskerville',serif; font-size:clamp(2rem,5vw,3.5rem); font-style:italic; color:var(--pearl); margin-bottom:1rem; }
+.a-process-hd p { font-size:0.75rem; color:var(--text-muted); max-width:480px; margin:0 auto; line-height:2.2; }
+
+.a-steps { display:flex; flex-direction:column; gap:3rem; }
+.a-step {
+  display:grid; grid-template-columns:50px 1fr;
+  gap:2rem; opacity:0; transform:translateY(20px);
+  transition:all 0.6s ease;
+}
+.a-step.show { opacity:1; transform:translateY(0); }
+.a-step-icon {
+  display:flex; flex-direction:column; align-items:center;
+  gap:1rem; padding-top:0.3rem;
+}
+.a-step-num {
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid rgba(196,146,122,0.4);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Libre Baskerville',serif; font-size:0.9rem;
+  color:var(--rose); flex-shrink:0;
+}
+.a-step-line { flex:1; width:1px; background:var(--silver-dim); }
+.a-step-body {}
+.a-step-label { font-size:0.55rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--rose); margin-bottom:0.5rem; }
+.a-step-title { font-family:'Libre Baskerville',serif; font-size:1.3rem; color:var(--pearl); margin-bottom:0.8rem; }
+.a-step-text { font-size:0.78rem; color:var(--text-muted); line-height:2.2; }
+
+/* ── CONTACT ── */
+#contact { display:none; padding-top:80px; }
+#contact.active { display:block; }
+
+.a-contact-wrap {
+  max-width:1000px; margin:0 auto; padding:5rem 2rem;
+  display:grid; grid-template-columns:1fr;
+  gap:5rem;
+}
+@media(min-width:768px){ .a-contact-wrap{ grid-template-columns:1fr 1.4fr; align-items:start; } }
+
+.a-contact-info {}
+.a-contact-info h2 {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(2rem,5vw,3rem); font-style:italic;
+  color:var(--pearl); margin-bottom:1.5rem;
+}
+.a-contact-info p { font-size:0.78rem; color:var(--text-muted); line-height:2.2; max-width:340px; margin-bottom:3rem; }
+.a-contact-details { display:flex; flex-direction:column; gap:2rem; }
+.a-cd {
+  display:flex; flex-direction:column; gap:0.4rem;
+  padding-left:1.2rem;
+  border-left:1px solid rgba(196,146,122,0.4);
+}
+.a-cd-label { font-size:0.5rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--rose); }
+.a-cd-val { font-size:0.85rem; color:var(--pearl); }
+
+.a-form { display:flex; flex-direction:column; gap:2rem; }
+.a-field { display:flex; flex-direction:column; gap:0.6rem; }
+.a-field-label { font-size:0.5rem; letter-spacing:0.4em; text-transform:uppercase; color:var(--silver); }
+.a-input {
+  background:transparent; border:none;
+  border-bottom:1px solid var(--silver-dim);
+  padding:0.8rem 0; font-family:'Jost',sans-serif;
+  font-size:0.85rem; color:var(--pearl); outline:none;
+  transition:border-color 0.4s; font-weight:200;
+}
+.a-input::placeholder { color:var(--text-muted); }
+.a-input:focus { border-color:var(--rose); }
+textarea.a-input { min-height:110px; resize:none; }
+.a-submit {
+  align-self:flex-start;
+  background:transparent; color:var(--rose);
+  border:1px solid rgba(196,146,122,0.5);
+  padding:0.9rem 2.5rem;
+  font-family:'Jost',sans-serif; font-size:0.6rem;
+  letter-spacing:0.3em; text-transform:uppercase; font-weight:300;
+  cursor:none; transition:all 0.4s; position:relative; overflow:hidden;
+}
+.a-submit::before {
+  content:''; position:absolute; inset:0;
+  background:var(--rose); transform:translateX(-100%);
+  transition:transform 0.4s ease; z-index:-1;
+}
+.a-submit:hover { color:var(--midnight); }
+.a-submit:hover::before { transform:translateX(0); }
+
+/* ── FOOTER ── */
+footer {
+  padding:3rem 2rem;
+  border-top:1px solid var(--silver-dim);
+  display:flex; flex-direction:column; align-items:center; gap:1.5rem;
+  text-align:center; position:relative; z-index:1;
+}
+.a-footer-logo {
+  font-family:'Libre Baskerville',serif;
+  font-size:1.1rem; font-style:italic; letter-spacing:0.2em; color:var(--silver);
+}
+.a-footer-logo span { color:var(--rose); }
+.a-footer-copy { font-size:0.55rem; letter-spacing:0.15em; color:var(--text-muted); }
+
+/* ── PAGE TRANSITION ── */
+.a-veil {
+  position:fixed; inset:0; z-index:9000;
+  pointer-events:none;
+  background:radial-gradient(ellipse at center, var(--rose) 0%, var(--midnight) 100%);
+  transform:scale(0); border-radius:50%;
+  opacity:0;
+}
+.a-veil.open {
+  animation:veilOpen 0.5s cubic-bezier(0.77,0,0.175,1) forwards;
+}
+.a-veil.close {
+  animation:veilClose 0.5s cubic-bezier(0.77,0,0.175,1) forwards;
+}
+@keyframes veilOpen { to{ transform:scale(3); opacity:1; } }
+@keyframes veilClose { from{ transform:scale(3); opacity:1; } to{ transform:scale(0); opacity:0; } }
+
+/* Click spark */
+.a-spark {
+  position:fixed; pointer-events:none; z-index:8999;
+  width:4px; height:4px; border-radius:50%;
+  background:var(--rose); transform:translate(-50%,-50%);
+  animation:sparkFly 0.5s ease-out forwards;
+}
+@keyframes sparkFly {
+  0%{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+  100%{ transform:translate(-50%,-50%) scale(4); opacity:0; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+<div class="a-cursor" id="aCursor"><div class="a-cursor-inner"></div></div>
+<div class="a-cursor-outer" id="aCursorOuter"></div>
+<div class="a-veil" id="aVeil"></div>
+
+<nav>
+  <div class="a-logo">
+    A<span>UR</span>A
+    <sub>Safety in Essence</sub>
+  </div>
+  <ul class="a-nav-links">
+    <li><a href="#" onclick="aNav('home');return false">Essence</a></li>
+    <li><a href="#" onclick="aNav('about');return false">Provenance</a></li>
+    <li><a href="#" onclick="aNav('products');return false">The Range</a></li>
+    <li><a href="#" onclick="aNav('process');return false">Composition</a></li>
+    <li><a href="#" onclick="aNav('contact');return false">Atelier</a></li>
+  </ul>
+  <a href="#" class="a-nav-btn" onclick="aNav('contact');return false">Enquire</a>
+  <button class="a-hamburger" onclick="aMobToggle()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="a-mob-nav" id="aMobNav">
+  <a href="#" onclick="aNav('home');aMobToggle();return false">Essence</a>
+  <a href="#" onclick="aNav('about');aMobToggle();return false">Provenance</a>
+  <a href="#" onclick="aNav('products');aMobToggle();return false">The Range</a>
+  <a href="#" onclick="aNav('process');aMobToggle();return false">Composition</a>
+  <a href="#" onclick="aNav('contact');aMobToggle();return false">Atelier</a>
+</div>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="home-inner">
+    <div class="a-eyebrow">Maison Aura — Established 2004</div>
+    <h1 class="a-h1">
+      <em>Invisible</em>
+      Protection
+      <span>Felt Everywhere</span>
+    </h1>
+    <p class="a-tagline">Like the finest fragrance, true safety should be imperceptible — present without imposing, essential without announcing itself. This is the AURA philosophy.</p>
+    <div class="a-hero-btns">
+      <button class="a-btn-rose" onclick="aNav('products')">Discover the Range</button>
+      <button class="a-btn-ghost" onclick="aNav('about')">Our Provenance</button>
+    </div>
+    <div class="home-scroll">
+      <div class="scroll-orb"></div>
+      <div class="scroll-txt">Descend</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="a-about-wrap">
+    <div class="a-section-eye">Provenance</div>
+    <div class="a-about-grid">
+      <div class="a-about-visual">
+        <div class="mist-ring"></div>
+        <div class="mist-ring"></div>
+        <div class="mist-ring"></div>
+        <div class="bottle"></div>
+      </div>
+      <div>
+        <h2 class="a-h2">Safety Distilled<br>to Its <em>Pure Essence</em></h2>
+        <p class="a-body">Born in 2004 in a small studio in Lausanne, AURA was founded on a radical idea: that safety engineering could be practised with the same reverence as perfumery. Both disciplines demand invisible precision. Both protect something irreplaceable. Both, when done well, leave no trace — only the quiet certainty that all is well.</p>
+        <p class="a-body" style="margin-top:1.5rem">Today, AURA systems protect lives across six continents — in concert halls, offshore platforms, mountain railways, and the world's highest towers.</p>
+        <div class="a-stats">
+          <div>
+            <div class="a-stat-val">6</div>
+            <div class="a-stat-label">Continents</div>
+          </div>
+          <div>
+            <div class="a-stat-val">1.8M</div>
+            <div class="a-stat-label">Lives Guarded</div>
+          </div>
+          <div>
+            <div class="a-stat-val">ISO</div>
+            <div class="a-stat-label">45001 Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="philosophy-strip">
+    <blockquote>
+      "A safety net should vanish into its environment — seen only when needed, felt always."
+      <cite>— AURA Founding Manifesto, 2004</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="a-products-hero">
+    <div class="a-eyebrow" style="justify-content:center">The Collection 2026</div>
+    <h2>Six Notes of Protection</h2>
+    <p>Each system in the AURA range is composed like a fragrance — layers of engineering logic that resolve, on installation, into something that simply feels right.</p>
+  </div>
+  <div class="a-products-grid">
+    <div class="a-product-card">
+      <div class="apc-orb orb-1"></div>
+      <div class="apc-note">Top Note</div>
+      <div class="apc-name">Première</div>
+      <p class="apc-desc">Our flagship vertical fall-arrest net. The first choice for architects who refuse to compromise on visual purity. Ultra-fine UHMWPE strands that disappear into the facade.</p>
+      <div class="apc-spec">UHMWPE · 100kN · EN 1263-1 A</div>
+    </div>
+    <div class="a-product-card">
+      <div class="apc-orb orb-2"></div>
+      <div class="apc-note">Heart Note</div>
+      <div class="apc-name">Intérieur</div>
+      <p class="apc-desc">Interior safety nets for atriums, staircases and galleries. Barely-there monofilament construction with colour-matched hardware. The invisible guardian of interior space.</p>
+      <div class="apc-spec">Monofilament · Custom Colour · Class B</div>
+    </div>
+    <div class="a-product-card">
+      <div class="apc-orb orb-3"></div>
+      <div class="apc-note">Base Note</div>
+      <div class="apc-name">Fondation</div>
+      <p class="apc-desc">Horizontal debris and tool-drop nets for industrial use. The foundation layer of any multi-level protection system — heavy, reliable, and unfailingly discreet.</p>
+      <div class="apc-spec">Mesh 10mm · SWL 600kg/m² · FR Class</div>
+    </div>
+    <div class="a-product-card">
+      <div class="apc-orb orb-4"></div>
+      <div class="apc-note">Accord</div>
+      <div class="apc-name">Marine Accord</div>
+      <p class="apc-desc">The scent of salt air demands a different composition. Titanium alloy fittings, halogen-stabilised polyester, engineered for offshore platforms and coastal superstructures.</p>
+      <div class="apc-spec">Ti Alloy · Offshore Rated · DNV GL</div>
+    </div>
+    <div class="a-product-card">
+      <div class="apc-orb orb-5"></div>
+      <div class="apc-note">Signature</div>
+      <div class="apc-name">Enceinte Sport</div>
+      <p class="apc-desc">Sports enclosure systems that frame rather than intrude. Knotless, colour-matched, tension-calibrated for stadium aesthetic standards. The signature of the well-designed venue.</p>
+      <div class="apc-spec">Knotless · 12 Colours · 60m Span</div>
+    </div>
+    <div class="a-product-card">
+      <div class="apc-orb orb-6"></div>
+      <div class="apc-note">Bespoke</div>
+      <div class="apc-name">Opus Privé</div>
+      <p class="apc-desc">For projects with no precedent. AURA's private commission service pairs your lead engineer with ours for a co-design process that produces something entirely original.</p>
+      <div class="apc-spec">Full Co-Design · Exclusive · By Appointment</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="a-process-wrap">
+    <div class="a-process-hd">
+      <div class="a-eyebrow" style="justify-content:center">Composition</div>
+      <h2>How We Distil Safety</h2>
+      <p>Every AURA system is composed in five movements — a process as deliberate and sequential as the crafting of a fine fragrance.</p>
+    </div>
+    <div class="a-steps">
+      <div class="a-step">
+        <div class="a-step-icon">
+          <div class="a-step-num">I</div>
+          <div class="a-step-line"></div>
+        </div>
+        <div class="a-step-body">
+          <div class="a-step-label">Movement One</div>
+          <div class="a-step-title">Listening</div>
+          <p class="a-step-text">We begin not with engineering, but with understanding. Our senior consultants spend time on-site, absorbing the character of the space and the culture of its users before a single calculation is made.</p>
+        </div>
+      </div>
+      <div class="a-step">
+        <div class="a-step-icon">
+          <div class="a-step-num">II</div>
+          <div class="a-step-line"></div>
+        </div>
+        <div class="a-step-body">
+          <div class="a-step-label">Movement Two</div>
+          <div class="a-step-title">Formula</div>
+          <p class="a-step-text">The structural formula is developed in our Lausanne studio — load paths, mesh geometry, attachment philosophy — using proprietary software developed over twenty years of practice.</p>
+        </div>
+      </div>
+      <div class="a-step">
+        <div class="a-step-icon">
+          <div class="a-step-num">III</div>
+          <div class="a-step-line"></div>
+        </div>
+        <div class="a-step-body">
+          <div class="a-step-label">Movement Three</div>
+          <div class="a-step-title">Distillation</div>
+          <p class="a-step-text">Materials are selected with the rigour of a master perfumer choosing ingredients. Each strand, each fitting, each anchor is evaluated not just for strength, but for longevity and invisible harmony with its environment.</p>
+        </div>
+      </div>
+      <div class="a-step">
+        <div class="a-step-icon">
+          <div class="a-step-num">IV</div>
+          <div class="a-step-line"></div>
+        </div>
+        <div class="a-step-body">
+          <div class="a-step-label">Movement Four</div>
+          <div class="a-step-title">Proving</div>
+          <p class="a-step-text">Every system is proof-tested in our ISO 17025 laboratory. The certificate of conformity is not paperwork — it is the signature on a finished composition.</p>
+        </div>
+      </div>
+      <div class="a-step">
+        <div class="a-step-icon">
+          <div class="a-step-num">V</div>
+          <div></div>
+        </div>
+        <div class="a-step-body">
+          <div class="a-step-label">Movement Five</div>
+          <div class="a-step-title">Presence</div>
+          <p class="a-step-text">Installation is the moment the formula becomes presence. Our supervised installation teams ensure the system settles into its environment exactly as designed — and then we disappear, leaving only the quiet confidence that the space is safe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="a-contact-wrap">
+    <div class="a-contact-info">
+      <div class="a-section-eye">Atelier</div>
+      <h2>Begin a Commission</h2>
+      <p>Every great safety system begins with a conversation. Reach out to our atelier and a senior consultant will respond within one business day.</p>
+      <div class="a-contact-details">
+        <div class="a-cd">
+          <span class="a-cd-label">Studio</span>
+          <span class="a-cd-val">Lausanne, Switzerland</span>
+        </div>
+        <div class="a-cd">
+          <span class="a-cd-label">Email</span>
+          <span class="a-cd-val">atelier@auranets.com</span>
+        </div>
+        <div class="a-cd">
+          <span class="a-cd-label">Offices</span>
+          <span class="a-cd-val">London · Singapore · Dubai</span>
+        </div>
+        <div class="a-cd">
+          <span class="a-cd-label">Response</span>
+          <span class="a-cd-val">Within one business day</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="a-form">
+        <div class="a-field">
+          <label class="a-field-label">Your Name</label>
+          <input class="a-input" type="text" placeholder="Full name">
+        </div>
+        <div class="a-field">
+          <label class="a-field-label">Organisation</label>
+          <input class="a-input" type="text" placeholder="Company or studio">
+        </div>
+        <div class="a-field">
+          <label class="a-field-label">Email Address</label>
+          <input class="a-input" type="email" placeholder="your@email.com">
+        </div>
+        <div class="a-field">
+          <label class="a-field-label">Project Nature</label>
+          <input class="a-input" type="text" placeholder="Describe the project type">
+        </div>
+        <div class="a-field">
+          <label class="a-field-label">Message</label>
+          <textarea class="a-input" placeholder="Tell us about your vision…"></textarea>
+        </div>
+        <button class="a-submit">Send to Atelier</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="a-footer-logo">A<span>UR</span>A — Safety in Essence</div>
+  <div class="a-footer-copy">© 2026 Aura Safety Systems SA. Lausanne, Switzerland. All rights reserved.</div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const aC = document.getElementById('aCursor');
+const aO = document.getElementById('aCursorOuter');
+let mx=0,my=0,ox=0,oy=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  aC.style.left=mx+'px'; aC.style.top=my+'px';
+});
+setInterval(()=>{
+  ox+=(mx-ox)*0.1; oy+=(my-oy)*0.1;
+  aO.style.left=ox+'px'; aO.style.top=oy+'px';
+},16);
+document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>aO.classList.add('bloom'));
+  el.addEventListener('mouseleave',()=>aO.classList.remove('bloom'));
+});
+
+// ── CLICK SPARK ──
+document.addEventListener('click',e=>{
+  for(let i=0;i<6;i++){
+    const s=document.createElement('div');
+    s.className='a-spark';
+    const angle=Math.random()*Math.PI*2;
+    const dist=20+Math.random()*40;
+    s.style.left=(e.clientX+Math.cos(angle)*dist)+'px';
+    s.style.top=(e.clientY+Math.sin(angle)*dist)+'px';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),600);
+  }
+});
+
+// ── MOBILE MENU ──
+function aMobToggle(){ document.getElementById('aMobNav').classList.toggle('open'); }
+
+// ── NAVIGATION ──
+let curPage='home';
+function aNav(id){
+  if(id===curPage) return;
+  const veil=document.getElementById('aVeil');
+  veil.className='a-veil open';
+  setTimeout(()=>{
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    const t=document.getElementById(id);
+    if(t){ t.classList.add('active'); window.scrollTo(0,0); }
+    curPage=id;
+    veil.className='a-veil close';
+    setTimeout(()=>{ veil.className='a-veil'; animSteps(); },520);
+  },500);
+}
+
+function animSteps(){
+  document.querySelectorAll('.a-step').forEach((el,i)=>{
+    el.classList.remove('show');
+    setTimeout(()=>el.classList.add('show'),i*140);
+  });
+}
+
+// ── PARTICLE SYSTEM ──
+const canvas=document.getElementById('particleCanvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+}
+
+function createParticles(){
+  particles=[];
+  const count = Math.min(Math.floor(W*H/14000), 80);
+  for(let i=0;i<count;i++){
+    const angle=Math.random()*Math.PI*2;
+    const speed=0.1+Math.random()*0.3;
+    particles.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
+      r:1+Math.random()*2,
+      alpha:0.1+Math.random()*0.4,
+      hue: Math.random()>0.5 ? '196,146,122' : '168,170,184',
+      phase:Math.random()*Math.PI*2
+    });
+  }
+}
+
+let pt2=0;
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  pt2+=0.008;
+
+  // Draw connections (net-like)
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){
+        const op=(1-dist/120)*0.15;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(196,146,122,${op})`;
+        ctx.lineWidth=0.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  particles.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    p.alpha=0.15+Math.sin(pt2+p.phase)*0.25;
+    if(p.x<0) p.x=W; if(p.x>W) p.x=0;
+    if(p.y<0) p.y=H; if(p.y>H) p.y=0;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.hue},${p.alpha})`;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+
+window.addEventListener('resize',()=>{ resize(); createParticles(); });
+resize(); createParticles(); drawParticles();
+</script>
+</body>
+</html>

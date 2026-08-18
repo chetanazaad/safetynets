@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUARDIAN — Precision Safety Systems</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap');
+
+  :root {
+    --obsidian: #0a0a0b;
+    --deep: #111114;
+    --surface: #1a1a1f;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --silver: #8a8a9a;
+    --white: #f0efe8;
+    --cream: #e8e4d8;
+    --text-dim: rgba(240,239,232,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--obsidian);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.08em;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+  .cursor-ring.expand { width: 60px; height: 60px; opacity: 0.3; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(to bottom, rgba(10,10,11,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: none;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  @media(min-width:768px){ .nav-links { display: flex; } }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.6rem 1.4rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--obsidian); }
+
+  .hamburger {
+    display: flex; flex-direction: column; gap: 5px; cursor: none;
+    background: none; border: none;
+  }
+  @media(min-width:768px){ .hamburger { display: none; } }
+  .hamburger span {
+    width: 24px; height: 1px; background: var(--gold); display: block;
+    transition: all 0.3s;
+  }
+
+  /* MOBILE NAV */
+  .mobile-nav {
+    position: fixed; inset: 0;
+    background: var(--obsidian);
+    z-index: 999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2.5rem;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+  }
+  .mobile-nav.open { transform: translateX(0); }
+  .mobile-nav a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    color: var(--white); text-decoration: none;
+    letter-spacing: 0.2em;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .mobile-nav a:hover { color: var(--gold); }
+
+  /* SECTIONS */
+  section {
+    min-height: 100dvh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  section.active { display: flex; }
+
+  /* HERO */
+  #home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+
+  /* Hexagonal mesh animation */
+  .hex-canvas {
+    position: absolute; inset: 0;
+    opacity: 0.15;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem; justify-content: center;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; width: 30px; height: 1px; background: var(--gold); opacity: 0.5;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-dim);
+    max-width: 400px; margin: 0 auto 3rem;
+    line-height: 2;
+  }
+  .hero-ctas {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-gold {
+    background: var(--gold); color: var(--obsidian);
+    padding: 0.9rem 2.5rem;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    border: none; cursor: none; transition: all 0.3s;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    padding: 0.9rem 2.5rem;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    border: 1px solid rgba(240,239,232,0.3); cursor: none; transition: all 0.3s;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  }
+  .scroll-line {
+    width: 1px; height: 50px; background: var(--gold); opacity: 0.3;
+    animation: scrollPulse 2s infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100%{ height:50px; opacity:0.3; }
+    50%{ height:30px; opacity:0.8; }
+  }
+  .scroll-label {
+    font-size: 0.55rem; letter-spacing: 0.3em; color: var(--text-dim); text-transform: uppercase;
+  }
+
+  /* ABOUT */
+  #about { padding: 6rem 2rem; }
+  .about-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  @media(min-width:768px){
+    .about-grid { grid-template-columns: 1fr 1fr; align-items: center; }
+  }
+  .about-visual {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .about-ring {
+    position: absolute; inset: 0;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 50%;
+    animation: rotateRing 20s linear infinite;
+  }
+  .about-ring:nth-child(2) {
+    inset: 15%;
+    border-color: rgba(201,168,76,0.3);
+    animation-direction: reverse; animation-duration: 15s;
+  }
+  .about-ring:nth-child(3) {
+    inset: 30%;
+    border-color: rgba(201,168,76,0.4);
+    animation-duration: 10s;
+  }
+  .about-center {
+    position: absolute; inset: 42%;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  @keyframes rotateRing { to { transform: rotate(360deg); } }
+  .about-ring::after {
+    content: '';
+    position: absolute; top: 0; left: 50%; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .section-label {
+    font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 300; line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .body-text {
+    font-size: 0.8rem; line-height: 2.2; color: var(--text-dim);
+    max-width: 480px;
+  }
+  .stats-row {
+    display: flex; gap: 3rem; margin-top: 3rem; flex-wrap: wrap;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text-dim);
+    text-transform: uppercase; margin-top: 0.3rem;
+  }
+
+  /* PRODUCTS */
+  #products { padding: 6rem 2rem; background: var(--deep); }
+  .products-header {
+    text-align: center; max-width: 600px; margin: 0 auto 5rem;
+  }
+  .products-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  @media(min-width:600px){ .products-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media(min-width:900px){ .products-grid { grid-template-columns: repeat(3, 1fr); } }
+  .product-card {
+    background: var(--surface);
+    padding: 3rem 2rem;
+    position: relative; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    border: 1px solid rgba(201,168,76,0.05);
+  }
+  .product-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .product-card:hover::before { transform: scaleX(1); }
+  .product-card:hover { transform: translateY(-4px); }
+  .product-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; font-weight: 300; color: rgba(201,168,76,0.1);
+    line-height: 1; margin-bottom: 1.5rem;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300;
+    margin-bottom: 1rem; color: var(--white);
+  }
+  .product-desc {
+    font-size: 0.72rem; color: var(--text-dim); line-height: 2;
+  }
+  .product-spec {
+    margin-top: 2rem; padding-top: 1.5rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    color: var(--gold); text-transform: uppercase;
+  }
+
+  /* PROCESS */
+  #process { padding: 6rem 2rem; }
+  .process-inner { max-width: 900px; margin: 0 auto; }
+  .process-header { text-align: center; margin-bottom: 5rem; }
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 2rem; padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .process-step.visible { opacity: 1; transform: translateY(0); }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300; color: var(--gold); opacity: 0.4;
+    text-align: right; padding-top: 0.3rem;
+  }
+  .step-body {}
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300; margin-bottom: 0.8rem;
+  }
+  .step-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 2; }
+
+  /* CONTACT */
+  #contact { padding: 6rem 2rem; background: var(--deep); }
+  .contact-inner {
+    max-width: 700px; margin: 0 auto; text-align: center;
+  }
+  .contact-form {
+    margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  @media(min-width:600px){ .form-row { grid-template-columns: 1fr 1fr; } }
+  .form-input {
+    background: transparent;
+    border: none; border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding: 1rem 0; font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.1em; color: var(--white);
+    font-weight: 200; outline: none; transition: border-color 0.3s;
+  }
+  .form-input::placeholder { color: var(--text-dim); }
+  .form-input:focus { border-color: var(--gold); }
+  textarea.form-input { resize: none; min-height: 120px; }
+  .form-submit {
+    align-self: center;
+    background: transparent; color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 1rem 3rem;
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    cursor: none; transition: all 0.3s;
+    margin-top: 1rem;
+  }
+  .form-submit:hover { background: var(--gold); color: var(--obsidian); }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; letter-spacing: 0.3em; color: var(--text-dim);
+  }
+  .footer-legal {
+    font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-dim); opacity: 0.5;
+  }
+
+  /* Page transition */
+  .page-transition {
+    position: fixed; inset: 0;
+    background: var(--gold);
+    z-index: 9990;
+    transform: scaleX(0); transform-origin: left;
+    pointer-events: none;
+  }
+  .page-transition.entering {
+    animation: transIn 0.4s cubic-bezier(0.77,0,0.175,1) forwards;
+  }
+  .page-transition.leaving {
+    animation: transOut 0.4s cubic-bezier(0.77,0,0.175,1) forwards;
+  }
+  @keyframes transIn { to { transform: scaleX(1); } }
+  @keyframes transOut { from { transform: scaleX(1); transform-origin: right; } to { transform: scaleX(0); transform-origin: right; } }
+
+  /* Ripple */
+  .ripple {
+    position: fixed; border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    pointer-events: none; z-index: 9997;
+    animation: rippleOut 0.6s ease-out forwards;
+  }
+  @keyframes rippleOut {
+    from { width:0;height:0;opacity:1;transform:translate(-50%,-50%); }
+    to { width:200px;height:200px;opacity:0;transform:translate(-50%,-50%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="page-transition" id="pageTransition"></div>
+
+<nav>
+  <div class="nav-logo">GUARD<span>I</span>AN</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="navigate('home')">Maison</a></li>
+    <li><a href="#" onclick="navigate('about')">Heritage</a></li>
+    <li><a href="#" onclick="navigate('products')">Collections</a></li>
+    <li><a href="#" onclick="navigate('process')">Savoir-Faire</a></li>
+    <li><a href="#" onclick="navigate('contact')">Atelier</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" onclick="navigate('home');toggleMenu()">Maison</a>
+  <a href="#" onclick="navigate('about');toggleMenu()">Heritage</a>
+  <a href="#" onclick="navigate('products');toggleMenu()">Collections</a>
+  <a href="#" onclick="navigate('process');toggleMenu()">Savoir-Faire</a>
+  <a href="#" onclick="navigate('contact');toggleMenu()">Atelier</a>
+</div>
+
+<!-- HERO -->
+<section id="home" class="active">
+  <div class="hero-bg"></div>
+  <canvas class="hex-canvas" id="hexCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Est. 2003 — Precision Safety Systems</div>
+    <h1>Safety<br>Forged in<br><em>Precision</em></h1>
+    <p class="hero-sub">Where Swiss watchmaking precision meets industrial safety engineering. Every net, a masterpiece of protection.</p>
+    <div class="hero-ctas">
+      <button class="btn-gold" onclick="navigate('products')">Explore Collections</button>
+      <button class="btn-outline" onclick="navigate('about')">Our Heritage</button>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <div class="scroll-label">Scroll</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div class="about-ring"></div>
+      <div class="about-ring"></div>
+      <div class="about-ring"></div>
+      <div class="about-center"></div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">Heritage & Mastery</div>
+      <h2>Two Decades of<br>Uncompromising<br>Excellence</h2>
+      <p class="body-text">Born from the belief that safety is not a compromise but a craft, Guardian has spent twenty years perfecting the art of protection. Our nets are engineered with the same obsessive attention that defines haute horology — every strand, every knot, every tension calibrated to perfection.</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num">2.4M</div>
+          <div class="stat-label">Lives Protected</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">98</div>
+          <div class="stat-label">Countries Served</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">ISO<br><small style="font-size:0.6rem">9001</small></div>
+          <div class="stat-label">Certified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header">
+    <div class="section-label">Collections</div>
+    <h2>The Guardian Range</h2>
+    <p class="body-text" style="margin:0 auto;text-align:center">Each series crafted for a distinct theatre of protection, engineered to the thousandth millimetre.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-num">01</div>
+      <div class="product-name">Sentinelle Series</div>
+      <p class="product-desc">Industrial fall-arrest systems for high-rise construction. Ultra-high-molecular-weight polyethylene strands woven in a hexagonal matrix for maximum energy absorption.</p>
+      <div class="product-spec">UHMWPE · Load: 100kN · EN 1263</div>
+    </div>
+    <div class="product-card">
+      <div class="product-num">02</div>
+      <div class="product-name">Atrium Collection</div>
+      <p class="product-desc">Architectural safety nets for atriums, bridges and public spaces. Invisible by design, unyielding by engineering. Custom geometries in stainless or anodised aluminium.</p>
+      <div class="product-spec">316L Steel · Custom Geometry · Class B</div>
+    </div>
+    <div class="product-card">
+      <div class="product-num">03</div>
+      <div class="product-name">Veldt Sport</div>
+      <p class="product-desc">Sports facility enclosures for stadiums, golf ranges, and training academies. Precision-tensioned for zero distortion across spans up to 80 metres.</p>
+      <div class="product-spec">UV-Stabilised · Spans to 80m · 25yr Warranty</div>
+    </div>
+    <div class="product-card">
+      <div class="product-num">04</div>
+      <div class="product-name">Maritime Shield</div>
+      <p class="product-desc">Offshore and marine safety netting engineered for saltwater environments. Corrosion-resistant alloys with dynamic load ratings for wave and wind conditions.</p>
+      <div class="product-spec">Marine Grade · Saltwater Rated · DNV GL</div>
+    </div>
+    <div class="product-card">
+      <div class="product-num">05</div>
+      <div class="product-name">Strata Debris</div>
+      <p class="product-desc">Debris containment systems for demolition and renovation projects. Mesh densities from 1mm² to 100mm² with fire-retardant treatment.</p>
+      <div class="product-spec">FR-Rated · 1–100mm Mesh · BS EN 1263-1</div>
+    </div>
+    <div class="product-card">
+      <div class="product-num">06</div>
+      <div class="product-name">Bespoke Atelier</div>
+      <p class="product-desc">Custom safety solutions designed from first principles. Our engineers work directly with architects and project managers to create systems that have never existed before.</p>
+      <div class="product-spec">Fully Custom · Consultation Included</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-header">
+      <div class="section-label">Savoir-Faire</div>
+      <h2>The Art of Protection</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">I</div>
+        <div class="step-body">
+          <div class="step-title">Site Analysis & Engineering</div>
+          <p class="step-desc">Our structural engineers conduct on-site load assessments, wind studies and geometric surveys. Every project begins with understanding its unique demands at a molecular level.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">II</div>
+        <div class="step-body">
+          <div class="step-title">Material Selection</div>
+          <p class="step-desc">We source from certified mills only. Every batch of fibre or alloy undergoes tensile, fatigue and UV-degradation testing before it enters our workshop.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">III</div>
+        <div class="step-body">
+          <div class="step-title">Precision Fabrication</div>
+          <p class="step-desc">CNC knotting machines guided by proprietary software produce consistent tensioning across the full panel. Human artisans inspect every junction by hand before sign-off.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">IV</div>
+        <div class="step-body">
+          <div class="step-title">Load Certification</div>
+          <p class="step-desc">Every assembly is proof-loaded in our ISO 17025-accredited laboratory. Certificates accompany every delivery as standard.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">V</div>
+        <div class="step-body">
+          <div class="step-title">Installation & Commissioning</div>
+          <p class="step-desc">Our supervised installation teams ensure the system performs exactly as modelled. We remain on-call for the lifetime of the installation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label">Atelier</div>
+    <h2>Begin a Conversation</h2>
+    <p class="body-text" style="margin:0 auto">Every great project starts with a single enquiry. Our consultants respond within four hours, every working day.</p>
+    <div class="contact-form">
+      <div class="form-row">
+        <input class="form-input" placeholder="Your Name" type="text">
+        <input class="form-input" placeholder="Organisation" type="text">
+      </div>
+      <div class="form-row">
+        <input class="form-input" placeholder="Email Address" type="email">
+        <input class="form-input" placeholder="Project Type" type="text">
+      </div>
+      <textarea class="form-input" placeholder="Describe your project…"></textarea>
+      <button class="form-submit">Send Enquiry</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">GUARDIAN — PRECISION SAFETY SYSTEMS</div>
+  <div class="footer-legal">© 2026 Guardian Safety Ltd. All rights reserved. Engineered in precision, installed with care.</div>
+</footer>
+
+<script>
+// ─── CURSOR ───
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left = mx+'px';
+  cursor.style.top = my+'px';
+});
+setInterval(()=>{
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+},16);
+document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('expand'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('expand'));
+});
+
+// ─── RIPPLE ───
+document.addEventListener('click', e => {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  r.style.left = e.clientX+'px';
+  r.style.top = e.clientY+'px';
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(), 700);
+});
+
+// ─── NAV ───
+function toggleMenu() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// ─── PAGE NAVIGATION ───
+let currentSection = 'home';
+function navigate(id) {
+  if(id === currentSection) return;
+  const pt = document.getElementById('pageTransition');
+  pt.className = 'page-transition entering';
+  setTimeout(()=>{
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if(target){ target.classList.add('active'); window.scrollTo(0,0); }
+    currentSection = id;
+    pt.className = 'page-transition leaving';
+    setTimeout(()=>{ pt.className='page-transition'; animateProcessSteps(); },450);
+  },420);
+  return false;
+}
+
+// ─── PROCESS ANIMATION ───
+function animateProcessSteps(){
+  const steps = document.querySelectorAll('.process-step');
+  steps.forEach((s,i)=>{
+    s.classList.remove('visible');
+    setTimeout(()=>s.classList.add('visible'), i*150);
+  });
+}
+
+// ─── HEX CANVAS ───
+const canvas = document.getElementById('hexCanvas');
+const ctx = canvas.getContext('2d');
+let W,H,hexes=[];
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+  buildHexes();
+}
+function buildHexes(){
+  hexes=[];
+  const r=40, h=r*Math.sqrt(3);
+  for(let y=-r;y<H+r*2;y+=h){
+    for(let x=-r;x<W+r*2;x+=r*3){
+      hexes.push({x,y,r,phase:Math.random()*Math.PI*2});
+      hexes.push({x:x+r*1.5,y:y+h/2,r,phase:Math.random()*Math.PI*2});
+    }
+  }
+}
+function drawHex(x,y,r,t,phase){
+  const pulse = Math.sin(t*0.5+phase)*0.5+0.5;
+  ctx.beginPath();
+  for(let i=0;i<6;i++){
+    const a=i*Math.PI/3-Math.PI/6;
+    i===0?ctx.moveTo(x+r*Math.cos(a),y+r*Math.sin(a)):ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));
+  }
+  ctx.closePath();
+  ctx.strokeStyle=`rgba(201,168,76,${0.1+pulse*0.15})`;
+  ctx.lineWidth=0.5;
+  ctx.stroke();
+}
+let t=0;
+function animHex(){
+  ctx.clearRect(0,0,W,H);
+  hexes.forEach(h=>drawHex(h.x,h.y,h.r,t,h.phase));
+  t+=0.02;
+  requestAnimationFrame(animHex);
+}
+window.addEventListener('resize',resize);
+resize(); animHex();
+</script>
+</body>
+</html>

@@ -57,7 +57,8 @@
             <!-- Navigation Links -->
             <nav class="capsule-nav-links">
                 <a href="#home" class="capsule-link active">Home</a>
-                <a href="#spaces" class="capsule-link">Spaces & Solutions</a>
+                <a href="#spaces" class="capsule-link">Spaces</a>
+                <a href="#gallery" class="capsule-link">Works Gallery</a>
                 <a href="#cities" class="capsule-link">City Hubs</a>
                 <a href="about.html" class="capsule-link">About Us</a>
                 <a href="why-us.html" class="capsule-link">Why Us</a>
@@ -83,13 +84,14 @@
         <div class="drawer-links">
             <a href="#home" class="drawer-link drawer-nav-item"><span>Home</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="#spaces" class="drawer-link drawer-nav-item"><span>Spaces & Solutions</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
-            <a href="about.html" class="drawer-link"><span>About Us</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
+            <a href="#gallery" class="drawer-link drawer-nav-item"><span>Works & Project Gallery</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="#cities" class="drawer-link drawer-nav-item"><span>City Service Hubs</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="invisible-grills.html" class="drawer-link"><span>Invisible Balcony Grills</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="child-safety-nets.html" class="drawer-link"><span>Child Safety Nets</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="pigeon-safety-nets.html" class="drawer-link"><span>Pigeon & Bird Nets</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="why-us.html" class="drawer-link"><span>Why Choose Us</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="safety-advisor.html" class="drawer-link"><span>Safety Advisor Tool</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
+            <a href="about.html" class="drawer-link"><span>About Us</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
             <a href="faq.html" class="drawer-link"><span>FAQs</span> <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; color: var(--accent);"></i></a>
         </div>
         <div style="display: flex; gap: 12px; margin-top: 20px;">
@@ -316,7 +318,277 @@
         </div>
     </section>
 
+    <!-- ==========================================================================
+       4. MixItUp Interactive Works Gallery (Real Project Installations)
+       ========================================================================== -->
+    <section id="gallery" class="gallery-mixit-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge-capsule"><i class="fa-solid fa-camera"></i> Verified On-Site Installations</span>
+                <h2>Real Project Works & Portfolio</h2>
+                <p>Explore over 10,000+ completed safety net and invisible grill fittings across Hyderabad, Bangalore, Vizag & Bhubaneswar.</p>
+            </div>
 
+            <!-- Mobile-First Horizontal Scrollable Filter Controls -->
+            <div class="mixit-filter-bar" id="mixitControls">
+                <button type="button" class="mixit-filter-btn active" data-filter="all">
+                    <i class="fa-solid fa-border-all"></i> All Projects (9)
+                </button>
+                <button type="button" class="mixit-filter-btn" data-filter=".cat-invisible">
+                    <i class="fa-solid fa-eye"></i> Invisible Grills
+                </button>
+                <button type="button" class="mixit-filter-btn" data-filter=".cat-balcony">
+                    <i class="fa-solid fa-building"></i> Balcony Safety Nets
+                </button>
+                <button type="button" class="mixit-filter-btn" data-filter=".cat-child">
+                    <i class="fa-solid fa-child-reaching"></i> Child & Pet Safety
+                </button>
+                <button type="button" class="mixit-filter-btn" data-filter=".cat-pigeon">
+                    <i class="fa-solid fa-dove"></i> Pigeon & Bird Shield
+                </button>
+                <button type="button" class="mixit-filter-btn" data-filter=".cat-sports">
+                    <i class="fa-solid fa-baseball-bat-ball"></i> Terrace & Turf
+                </button>
+            </div>
+
+            <!-- MixItUp Grid Container -->
+            <div class="mixit-grid" id="mixitGrid">
+                <!-- Item 1: Invisible Grills Hyderabad -->
+                <div class="mixit-card mix cat-invisible">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/premium-invible-grill.jpeg" alt="Invisible Grills Hyderabad Penthouse" loading="lazy">
+                        <span class="mixit-card-tag">Invisible Grills</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Skyline Penthouse Invisible Grills</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> My Home Bhooja, Gachibowli, Hyderabad
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-shield-halved"></i> 316-M Steel</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-weight-hanging"></i> 850kg Test</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-certificate"></i> 15-Yr Warranty</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20saw%20the%20My%20Home%20Bhooja%20Invisible%20Grills%20setup%20and%20want%20a%20quote." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2: Child Safety Net Bangalore -->
+                <div class="mixit-card mix cat-child cat-balcony">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/child-safety.jpeg" alt="Child Safety Net Installation Bangalore" loading="lazy">
+                        <span class="mixit-card-tag">Child Safety Net</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Ultra-Tension Child Balcony Shield</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Prestige Falcon City, Bangalore
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-shield-halved"></i> Virgin HDPE</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-sun"></i> UV-Treated</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-certificate"></i> 5-Yr Warranty</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20want%20a%20quote%20for%20Prestige%20Falcon%20City%20style%20Child%20Safety%20Nets." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3: Pigeon Net Kondapur Hyderabad -->
+                <div class="mixit-card mix cat-pigeon cat-balcony">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/pigeon-safety.jpeg" alt="Anti-Pigeon Bird Shield Net Hyderabad" loading="lazy">
+                        <span class="mixit-card-tag">Pigeon Net</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Translucent Anti-Pigeon Bird Net</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Aparna Serene Park, Kondapur, Hyderabad
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-eye-slash"></i> Discreet Fit</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-wind"></i> 100% Airflow</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-certificate"></i> Zero Odor</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20Pigeon%20Protection%20Nets%20like%20Aparna%20Serene%20Park." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4: Invisible Grills Vizag -->
+                <div class="mixit-card mix cat-invisible">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/img_40_a838e735.jpeg" alt="Invisible Grills Coastal Installation Vizag" loading="lazy">
+                        <span class="mixit-card-tag">Invisible Grills</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Coastal High-Rise Marine Grills</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Dwaraka Heights, VIP Road, Vizag
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-droplet-slash"></i> 100% Rust-Proof</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-bolt"></i> 2mm 316 Cable</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-fire-extinguisher"></i> Fast Exit</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20want%20a%20quote%20for%20Vizag%20Invisible%20Grills%20setup." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5: Terrace Net Bhubaneswar -->
+                <div class="mixit-card mix cat-sports cat-balcony">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/img_7be0c77d6e.jpeg" alt="Duplex Terrace Perimeter Netting Bhubaneswar" loading="lazy">
+                        <span class="mixit-card-tag">Terrace Safety</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Duplex Terrace Perimeter Netting</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Saheed Nagar Villa, Bhubaneswar
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-house"></i> Heavy Framing</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-cloud-sun"></i> Weatherproof</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-shield-check"></i> Full Boundary</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20Terrace%20Perimeter%20Netting%20in%20Bhubaneswar." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6: Cricket Turf Net Bangalore -->
+                <div class="mixit-card mix cat-sports">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/sports_net.jpeg" alt="Box Cricket & Sports Turf Net Bangalore" loading="lazy">
+                        <span class="mixit-card-tag">Cricket & Turf</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Clubhouse Box Cricket Net Setup</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Whitefield Sports Arena, Bangalore
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-baseball"></i> High Impact</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-layer-group"></i> Braided Twine</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-wrench"></i> Pro Galvanized</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20a%20Cricket%20Turf%20Netting%20quote." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 7: High Rise Balcony Enclosure Hyderabad -->
+                <div class="mixit-card mix cat-balcony cat-child">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/Balcony net installation.jpg" alt="Balcony Enclosure Safety Netting Hyderabad" loading="lazy">
+                        <span class="mixit-card-tag">Balcony Net</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Full Balcony Safety Enclosure</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Lanco Hills, Manikonda, Hyderabad
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-shield-check"></i> Double Knot</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-clock"></i> Same-Day Fit</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-medal"></i> ISO Certified</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20want%20Balcony%20Net%20installation%20at%20Lanco%20Hills." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 8: Duct Area Pigeon Shield Net -->
+                <div class="mixit-card mix cat-pigeon">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/gallery1.jpeg" alt="Duct Shaft Bird Shield Net Bangalore" loading="lazy">
+                        <span class="mixit-card-tag">Duct Area Net</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Duct & Shaft Bird Protection</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Brigade Gateway, Rajajinagar, Bangalore
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-ban"></i> Anti-Nesting</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-fan"></i> AC Compressor Safe</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-certificate"></i> Long Life</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20Duct%20Area%20Bird%20Net%20for%20my%20apartment." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 9: Curved Invisible Grills Hyderabad -->
+                <div class="mixit-card mix cat-invisible">
+                    <div class="mixit-img-box">
+                        <img src="assets/images/galery3.jpeg" alt="Curved Balcony Invisible Grill Hyderabad" loading="lazy">
+                        <span class="mixit-card-tag">Invisible Grills</span>
+                        <span class="mixit-verified-badge"><i class="fa-solid fa-circle-check"></i> Fitted</span>
+                    </div>
+                    <div class="mixit-card-body">
+                        <div>
+                            <h3 class="mixit-card-title">Curved Balcony Invisible Grills</h3>
+                            <div class="mixit-card-location">
+                                <i class="fa-solid fa-location-dot"></i> Rainbow Vistas, Hitec City, Hyderabad
+                            </div>
+                            <div class="mixit-card-specs">
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-bezier-curve"></i> Custom Contour</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-shield-halved"></i> 316 Marine SS</span>
+                                <span class="mixit-spec-pill"><i class="fa-solid fa-sparkles"></i> Clean Finish</span>
+                            </div>
+                        </div>
+                        <div class="mixit-card-actions">
+                            <a href="https://wa.me/919392851602?text=Hi%2C%20I%20need%20Curved%20Balcony%20Invisible%20Grills." class="btn btn-gold btn-sm flex-center" target="_blank"><i class="fab fa-whatsapp"></i> Quote</a>
+                            <a href="tel:+919392851602" class="btn btn-secondary btn-sm flex-center"><i class="fa-solid fa-phone"></i> Call</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ==========================================================================
        5. Regional City Matrix Section
@@ -509,7 +781,7 @@
                 </div>
 
                 <div>
-                    <h4 class="footer-heading" style="color: #fff; margin-bottom: 18px;">Direct Contact</h4>
+                    <h4 class="footer-heading" style="color: #fff; margin-bottom: 18px;">Reach Us</h4>
                     <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; color: var(--steel);">
                         <div><i class="fa-solid fa-phone" style="color: var(--accent); margin-right: 8px;"></i> +91 93928 51602</div>
                         <div><i class="fa-solid fa-envelope" style="color: var(--accent); margin-right: 8px;"></i> rachelgarikina@gmail.com</div>
@@ -518,8 +790,9 @@
                 </div>
             </div>
 
-            <div style="text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 24px; font-size: 0.85rem; color: var(--steel);">
-                © 2026 GAR Safety Nets. Next-Gen Architectural Edition. All Rights Reserved.
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 24px; font-size: 0.85rem; color: var(--steel);">
+                <p>&copy; 2026 GAR Safety Nets. All Rights Reserved.</p>
+                <p>Designed and developed by Sofzenix IT Solutions LLP</p>
             </div>
         </div>
     </footer>
@@ -535,6 +808,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
     <script src="assets/js/script.js?v=6.0"></script>
 </body>
 

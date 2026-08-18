@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Luxury Button & 10 Cursor Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --navy: #0B2545;
+  --dark: #061527;
+  --cyan: #00A8E8;
+  --gold: #D4AF37;
+  --card-bg: #0D2847;
+  --white: #FFFFFF;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+  overflow-x: hidden;
+}
+
+/* Page Header */
+.header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3.5rem auto;
+}
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header p {
+  color: #8DA9C4;
+  font-size: 1rem;
+}
+
+/* Switcher Bar */
+.cursor-selector-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto 3rem auto;
+  background: rgba(13, 40, 71, 0.7);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 168, 232, 0.2);
+}
+.c-select-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 168, 232, 0.3);
+  color: #8DA9C4;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.c-select-btn.active, .c-select-btn:hover {
+  background: var(--cyan);
+  color: #ffffff;
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 168, 232, 0.4);
+}
+
+/* Grid Layout */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demo-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(0, 168, 232, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.demo-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cyan);
+}
+.card-num {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin-bottom: 1.8rem;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   10 LUXURY BUTTON STYLES
+   ========================================================================== */
+
+/* 1. Liquid Wave Fill */
+.btn-1 {
+  position: relative;
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: transparent;
+  border: 2px solid var(--cyan);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: color 0.4s ease;
+  z-index: 1;
+}
+.btn-1::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--cyan);
+  transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+.btn-1:hover { color: #ffffff; }
+.btn-1:hover::before { top: 0; }
+
+/* 2. Golden Metallic Flare */
+.btn-2 {
+  position: relative;
+  padding: 1rem 2.2rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(135deg, #B8860B 0%, var(--gold) 50%, #DAA520 100%);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.btn-2::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(25deg);
+  transition: all 0.6s ease;
+}
+.btn-2:hover::after { left: 120%; }
+.btn-2:hover { transform: scale(1.03); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5); }
+
+/* 3. Glassmorphic Glow */
+.btn-3 {
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.btn-3:hover {
+  background: rgba(0, 168, 232, 0.25);
+  border-color: var(--cyan);
+  box-shadow: 0 0 25px rgba(0, 168, 232, 0.4);
+}
+
+/* 4. Split Reveal Arrow */
+.btn-4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  background: var(--cyan);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-4 i { transition: transform 0.3s ease; }
+.btn-4:hover { background: #ffffff; color: var(--navy); }
+.btn-4:hover i { transform: translateX(6px); }
+
+/* 5. Minimalist Underline Sweep */
+.btn-5 {
+  position: relative;
+  padding: 0.8rem 1.8rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.btn-5::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn-5:hover::after { width: 100%; }
+
+/* 6. Neon Pulse Cyber */
+.btn-6 {
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: transparent;
+  border: 1px solid var(--cyan);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 168, 232, 0.2);
+  transition: all 0.3s ease;
+}
+.btn-6:hover {
+  background: var(--cyan);
+  color: var(--dark);
+  box-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan);
+}
+
+/* 7. Royal Border Draw */
+.btn-7 {
+  position: relative;
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.btn-7::before, .btn-7::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  box-sizing: border-box;
+  transition: all 0.4s ease;
+}
+.btn-7::before { top: 0; left: 0; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.btn-7::after { bottom: 0; right: 0; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.btn-7:hover::before, .btn-7:hover::after { width: 100%; height: 100%; }
+
+/* 8. 3D Elevated Press */
+.btn-8 {
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #007EA7;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #005F7E, 0 10px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.15s ease;
+}
+.btn-8:hover { transform: translateY(2px); box-shadow: 0 4px 0 #005F7E, 0 6px 14px rgba(0, 0, 0, 0.3); }
+.btn-8:active { transform: translateY(6px); box-shadow: 0 0 0 #005F7E; }
+
+/* 9. Magnetic Radial Gradient */
+.btn-9 {
+  position: relative;
+  padding: 1rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--navy) 0%, #134074 100%);
+  border: 1px solid var(--cyan);
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.btn-9:hover {
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--navy) 100%);
+  transform: scale(1.04);
+}
+
+/* 10. Shimmer Diamond Edge */
+.btn-10 {
+  position: relative;
+  padding: 1rem 2.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--dark);
+  border: 1px solid var(--cyan);
+  cursor: pointer;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  transition: all 0.3s ease;
+}
+.btn-10:hover {
+  background: var(--cyan);
+  color: var(--dark);
+  border-color: #ffffff;
+}
+
+/* ==========================================================================
+   10 CUSTOM CURSOR SYSTEM CONTAINERS
+   ========================================================================== */
+.custom-cursor { pointer-events: none; position: fixed; z-index: 99999; transform: translate(-50%, -50%); display: none; }
+.custom-cursor.active-mode { display: block; }
+
+/* C1: Classic Dual Ring */
+#c1-dot { width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; }
+#c1-trail { width: 36px; height: 36px; border: 1.5px solid rgba(0, 168, 232, 0.5); border-radius: 50%; transition: transform 0.15s ease-out; }
+
+/* C2: Gold Couture Ring */
+#c2-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+#c2-trail { width: 44px; height: 44px; border: 1px dashed var(--gold); border-radius: 50%; animation: spin 8s linear infinite; }
+@keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* C3: Glowing Laser Orb */
+#c3-dot { width: 14px; height: 14px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan); }
+
+/* C4: Inverted Blend Circle */
+#c4-dot { width: 32px; height: 32px; background: #ffffff; border-radius: 50%; mix-blend-mode: difference; }
+
+/* C5: Diamond Reticle */
+#c5-dot { width: 16px; height: 16px; border: 2px solid var(--gold); transform: translate(-50%, -50%) rotate(45deg); }
+
+/* C6: Magnet Ring Expand */
+#c6-dot { width: 10px; height: 10px; background: var(--white); border-radius: 50%; transition: width 0.2s, height 0.2s; }
+
+/* C7: Soft Blurred Aura */
+#c7-dot { width: 45px; height: 45px; background: rgba(0, 168, 232, 0.4); border-radius: 50%; filter: blur(8px); }
+
+/* C8: Precision Crosshair */
+#c8-dot { width: 20px; height: 20px; position: relative; }
+#c8-dot::before, #c8-dot::after { content:''; position:absolute; background: var(--cyan); }
+#c8-dot::before { top:9px; left:0; width:20px; height:2px; }
+#c8-dot::after { top:0; left:9px; width:2px; height:20px; }
+
+/* C9: Particle Sparkle Follower */
+#c9-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; box-shadow: 0 0 10px var(--gold); }
+
+/* C10: Minimalist Dot */
+#c10-dot { width: 6px; height: 6px; background: #ffffff; border-radius: 50%; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>10 Buttons & 10 Cursor Styles</h1>
+  <p>Interactive Luxury Design Elements for Safety Net Client Sites</p>
+</div>
+
+<!-- Cursor Selector Switcher -->
+<div class="cursor-selector-bar">
+  <button class="c-select-btn active" onclick="setCursor(1)">Cursor 1: Dual Ring</button>
+  <button class="c-select-btn" onclick="setCursor(2)">Cursor 2: Gold Couture</button>
+  <button class="c-select-btn" onclick="setCursor(3)">Cursor 3: Glow Orb</button>
+  <button class="c-select-btn" onclick="setCursor(4)">Cursor 4: Invert Blend</button>
+  <button class="c-select-btn" onclick="setCursor(5)">Cursor 5: Diamond</button>
+  <button class="c-select-btn" onclick="setCursor(6)">Cursor 6: Magnet Expand</button>
+  <button class="c-select-btn" onclick="setCursor(7)">Cursor 7: Soft Aura</button>
+  <button class="c-select-btn" onclick="setCursor(8)">Cursor 8: Crosshair</button>
+  <button class="c-select-btn" onclick="setCursor(9)">Cursor 9: Sparkle</button>
+  <button class="c-select-btn" onclick="setCursor(10)">Cursor 10: Minimal Dot</button>
+</div>
+
+<!-- 10 Button Showcase Grid -->
+<div class="showcase-grid">
+
+  <!-- Card 1 -->
+  <div class="demo-card">
+    <span class="card-num">Button 01</span>
+    <div class="card-title">Liquid Wave Fill</div>
+    <button class="btn-1">Explore Services</button>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="demo-card">
+    <span class="card-num">Button 02</span>
+    <div class="card-title">Golden Metallic Flare</div>
+    <button class="btn-2">Book Atelier Quote</button>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="demo-card">
+    <span class="card-num">Button 03</span>
+    <div class="card-title">Glassmorphic Glow</div>
+    <button class="btn-3">Instant Inspection</button>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="demo-card">
+    <span class="card-num">Button 04</span>
+    <div class="card-title">Split Reveal Arrow</div>
+    <button class="btn-4">View Invisible Grills <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="demo-card">
+    <span class="card-num">Button 05</span>
+    <div class="card-title">Minimalist Underline</div>
+    <button class="btn-5">Discover Craftsmanship</button>
+  </div>
+
+  <!-- Card 6 -->
+  <div class="demo-card">
+    <span class="card-num">Button 06</span>
+    <div class="card-title">Neon Pulse Cyber</div>
+    <button class="btn-6">WhatsApp Support</button>
+  </div>
+
+  <!-- Card 7 -->
+  <div class="demo-card">
+    <span class="card-num">Button 07</span>
+    <div class="card-title">Royal Border Draw</div>
+    <button class="btn-7">Safety Advisor</button>
+  </div>
+
+  <!-- Card 8 -->
+  <div class="demo-card">
+    <span class="card-num">Button 08</span>
+    <div class="card-title">3D Elevated Press</div>
+    <button class="btn-8">Call Now Direct</button>
+  </div>
+
+  <!-- Card 9 -->
+  <div class="demo-card">
+    <span class="card-num">Button 09</span>
+    <div class="card-title">Magnetic Radial Gradient</div>
+    <button class="btn-9">Select AP City</button>
+  </div>
+
+  <!-- Card 10 -->
+  <div class="demo-card">
+    <span class="card-num">Button 10</span>
+    <div class="card-title">Shimmer Diamond Edge</div>
+    <button class="btn-10">Get Warranty</button>
+  </div>
+
+</div>
+
+<!-- Cursor Elements -->
+<div id="c1-dot" class="custom-cursor active-mode"></div>
+<div id="c1-trail" class="custom-cursor active-mode"></div>
+
+<div id="c2-dot" class="custom-cursor"></div>
+<div id="c2-trail" class="custom-cursor"></div>
+
+<div id="c3-dot" class="custom-cursor"></div>
+<div id="c4-dot" class="custom-cursor"></div>
+<div id="c5-dot" class="custom-cursor"></div>
+<div id="c6-dot" class="custom-cursor"></div>
+<div id="c7-dot" class="custom-cursor"></div>
+<div id="c8-dot" class="custom-cursor"></div>
+<div id="c9-dot" class="custom-cursor"></div>
+<div id="c10-dot" class="custom-cursor"></div>
+
+<script>
+let currentCursorIndex = 1;
+let mouseX = 0, mouseY = 0;
+let trailX = 0, trailY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  // Direct dot positioning
+  const activeDots = document.querySelectorAll('.custom-cursor.active-mode');
+  activeDots.forEach(el => {
+    if(!el.id.includes('trail')) {
+      el.style.left = mouseX + 'px';
+      el.style.top = mouseY + 'px';
+    }
+  });
+});
+
+// Smooth Lerp animation for trail cursors
+function animateTrail() {
+  trailX += (mouseX - trailX) * 0.15;
+  trailY += (mouseY - trailY) * 0.15;
+  
+  const c1Trail = document.getElementById('c1-trail');
+  const c2Trail = document.getElementById('c2-trail');
+  
+  if (c1Trail && c1Trail.classList.contains('active-mode')) {
+    c1Trail.style.left = trailX + 'px';
+    c1Trail.style.top = trailY + 'px';
+  }
+  if (c2Trail && c2Trail.classList.contains('active-mode')) {
+    c2Trail.style.left = trailX + 'px';
+    c2Trail.style.top = trailY + 'px';
+  }
+  
+  requestAnimationFrame(animateTrail);
+}
+animateTrail();
+
+// Cursor Switcher Logic
+function setCursor(index) {
+  currentCursorIndex = index;
+  
+  // Hide all
+  document.querySelectorAll('.custom-cursor').forEach(el => el.classList.remove('active-mode'));
+  document.querySelectorAll('.c-select-btn').forEach(btn => btn.classList.remove('active'));
+  
+  // Show selected
+  if (index === 1) {
+    document.getElementById('c1-dot').classList.add('active-mode');
+    document.getElementById('c1-trail').classList.add('active-mode');
+  } else if (index === 2) {
+    document.getElementById('c2-dot').classList.add('active-mode');
+    document.getElementById('c2-trail').classList.add('active-mode');
+  } else {
+    document.getElementById(`c${index}-dot`).classList.add('active-mode');
+  }
+  
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

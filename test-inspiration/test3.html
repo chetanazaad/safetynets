@@ -1,0 +1,4047 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Safety-Net Ateliers — Nocturne · Serif & Twine · Blueprint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js"></script>
+    <style>
+        /* ========== TOKENS ========== */
+        :root {
+            --bg: #EAE4D9;
+            --cream: #F3F0EB;
+            --charcoal: #1C1C1C;
+            --earth: #2A2A2A;
+            --accent: #8C7B6B;
+            --text: #1C1C1C;
+            --text-dim: rgba(28, 28, 28, .55);
+            --rule: rgba(28, 28, 28, .12);
+            --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+            --ease-emphasis: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        body[data-site="nocturne"] {
+            --bg: #0A0A0A;
+            --cream: #F5F0E8;
+            --charcoal: #141414;
+            --earth: #1A1A1A;
+            --accent: #9A7B4F;
+            --text: #F5F0E8;
+            --text-dim: rgba(245, 240, 232, .5);
+            --rule: rgba(245, 240, 232, .1);
+        }
+
+        body[data-site="serif"] {
+            --bg: #E8E2D5;
+            --cream: #F5F0E8;
+            --charcoal: #1C1C1C;
+            --earth: #3A3530;
+            --accent: #4A5D3F;
+            --text: #1C1C1C;
+            --text-dim: rgba(28, 28, 28, .55);
+            --rule: rgba(28, 28, 28, .1);
+        }
+
+        body[data-site="blueprint"] {
+            --bg: #F0EDE8;
+            --cream: #FAF8F4;
+            --charcoal: #1A1A1A;
+            --earth: #2A2A2A;
+            --accent: #2D5F8A;
+            --text: #1A1A1A;
+            --text-dim: rgba(26, 26, 26, .55);
+            --rule: rgba(26, 26, 26, .15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100vw
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            transition: background .6s var(--ease-quiet), color .6s var(--ease-quiet)
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font-family: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer
+        }
+
+        ul {
+            list-style: none
+        }
+
+        input,
+        select {
+            font-family: inherit
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--cream)
+        }
+
+        /* ========== BRAND BAR ========== */
+        .brand-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--cream);
+            border-bottom: 1px solid var(--rule);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            transition: background .6s var(--ease-quiet), border-color .6s var(--ease-quiet)
+        }
+
+        .brand-bar__left {
+            font-size: .65rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .5;
+            color: var(--text)
+        }
+
+        .brand-bar__center {
+            display: flex;
+            gap: .4rem
+        }
+
+        .brand-bar__right {
+            font-size: .6rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .4;
+            text-align: right;
+            color: var(--text)
+        }
+
+        .brand-tab {
+            border: 1px solid transparent;
+            cursor: pointer;
+            padding: .5rem 1rem;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: .7rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: var(--text);
+            opacity: .4;
+            transition: opacity .4s var(--ease-quiet), border-color .4s var(--ease-quiet)
+        }
+
+        .brand-tab:hover {
+            opacity: .75
+        }
+
+        .brand-tab.active {
+            opacity: 1;
+            border-color: var(--text)
+        }
+
+        @media(max-width:768px) {
+            .brand-bar {
+                padding: .6rem .8rem;
+                grid-template-columns: 1fr;
+                gap: .4rem
+            }
+
+            .brand-bar__left,
+            .brand-bar__right {
+                display: none
+            }
+
+            .brand-bar__center {
+                justify-content: center
+            }
+
+            .brand-tab {
+                padding: .35rem .55rem;
+                font-size: .55rem;
+                letter-spacing: .15em
+            }
+        }
+
+        /* ========== SITES ========== */
+        .site {
+            display: none;
+            padding-top: 60px;
+            min-height: 100vh
+        }
+
+        .site.active {
+            display: block;
+            animation: siteFade .8s var(--ease-quiet)
+        }
+
+        @keyframes siteFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @media(max-width:768px) {
+            .site {
+                padding-top: 64px
+            }
+        }
+
+        /* ========== CURSORS ========== */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            will-change: transform
+        }
+
+        @media(pointer:fine) {
+
+            body[data-site="nocturne"] .cursor[data-for="nocturne"],
+            body[data-site="serif"] .cursor[data-for="serif"],
+            body[data-site="blueprint"] .cursor[data-for="blueprint"] {
+                display: block
+            }
+
+            body[data-site="nocturne"],
+            body[data-site="serif"],
+            body[data-site="blueprint"] {
+                cursor: none
+            }
+
+            body[data-site="nocturne"] a,
+            body[data-site="serif"] a,
+            body[data-site="blueprint"] a,
+            body[data-site="nocturne"] button,
+            body[data-site="serif"] button,
+            body[data-site="blueprint"] button,
+            body[data-site="nocturne"] input,
+            body[data-site="serif"] input,
+            body[data-site="blueprint"] input,
+            body[data-site="nocturne"] select,
+            body[data-site="serif"] select,
+            body[data-site="blueprint"] select {
+                cursor: none
+            }
+        }
+
+        .cursor .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+            margin-left: -3px;
+            margin-top: -3px
+        }
+
+        .cursor-1 .glow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(154, 123, 79, .35) 0%, transparent 70%);
+            margin-left: -20px;
+            margin-top: -20px;
+            transition: width .4s var(--ease-quiet), height .4s var(--ease-quiet)
+        }
+
+        .cursor-1 .glow.hover {
+            width: 80px;
+            height: 80px;
+            margin-left: -40px;
+            margin-top: -40px
+        }
+
+        .cursor-2 .trail {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            opacity: .4;
+            transition: width .4s var(--ease-quiet), height .4s var(--ease-quiet), opacity .4s var(--ease-quiet)
+        }
+
+        .cursor-2 .trail.hover {
+            width: 56px;
+            height: 56px;
+            margin-left: -28px;
+            margin-top: -28px;
+            opacity: .7
+        }
+
+        .cursor-3 .ch-h,
+        .cursor-3 .ch-v {
+            position: absolute;
+            background: var(--text);
+            opacity: .6
+        }
+
+        .cursor-3 .ch-h {
+            width: 20px;
+            height: 1px;
+            margin-left: -10px;
+            margin-top: 0
+        }
+
+        .cursor-3 .ch-v {
+            width: 1px;
+            height: 20px;
+            margin-left: 0;
+            margin-top: -10px
+        }
+
+        .cursor-3 .tick {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--text);
+            opacity: .4;
+            white-space: nowrap;
+            margin-left: 14px;
+            margin-top: 6px
+        }
+
+        /* ========== REVEALS ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-quiet), transform 1s var(--ease-quiet)
+        }
+
+        .reveal.is-in {
+            opacity: 1;
+            transform: none
+        }
+
+        .reveal--delay-1 {
+            transition-delay: .15s
+        }
+
+        .reveal--delay-2 {
+            transition-delay: .3s
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: .7rem;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            color: var(--accent)
+        }
+
+        /* ========== NOCTURNE ========== */
+        .nocturne .display {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            letter-spacing: -.02em;
+            line-height: 1.05
+        }
+
+        .nocturne .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300
+        }
+
+        .noc-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(10, 10, 10, .88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .noc-nav__logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            letter-spacing: .15em
+        }
+
+        .noc-nav__links {
+            display: flex;
+            gap: 1.8rem
+        }
+
+        .noc-nav__links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .55;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .noc-nav__links a:hover {
+            opacity: 1
+        }
+
+        .noc-nav__cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .55rem 1.1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .noc-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .noc-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .noc-nav__links {
+                gap: .7rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .noc-nav__links a {
+                font-size: .5rem
+            }
+
+            .noc-nav__cta {
+                padding: .4rem .7rem;
+                font-size: .5rem
+            }
+
+            .nocturne {
+                padding-top: 130px
+            }
+        }
+
+        .noc-hero {
+            padding: 7rem 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .noc-hero__bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 40%, rgba(154, 123, 79, .06) 0%, transparent 50%);
+            pointer-events: none
+        }
+
+        .noc-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .noc-hero__title {
+            font-size: clamp(3rem, 12vw, 12rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .noc-hero__title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent)
+        }
+
+        .noc-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .noc-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.6s var(--ease-emphasis)
+        }
+
+        .is-loaded .noc-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .noc-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .25s
+        }
+
+        .noc-hero__lede {
+            max-width: 40rem;
+            margin: 3rem 0;
+            font-family: 'Fraunces', serif;
+            font-weight: 300;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s var(--ease-quiet) .8s, transform 1.2s var(--ease-quiet) .8s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .noc-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .noc-hero__scroll {
+            margin-top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .noc-hero__scroll-line {
+            width: 60px;
+            height: 1px;
+            background: var(--text);
+            position: relative;
+            overflow: hidden
+        }
+
+        .noc-hero__scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: var(--bg);
+            animation: scrollLine 2.5s var(--ease-quiet) infinite
+        }
+
+        @keyframes scrollLine {
+            0% {
+                transform: translateX(-100%)
+            }
+
+            100% {
+                transform: translateX(100%)
+            }
+        }
+
+        @media(max-width:768px) {
+            .noc-hero {
+                padding: 3rem 1.2rem 2rem;
+                min-height: auto
+            }
+
+            .noc-hero__meta {
+                margin-bottom: 2rem;
+                font-size: .5rem
+            }
+
+            .noc-hero__lede {
+                font-size: 1.05rem;
+                margin: 2rem 0
+            }
+        }
+
+        .noc-section {
+            padding: 7rem 2rem;
+            position: relative
+        }
+
+        .noc-section__head {
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            text-align: center
+        }
+
+        .noc-section__eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: inline-block
+        }
+
+        .noc-section__title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .noc-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .noc-section__lede {
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin: 1.5rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .noc-section {
+                padding: 4rem 1.2rem
+            }
+
+            .noc-section__head {
+                margin-bottom: 3rem
+            }
+        }
+
+        /* Threat Heatmap */
+        .noc-heatmap {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: var(--charcoal);
+            border: 1px solid var(--rule);
+            padding: 3rem
+        }
+
+        .noc-heatmap__building {
+            width: 100%;
+            height: auto;
+            cursor: pointer
+        }
+
+        .noc-heatmap__zone {
+            cursor: pointer;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .noc-heatmap__zone rect {
+            fill: transparent;
+            stroke: var(--text);
+            stroke-width: 1;
+            opacity: .25;
+            transition: all .4s var(--ease-quiet)
+        }
+
+        .noc-heatmap__zone text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .15em;
+            fill: var(--text);
+            opacity: .4;
+            text-transform: uppercase;
+            transition: opacity .4s var(--ease-quiet)
+        }
+
+        .noc-heatmap__zone:hover rect {
+            opacity: .4;
+            stroke: var(--accent)
+        }
+
+        .noc-heatmap__zone:hover text {
+            opacity: .7
+        }
+
+        .noc-heatmap__zone.is-active rect {
+            fill: rgba(154, 123, 79, .15);
+            opacity: 1;
+            stroke: var(--accent)
+        }
+
+        .noc-heatmap__zone.is-active text {
+            opacity: 1;
+            fill: var(--accent)
+        }
+
+        .noc-heatmap__panel {
+            padding: 1rem 0
+        }
+
+        .noc-heatmap__panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: .8rem
+        }
+
+        .noc-heatmap__panel-zone {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: 2.2rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            min-height: 2.5rem
+        }
+
+        .noc-heatmap__panel-zone em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .noc-heatmap__panel-section {
+            margin-bottom: 1.2rem
+        }
+
+        .noc-heatmap__panel-section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: .3rem
+        }
+
+        .noc-heatmap__panel-threats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem
+        }
+
+        .noc-heatmap__panel-threat {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            border: 1px solid var(--rule);
+            padding: .3rem .6rem;
+            opacity: .8
+        }
+
+        .noc-heatmap__panel-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .8rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--rule)
+        }
+
+        .noc-heatmap__panel-spec dt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: .15rem
+        }
+
+        .noc-heatmap__panel-spec dd {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem;
+            color: var(--text)
+        }
+
+        .noc-heatmap__hint {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: .85rem;
+            opacity: .4;
+            margin-top: 1.5rem
+        }
+
+        @media(max-width:768px) {
+            .noc-heatmap {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 1.5rem
+            }
+
+            .noc-heatmap__panel-zone {
+                font-size: 1.5rem;
+                min-height: auto
+            }
+        }
+
+        /* Collection */
+        .noc-collection {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem
+        }
+
+        .noc-card {
+            background: var(--charcoal);
+            border: 1px solid var(--rule);
+            overflow: hidden;
+            position: relative;
+            transition: transform .5s var(--ease-quiet)
+        }
+
+        .noc-card:hover {
+            transform: translateY(-6px)
+        }
+
+        .noc-card__img {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            position: relative
+        }
+
+        .noc-card__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(.3) brightness(.7);
+            transition: filter .8s var(--ease-quiet), transform 1s var(--ease-quiet)
+        }
+
+        .noc-card:hover .noc-card__img img {
+            filter: grayscale(0) brightness(.85);
+            transform: scale(1.05)
+        }
+
+        .noc-card__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 10, 10, .9) 0%, transparent 50%);
+            pointer-events: none
+        }
+
+        .noc-card__body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            z-index: 2
+        }
+
+        .noc-card__num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            color: var(--accent);
+            margin-bottom: .4rem;
+            display: block
+        }
+
+        .noc-card__name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.1;
+            margin-bottom: .3rem
+        }
+
+        .noc-card__name em {
+            font-style: italic
+        }
+
+        .noc-card__for {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: .85rem;
+            opacity: .6
+        }
+
+        .noc-card__specs {
+            display: flex;
+            gap: 1rem;
+            margin-top: .8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        @media(max-width:1024px) {
+            .noc-collection {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:600px) {
+            .noc-collection {
+                grid-template-columns: 1fr
+            }
+
+            .noc-card__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        /* Night Shift */
+        .noc-shift {
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .noc-shift__item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            padding-bottom: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .noc-shift__item:last-child {
+            border-bottom: none;
+            margin-bottom: 0
+        }
+
+        .noc-shift__time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            color: var(--accent);
+            white-space: nowrap
+        }
+
+        .noc-shift__body h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.2;
+            margin-bottom: .6rem
+        }
+
+        .noc-shift__body h4 em {
+            font-style: italic
+        }
+
+        .noc-shift__body p {
+            font-family: 'Fraunces', serif;
+            font-size: .95rem;
+            line-height: 1.6;
+            color: var(--text-dim)
+        }
+
+        @media(max-width:768px) {
+            .noc-shift__item {
+                grid-template-columns: 1fr;
+                gap: .5rem
+            }
+
+            .noc-shift__time {
+                font-size: .6rem
+            }
+        }
+
+        /* Contact */
+        .noc-contact {
+            padding: 7rem 2rem;
+            background: var(--charcoal);
+            border-top: 1px solid var(--rule)
+        }
+
+        .noc-contact__inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start
+        }
+
+        .noc-contact__title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.05
+        }
+
+        .noc-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .noc-contact__lede {
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            line-height: 1.55;
+            color: var(--text-dim);
+            margin-top: 1.5rem
+        }
+
+        .noc-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem
+        }
+
+        .noc-form__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .noc-form__label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4
+        }
+
+        .noc-form__input,
+        .noc-form__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .noc-form__input:focus,
+        .noc-form__select:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .noc-form__select option {
+            background: var(--charcoal)
+        }
+
+        .noc-form__submit {
+            margin-top: 1rem;
+            align-self: flex-start;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .9rem 1.8rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .noc-form__submit:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .noc-contact {
+                padding: 4rem 1.2rem
+            }
+
+            .noc-contact__inner {
+                grid-template-columns: 1fr;
+                gap: 2rem
+            }
+        }
+
+        /* ========== SERIF & TWINE ========== */
+        .serif .display {
+            font-family: 'Fraunces', serif;
+            font-weight: 300;
+            letter-spacing: -.01em;
+            line-height: 1.1
+        }
+
+        .serif .sans {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400
+        }
+
+        .seri-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(232, 226, 213, .9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .seri-nav__logo {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.3rem
+        }
+
+        .seri-nav__links {
+            display: flex;
+            gap: 2rem
+        }
+
+        .seri-nav__links a {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .05em;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .seri-nav__links a:hover {
+            opacity: 1
+        }
+
+        .seri-nav__cta {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .55rem 1.1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .seri-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .seri-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .seri-nav__links {
+                gap: .8rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .seri-nav__links a {
+                font-size: .55rem
+            }
+
+            .seri-nav__cta {
+                padding: .4rem .7rem;
+                font-size: .5rem
+            }
+
+            .serif {
+                padding-top: 130px
+            }
+        }
+
+        .seri-hero {
+            padding: 7rem 2rem 5rem;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto
+        }
+
+        .seri-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 4rem
+        }
+
+        .seri-hero__title {
+            font-size: clamp(2.5rem, 8vw, 7rem)
+        }
+
+        .seri-hero__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .seri-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .seri-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.4s var(--ease-emphasis)
+        }
+
+        .is-loaded .seri-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .seri-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .2s
+        }
+
+        .seri-hero__lede {
+            max-width: 38rem;
+            margin: 3rem 0;
+            font-family: 'Fraunces', serif;
+            font-size: 1.2rem;
+            line-height: 1.65;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .6s, transform 1s var(--ease-quiet) .6s
+        }
+
+        .is-loaded .seri-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .seri-hero__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: .8rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text);
+            padding-bottom: .5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .8s, transform 1s var(--ease-quiet) .8s
+        }
+
+        .is-loaded .seri-hero__cta {
+            opacity: 1;
+            transform: none
+        }
+
+        .seri-hero__cta .arrow {
+            transition: transform .4s var(--ease-quiet)
+        }
+
+        .seri-hero__cta:hover .arrow {
+            transform: translateX(6px)
+        }
+
+        @media(max-width:768px) {
+            .seri-hero {
+                padding: 3rem 1.2rem 2rem
+            }
+
+            .seri-hero__meta {
+                margin-bottom: 2rem;
+                font-size: .55rem
+            }
+
+            .seri-hero__lede {
+                font-size: 1.05rem;
+                margin: 2rem 0
+            }
+        }
+
+        .seri-section {
+            padding: 7rem 2rem;
+            position: relative
+        }
+
+        .seri-section__head {
+            max-width: 900px;
+            margin: 0 auto 4rem
+        }
+
+        .seri-section__eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block
+        }
+
+        .seri-section__title {
+            font-family: 'Fraunces', serif;
+            font-weight: 300;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.15
+        }
+
+        .seri-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .seri-section__lede {
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin-top: 1rem
+        }
+
+        @media(max-width:768px) {
+            .seri-section {
+                padding: 4rem 1.2rem
+            }
+
+            .seri-section__head {
+                margin-bottom: 3rem
+            }
+        }
+
+        /* Material Atlas */
+        .atlas {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem
+        }
+
+        .atlas__card {
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color .4s var(--ease-quiet)
+        }
+
+        .atlas__card.is-open {
+            grid-column: span 2;
+            grid-row: span 2
+        }
+
+        .atlas__card:hover {
+            border-color: var(--accent)
+        }
+
+        .atlas__card-swatch {
+            height: 140px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .atlas__card-swatch img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .8s var(--ease-quiet)
+        }
+
+        .atlas__card:hover .atlas__card-swatch img {
+            transform: scale(1.05)
+        }
+
+        .atlas__card-body {
+            padding: 1.5rem
+        }
+
+        .atlas__card-num {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .4rem;
+            display: block
+        }
+
+        .atlas__card-name {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: 1.3rem;
+            line-height: 1.1;
+            margin-bottom: .2rem
+        }
+
+        .atlas__card-name em {
+            font-style: italic
+        }
+
+        .atlas__card-full {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: .9rem;
+            color: var(--text-dim)
+        }
+
+        .atlas__card-expand {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--rule);
+            display: none
+        }
+
+        .atlas__card.is-open .atlas__card-expand {
+            display: block;
+            animation: fadeIn .5s var(--ease-quiet)
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .atlas__detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 1.5rem;
+            margin-bottom: 1rem
+        }
+
+        .atlas__detail dt {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .5rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .15rem
+        }
+
+        .atlas__detail dd {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: .9rem
+        }
+
+        .atlas__card-desc {
+            font-family: 'Fraunces', serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin-top: .8rem
+        }
+
+        @media(max-width:1024px) {
+            .atlas {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .atlas__card.is-open {
+                grid-column: span 2;
+                grid-row: auto
+            }
+        }
+
+        @media(max-width:600px) {
+            .atlas {
+                grid-template-columns: 1fr
+            }
+
+            .atlas__card.is-open {
+                grid-column: auto
+            }
+        }
+
+        /* Field Journal */
+        .journal {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .journal__entry {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem
+        }
+
+        .journal__entry:last-child {
+            margin-bottom: 0
+        }
+
+        .journal__entry[data-reverse] .journal__text {
+            order: 2
+        }
+
+        .journal__img {
+            aspect-ratio: 4/5;
+            overflow: hidden
+        }
+
+        .journal__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.4s var(--ease-quiet)
+        }
+
+        .journal__entry:hover .journal__img img {
+            transform: scale(1.03)
+        }
+
+        .journal__text>* {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity .9s var(--ease-quiet), transform .9s var(--ease-quiet)
+        }
+
+        .journal__entry.is-in .journal__text>* {
+            opacity: 1;
+            transform: none
+        }
+
+        .journal__entry.is-in .journal__text>*:nth-child(1) {
+            transition-delay: 0s
+        }
+
+        .journal__entry.is-in .journal__text>*:nth-child(2) {
+            transition-delay: .1s
+        }
+
+        .journal__entry.is-in .journal__text>*:nth-child(3) {
+            transition-delay: .2s
+        }
+
+        .journal__entry.is-in .journal__text>*:nth-child(4) {
+            transition-delay: .3s
+        }
+
+        .journal__num {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1rem
+        }
+
+        .journal__title {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            line-height: 1.15;
+            margin-bottom: 1rem
+        }
+
+        .journal__title em {
+            font-style: italic
+        }
+
+        .journal__body {
+            font-family: 'Fraunces', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem
+        }
+
+        .journal__pull {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            line-height: 1.4;
+            border-left: 2px solid var(--accent);
+            padding-left: 1.2rem;
+            color: var(--text)
+        }
+
+        @media(max-width:768px) {
+            .journal__entry {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                margin-bottom: 4rem
+            }
+
+            .journal__entry[data-reverse] .journal__text {
+                order: 0
+            }
+
+            .journal__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        /* Atelier */
+        .seri-atelier {
+            background: var(--cream);
+            padding: 7rem 2rem
+        }
+
+        .seri-atelier__inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center
+        }
+
+        .seri-atelier__img {
+            aspect-ratio: 4/5;
+            overflow: hidden
+        }
+
+        .seri-atelier__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .seri-atelier__text h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            line-height: 1.15;
+            margin-bottom: 1.5rem
+        }
+
+        .seri-atelier__text h3 em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .seri-atelier__text p {
+            font-family: 'Fraunces', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            margin-bottom: 1rem
+        }
+
+        .seri-atelier__stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--rule)
+        }
+
+        .seri-atelier__stat .num {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: 2rem;
+            line-height: 1;
+            display: block
+        }
+
+        .seri-atelier__stat .lab {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-top: .3rem;
+            display: block
+        }
+
+        @media(max-width:768px) {
+            .seri-atelier {
+                padding: 4rem 1.2rem
+            }
+
+            .seri-atelier__inner {
+                grid-template-columns: 1fr;
+                gap: 2rem
+            }
+
+            .seri-atelier__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        .seri-contact {
+            padding: 7rem 2rem;
+            background: var(--cream);
+            border-top: 1px solid var(--rule)
+        }
+
+        .seri-contact__inner {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .seri-contact__title {
+            font-family: 'Fraunces', serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.1
+        }
+
+        .seri-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .seri-contact__lede {
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin: 1.5rem auto 2.5rem;
+            max-width: 32rem
+        }
+
+        .seri-contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 32rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .seri-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .seri-contact__label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .seri-contact__input,
+        .seri-contact__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .seri-contact__input:focus,
+        .seri-contact__select:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .seri-contact__select option {
+            font-family: 'Inter', sans-serif
+        }
+
+        .seri-contact__submit {
+            margin-top: 1rem;
+            align-self: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .seri-contact__submit:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .seri-contact {
+                padding: 4rem 1.2rem
+            }
+        }
+
+        /* ========== BLUEPRINT ========== */
+        .blueprint .display {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            letter-spacing: -.01em;
+            line-height: 1.1
+        }
+
+        .blueprint .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300
+        }
+
+        .bp-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(240, 237, 232, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+            padding: .8rem 2rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 2rem
+        }
+
+        .bp-nav__logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: .9rem;
+            letter-spacing: .05em
+        }
+
+        .bp-nav__logo span {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .55rem;
+            opacity: .5;
+            margin-left: .5rem
+        }
+
+        .bp-nav__links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center
+        }
+
+        .bp-nav__links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .6;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .bp-nav__links a:hover {
+            opacity: 1
+        }
+
+        .bp-nav__cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .5rem 1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .bp-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .bp-nav {
+                padding: .6rem 1rem;
+                grid-template-columns: 1fr;
+                gap: .4rem;
+                text-align: center
+            }
+
+            .bp-nav__links {
+                justify-content: center;
+                gap: .6rem;
+                order: 3;
+                padding-top: .3rem
+            }
+
+            .bp-nav__links a {
+                font-size: .5rem
+            }
+
+            .bp-nav__cta {
+                justify-self: center;
+                padding: .35rem .7rem;
+                font-size: .5rem
+            }
+
+            .blueprint {
+                padding-top: 130px
+            }
+        }
+
+        .bp-hero {
+            padding: 6rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .bp-hero__grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .4
+        }
+
+        .bp-hero__grid svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .bp-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .bp-hero__title {
+            font-size: clamp(2.5rem, 7vw, 6rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .bp-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .bp-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.3s var(--ease-emphasis)
+        }
+
+        .is-loaded .bp-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .bp-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .18s
+        }
+
+        .bp-hero__sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .8rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .5s, transform 1s var(--ease-quiet) .5s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .bp-hero__sub {
+            opacity: 1;
+            transform: none
+        }
+
+        .bp-hero__specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .bp-hero__spec {
+            background: var(--cream);
+            padding: 1.2rem
+        }
+
+        .bp-hero__spec .lab {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            display: block;
+            margin-bottom: .3rem
+        }
+
+        .bp-hero__spec .val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            display: block
+        }
+
+        .bp-hero__spec .unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            opacity: .5;
+            margin-left: .2rem
+        }
+
+        @media(max-width:768px) {
+            .bp-hero {
+                padding: 2rem 1.2rem
+            }
+
+            .bp-hero__meta {
+                margin-bottom: 1.5rem;
+                font-size: .5rem
+            }
+
+            .bp-hero__sub {
+                font-size: .7rem
+            }
+
+            .bp-hero__specs {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .bp-hero__spec {
+                padding: .8rem
+            }
+
+            .bp-hero__spec .val {
+                font-size: 1rem
+            }
+        }
+
+        .bp-section {
+            padding: 6rem 2rem;
+            position: relative
+        }
+
+        .bp-section__head {
+            max-width: 1100px;
+            margin: 0 auto 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: end;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1.5rem
+        }
+
+        .bp-section__num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            color: var(--accent);
+            white-space: nowrap
+        }
+
+        .bp-section__title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            line-height: 1.1
+        }
+
+        .bp-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .bp-section__lede {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .8rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin: 1rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .bp-section {
+                padding: 4rem 1.2rem
+            }
+
+            .bp-section__head {
+                grid-template-columns: 1fr;
+                gap: .5rem
+            }
+        }
+
+        /* Net Diagram */
+        .bp-diagram {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            background: var(--cream);
+            border: 1px solid var(--rule)
+        }
+
+        .bp-diagram__main {
+            padding: 2rem
+        }
+
+        .bp-diagram__toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-bottom: 1.5rem
+        }
+
+        .bp-diagram__toggle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: .5rem .8rem;
+            border: 1px solid var(--rule);
+            background: var(--cream);
+            color: var(--text);
+            opacity: .5;
+            transition: all .3s var(--ease-quiet)
+        }
+
+        .bp-diagram__toggle:hover {
+            opacity: .8
+        }
+
+        .bp-diagram__toggle.active {
+            background: var(--text);
+            color: var(--cream);
+            border-color: var(--text);
+            opacity: 1
+        }
+
+        .bp-diagram__svg-wrap {
+            background: var(--bg);
+            border: 1px solid var(--rule);
+            aspect-ratio: 3/2;
+            overflow: hidden
+        }
+
+        .bp-diagram__svg {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        .bp-diagram__svg .layer {
+            transition: opacity .4s var(--ease-quiet)
+        }
+
+        .bp-diagram__svg .layer.is-hidden {
+            opacity: 0
+        }
+
+        .bp-diagram__panel {
+            background: var(--bg);
+            border-left: 1px solid var(--rule);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column
+        }
+
+        .bp-diagram__panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .8rem
+        }
+
+        .bp-diagram__panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem
+        }
+
+        .bp-diagram__panel-specs {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem
+        }
+
+        .bp-diagram__panel-spec {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .bp-diagram__panel-spec dt {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .bp-diagram__panel-spec dd {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .8rem;
+            font-weight: 400
+        }
+
+        .bp-diagram__panel-note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin-top: auto;
+            padding-top: 1.5rem
+        }
+
+        @media(max-width:900px) {
+            .bp-diagram {
+                grid-template-columns: 1fr
+            }
+
+            .bp-diagram__panel {
+                border-left: none;
+                border-top: 1px solid var(--rule)
+            }
+        }
+
+        /* Standards */
+        .bp-standards {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .bp-standards__select-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap
+        }
+
+        .bp-standards__label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .bp-standards__select {
+            background: var(--cream);
+            border: 1px solid var(--text);
+            padding: .6rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            color: var(--text);
+            cursor: pointer
+        }
+
+        .bp-standards__select:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .bp-standards__table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .bp-standards__table th,
+        .bp-standards__table td {
+            padding: 1rem .8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--rule);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .75rem
+        }
+
+        .bp-standards__table th {
+            font-weight: 400;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .bp-standards__table td {
+            font-weight: 300
+        }
+
+        .bp-standards__table td:first-child {
+            font-weight: 400
+        }
+
+        .bp-standards__comply {
+            display: inline-block;
+            padding: .2rem .5rem;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .bp-standards__comply--yes {
+            background: rgba(74, 93, 63, .15);
+            color: var(--accent)
+        }
+
+        .bp-standards__comply--no {
+            background: rgba(26, 26, 26, .08);
+            opacity: .4
+        }
+
+        .bp-standards__row.is-hidden {
+            display: none
+        }
+
+        @media(max-width:768px) {
+            .bp-standards__table {
+                font-size: .65rem
+            }
+
+            .bp-standards__table th,
+            .bp-standards__table td {
+                padding: .6rem .4rem
+            }
+
+            .bp-standards__table th:nth-child(4),
+            .bp-standards__table td:nth-child(4) {
+                display: none
+            }
+        }
+
+        /* Specs table */
+        .bp-specs {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .bp-specs__table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .bp-specs__table th,
+        .bp-specs__table td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--rule);
+            vertical-align: middle
+        }
+
+        .bp-specs__table th {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .bp-specs__table td {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: .85rem
+        }
+
+        .bp-specs__table td:first-child {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: .9rem
+        }
+
+        .bp-specs__bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: .6rem
+        }
+
+        .bp-specs__bar {
+            display: inline-block;
+            height: 4px;
+            background: var(--accent);
+            min-width: 4px
+        }
+
+        @media(max-width:768px) {
+            .bp-specs__table {
+                font-size: .75rem
+            }
+
+            .bp-specs__table th,
+            .bp-specs__table td {
+                padding: .7rem .5rem
+            }
+
+            .bp-specs__table th:nth-child(5),
+            .bp-specs__table td:nth-child(5) {
+                display: none
+            }
+        }
+
+        .bp-contact {
+            padding: 6rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream)
+        }
+
+        .bp-contact__inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .bp-contact__title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .bp-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .bp-contact__lede {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem;
+            line-height: 1.6;
+            opacity: .6;
+            margin: 1.5rem auto 2.5rem;
+            max-width: 34rem
+        }
+
+        .bp-contact__form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 44rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .bp-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .bp-contact__field--full {
+            grid-column: span 2
+        }
+
+        .bp-contact__label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .bp-contact__input,
+        .bp-contact__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid rgba(245, 240, 232, .2);
+            padding: .5rem 0;
+            color: var(--cream);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .85rem;
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .bp-contact__input:focus,
+        .bp-contact__select:focus {
+            outline: none;
+            border-color: var(--cream)
+        }
+
+        .bp-contact__select option {
+            background: var(--charcoal)
+        }
+
+        .bp-contact__submit {
+            grid-column: span 2;
+            justify-self: center;
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--cream);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .bp-contact__submit:hover {
+            background: var(--cream);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .bp-contact {
+                padding: 4rem 1.2rem
+            }
+
+            .bp-contact__form {
+                grid-template-columns: 1fr
+            }
+
+            .bp-contact__field--full {
+                grid-column: auto
+            }
+        }
+
+        /* ========== FOOTER ========== */
+        .site-footer {
+            padding: 4rem 2rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            border-top: 1px solid var(--rule)
+        }
+
+        .site-footer__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem
+        }
+
+        .site-footer__col h5 {
+            font-family: 'Oswald', sans-serif;
+            font-size: .6rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 1.5rem
+        }
+
+        .site-footer__col ul li {
+            margin-bottom: .7rem;
+            font-size: .85rem;
+            opacity: .7;
+            transition: opacity .3s var(--ease-quiet);
+            cursor: pointer
+        }
+
+        .site-footer__col ul li:hover {
+            opacity: 1
+        }
+
+        .site-footer__brand {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 200;
+            font-size: 1.5rem;
+            letter-spacing: .3em;
+            margin-bottom: 1rem
+        }
+
+        .site-footer__bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(243, 240, 235, .12);
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Oswald', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            opacity: .4;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        @media(max-width:768px) {
+            .site-footer__inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem
+            }
+
+            .site-footer__bottom {
+                flex-direction: column;
+                text-align: center
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                animation-iteration-count: 1 !important
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none
+            }
+
+            .noc-hero__title .line-inner,
+            .seri-hero__title .line-inner,
+            .bp-hero__title .line-inner {
+                transform: none
+            }
+        }
+    </style>
+</head>
+
+<body data-site="nocturne">
+
+    <header class="brand-bar">
+        <div class="brand-bar__left">Three Ateliers · One Craft</div>
+        <div class="brand-bar__center">
+            <button class="brand-tab active" data-brand="nocturne">Nocturne</button>
+            <button class="brand-tab" data-brand="serif">Serif &amp; Twine</button>
+            <button class="brand-tab" data-brand="blueprint">Blueprint</button>
+        </div>
+        <div class="brand-bar__right">Safety Netting · Est. 2014</div>
+    </header>
+
+    <div class="cursor cursor-1" data-for="nocturne">
+        <div class="glow"></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-2" data-for="serif">
+        <div class="trail"></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-3" data-for="blueprint">
+        <div class="ch-h"></div>
+        <div class="ch-v"></div>
+        <div class="tick">0,0</div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ========== NOCTURNE ======================================== -->
+    <!-- ============================================================ -->
+    <main class="site site-nocturne active" data-site="nocturne">
+        <nav class="noc-nav">
+            <div class="noc-nav__logo">NOCTURNE</div>
+            <ul class="noc-nav__links">
+                <li><a href="#noc-heatmap" data-link>Heatmap</a></li>
+                <li><a href="#noc-collection" data-link>Collection</a></li>
+                <li><a href="#noc-shift" data-link>Night Shift</a></li>
+                <li><a href="#noc-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#noc-contact" class="noc-nav__cta" data-link>Book survey</a>
+        </nav>
+
+        <section class="noc-hero">
+            <div class="noc-hero__bg"></div>
+            <div class="noc-hero__meta">
+                <span>NOCTURNE / 01</span>
+                <span>Residential Safety Nets</span>
+                <span>Bangalore · 2024</span>
+            </div>
+            <h1 class="noc-hero__title display">
+                <span class="line"><span class="line-inner">When the building</span></span>
+                <span class="line"><span class="line-inner"><em>sleeps, we hold.</em></span></span>
+            </h1>
+            <p class="noc-hero__lede">Architectural safety nets for the hours after dark — bird exclusion, mosquito
+                mesh, child safety, fall arrest. Hand-fitted in HDPE and nylon, invisible by moonlight, certified by
+                daylight.</p>
+            <div class="noc-hero__scroll"><span>Scroll to explore</span>
+                <div class="noc-hero__scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- THREAT HEATMAP -->
+        <section class="noc-section" id="noc-heatmap">
+            <div class="noc-section__head reveal">
+                <div class="noc-section__eyebrow">— Section 01 / Threat Heatmap</div>
+                <h2 class="noc-section__title">Tap a floor. <em>See what threatens it.</em></h2>
+                <p class="noc-section__lede">Every floor of a residential building faces a different set of threats. The
+                    cross-section below is a clickable map — tap any zone to see what lives there, what falls there, and
+                    which net holds it.</p>
+            </div>
+            <div class="noc-heatmap reveal">
+                <div class="noc-heatmap__building">
+                    <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <pattern id="noc-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-width="0.4"
+                                    opacity="0.08" />
+                            </pattern>
+                        </defs>
+                        <rect width="400" height="500" fill="url(#noc-grid)" />
+                        <!-- Building outline -->
+                        <rect x="80" y="30" width="240" height="440" fill="none" stroke="currentColor"
+                            stroke-width="1.5" opacity="0.3" />
+                        <!-- Ground line -->
+                        <line x1="40" y1="470" x2="360" y2="470" stroke="currentColor" stroke-width="1" opacity="0.2" />
+                        <g class="noc-heatmap__zone" data-zone="roof">
+                            <rect x="80" y="30" width="240" height="80" />
+                            <line x1="80" y1="110" x2="320" y2="110" stroke="currentColor" stroke-width="0.5"
+                                opacity="0.15" />
+                            <text x="200" y="75" text-anchor="middle">ROOF TERRACE</text>
+                        </g>
+                        <g class="noc-heatmap__zone" data-zone="balcony">
+                            <rect x="80" y="110" width="240" height="80" />
+                            <rect x="105" y="125" width="35" height="50" fill="none" stroke="currentColor"
+                                stroke-width="0.6" opacity="0.15" />
+                            <rect x="260" y="125" width="35" height="50" fill="none" stroke="currentColor"
+                                stroke-width="0.6" opacity="0.15" />
+                            <text x="200" y="158" text-anchor="middle">BALCONY</text>
+                        </g>
+                        <g class="noc-heatmap__zone" data-zone="window">
+                            <rect x="80" y="190" width="240" height="80" />
+                            <rect x="110" y="205" width="30" height="50" fill="none" stroke="currentColor"
+                                stroke-width="0.6" opacity="0.15" />
+                            <rect x="260" y="205" width="30" height="50" fill="none" stroke="currentColor"
+                                stroke-width="0.6" opacity="0.15" />
+                            <text x="200" y="238" text-anchor="middle">WINDOW</text>
+                        </g>
+                        <g class="noc-heatmap__zone" data-zone="atrium">
+                            <rect x="80" y="270" width="240" height="80" />
+                            <text x="200" y="318" text-anchor="middle">ATRIUM / MEZZANINE</text>
+                        </g>
+                        <g class="noc-heatmap__zone" data-zone="staircase">
+                            <rect x="80" y="350" width="240" height="120" />
+                            <line x1="120" y1="360" x2="120" y2="460" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.1" />
+                            <line x1="140" y1="370" x2="140" y2="460" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.1" />
+                            <line x1="160" y1="380" x2="160" y2="460" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.1" />
+                            <text x="240" y="415" text-anchor="middle">STAIRCASE</text>
+                        </g>
+                    </svg>
+                </div>
+                <div class="noc-heatmap__panel">
+                    <div class="noc-heatmap__panel-label">— Selected zone</div>
+                    <div class="noc-heatmap__panel-zone" id="noc-zone-name">Tap a floor <em>above</em></div>
+                    <div class="noc-heatmap__panel-section" id="noc-zone-threats-wrap" style="display:none">
+                        <div class="noc-heatmap__panel-section-label">Threats present</div>
+                        <div class="noc-heatmap__panel-threats" id="noc-zone-threats"></div>
+                    </div>
+                    <div class="noc-heatmap__panel-specs" id="noc-zone-specs" style="display:none">
+                        <dl class="noc-heatmap__panel-spec">
+                            <dt>Recommended net</dt>
+                            <dd id="noc-zone-net">—</dd>
+                        </dl>
+                        <dl class="noc-heatmap__panel-spec">
+                            <dt>Mesh size</dt>
+                            <dd id="noc-zone-mesh">—</dd>
+                        </dl>
+                        <dl class="noc-heatmap__panel-spec">
+                            <dt>Material</dt>
+                            <dd id="noc-zone-material">—</dd>
+                        </dl>
+                        <dl class="noc-heatmap__panel-spec">
+                            <dt>Tensile</dt>
+                            <dd id="noc-zone-tensile">—</dd>
+                        </dl>
+                    </div>
+                    <p class="noc-heatmap__hint" id="noc-zone-hint">Each zone reveals its threats and the net that holds
+                        them.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLECTION -->
+        <section class="noc-section" id="noc-collection">
+            <div class="noc-section__head reveal">
+                <div class="noc-section__eyebrow">— Section 02 / Collection</div>
+                <h2 class="noc-section__title">Six pieces for the <em>hours after dark.</em></h2>
+            </div>
+            <div class="noc-collection reveal">
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-bird/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 01</span>
+                        <h3 class="noc-card__name">Night <em>Veil</em></h3>
+                        <p class="noc-card__for">Bird exclusion · balconies</p>
+                        <div class="noc-card__specs"><span>25mm</span><span>HDPE</span><span>120kg</span></div>
+                    </div>
+                </article>
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-mosquito/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 02</span>
+                        <h3 class="noc-card__name">Nocturne <em>Mesh</em></h3>
+                        <p class="noc-card__for">Mosquito screen · windows</p>
+                        <div class="noc-card__specs"><span>0.8mm</span><span>Polyester</span><span>40kg</span></div>
+                    </div>
+                </article>
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-child/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 03</span>
+                        <h3 class="noc-card__name"><em>Sentinel</em></h3>
+                        <p class="noc-card__for">Child safety · staircases</p>
+                        <div class="noc-card__specs"><span>40mm</span><span>Nylon</span><span>250kg</span></div>
+                    </div>
+                </article>
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-guardian/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 04</span>
+                        <h3 class="noc-card__name"><em>Guardian</em></h3>
+                        <p class="noc-card__for">Fall arrest · atriums</p>
+                        <div class="noc-card__specs"><span>32mm</span><span>Nylon</span><span>600kg</span></div>
+                    </div>
+                </article>
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-atrium/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 05</span>
+                        <h3 class="noc-card__name">Atrium <em>Shield</em></h3>
+                        <p class="noc-card__for">Wide-span · mezzanines</p>
+                        <div class="noc-card__specs"><span>45mm</span><span>Nylon</span><span>250kg</span></div>
+                    </div>
+                </article>
+                <article class="noc-card">
+                    <div class="noc-card__img"><img src="https://picsum.photos/seed/noc-card-canopy/600/750" alt="">
+                        <div class="noc-card__overlay"></div>
+                    </div>
+                    <div class="noc-card__body">
+                        <span class="noc-card__num">N° 06</span>
+                        <h3 class="noc-card__name"><em>Canopy</em></h3>
+                        <p class="noc-card__for">Roof · terrace gardens</p>
+                        <div class="noc-card__specs"><span>50mm</span><span>HDPE UV</span><span>300kg</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- NIGHT SHIFT -->
+        <section class="noc-section" id="noc-shift">
+            <div class="noc-section__head reveal">
+                <div class="noc-section__eyebrow">— Section 03 / Night Shift</div>
+                <h2 class="noc-section__title">The <em>night shift.</em></h2>
+                <p class="noc-section__lede">Most of our installations happen between 9pm and 5am — when the building is
+                    empty, the residents are away, and the fitters can work without disruption. A log of three recent
+                    shifts.</p>
+            </div>
+            <div class="noc-shift reveal">
+                <div class="noc-shift__item">
+                    <div class="noc-shift__time">23:40 · MAR 14</div>
+                    <div class="noc-shift__body">
+                        <h4>Penthouse <em>balcony</em> — Hebbal</h4>
+                        <p>Four balconies on the 18th floor. Wind was a steady 15 knots. Net tensioned by 02:15, anchors
+                            sealed by 03:00. The resident arrived home at 07:30 and did not notice the fitting.</p>
+                    </div>
+                </div>
+                <div class="noc-shift__item">
+                    <div class="noc-shift__time">21:00 · FEB 28</div>
+                    <div class="noc-shift__body">
+                        <h4>Duplex <em>atrium</em> — Sadashivanagar</h4>
+                        <p>A six-metre span across a double-height living room. Scaffolding assembled at 19:00, net in
+                            place by midnight, scaffolding struck by 03:00. The family slept through it.</p>
+                    </div>
+                </div>
+                <div class="noc-shift__item">
+                    <div class="noc-shift__time">22:30 · JAN 17</div>
+                    <div class="noc-shift__body">
+                        <h4>Staircase <em>well</em> — Indiranagar</h4>
+                        <p>Three floors of open staircase. Child-safety net in 40mm nylon, 48 anchors drilled into
+                            limestone walls. The dog was the only one who noticed — he watched from the landing for two
+                            hours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="noc-contact" id="noc-contact">
+            <div class="noc-contact__inner">
+                <div class="reveal">
+                    <div class="noc-section__eyebrow">— Section 04 / Contact</div>
+                    <h2 class="noc-contact__title">Book a <em>night survey.</em></h2>
+                    <p class="noc-contact__lede">A fitter visits after sundown — torch, tape, camera. Measures every
+                        opening, photographs the access, confirms the spec. The survey is free within Bangalore city
+                        limits.</p>
+                </div>
+                <form class="noc-form reveal reveal--delay-1"
+                    onsubmit="event.preventDefault();this.querySelector('.noc-form__submit').textContent='Received — calling within the hour'">
+                    <div class="noc-form__field">
+                        <label class="noc-form__label">Your name</label>
+                        <input class="noc-form__input" type="text" required>
+                    </div>
+                    <div class="noc-form__field">
+                        <label class="noc-form__label">Phone</label>
+                        <input class="noc-form__input" type="tel" required>
+                    </div>
+                    <div class="noc-form__field">
+                        <label class="noc-form__label">Locality</label>
+                        <input class="noc-form__input" type="text">
+                    </div>
+                    <div class="noc-form__field">
+                        <label class="noc-form__label">What needs holding?</label>
+                        <select class="noc-form__select">
+                            <option>Balcony — birds</option>
+                            <option>Window — mosquitoes</option>
+                            <option>Staircase — child safety</option>
+                            <option>Atrium — fall arrest</option>
+                            <option>Roof — terrace</option>
+                            <option>Multiple openings</option>
+                        </select>
+                    </div>
+                    <button class="noc-form__submit" type="submit">Request survey</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand">NOCTURNE</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2014</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Atelier</h5>
+                    <ul>
+                        <li>The night shift</li>
+                        <li>Craft</li>
+                        <li>Warranty</li>
+                        <li>Press</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Collection</h5>
+                    <ul>
+                        <li>N°01 Night Veil</li>
+                        <li>N°02 Nocturne Mesh</li>
+                        <li>N°03 Sentinel</li>
+                        <li>N°04 Guardian</li>
+                        <li>N°05 Atrium Shield</li>
+                        <li>N°06 Canopy</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>night@nocturne.in</li>
+                        <li>+91 80 4120 2014</li>
+                        <li>Peenya · Bangalore</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Nocturne Safety Nets 2024</span><span>Fitted in the dark · held in
+                    the light</span></div>
+        </footer>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- ========== SERIF & TWINE =================================== -->
+    <!-- ============================================================ -->
+    <main class="site site-serif" data-site="serif">
+        <nav class="seri-nav">
+            <div class="seri-nav__logo">Serif &amp; Twine</div>
+            <ul class="seri-nav__links">
+                <li><a href="#seri-atlas" data-link>Material Atlas</a></li>
+                <li><a href="#seri-journal" data-link>Field Journal</a></li>
+                <li><a href="#seri-atelier" data-link>Atelier</a></li>
+                <li><a href="#seri-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#seri-contact" class="seri-nav__cta" data-link>Begin</a>
+        </nav>
+
+        <section class="seri-hero">
+            <div class="seri-hero__meta">
+                <span>Issue 01 · Spring</span>
+                <span>The Safety-Net Atelier</span>
+                <span>Bangalore · 2024</span>
+            </div>
+            <h1 class="seri-hero__title display">
+                <span class="line"><span class="line-inner">Woven,</span></span>
+                <span class="line"><span class="line-inner"><em>not built.</em></span></span>
+            </h1>
+            <p class="seri-hero__lede">A safety net is the last piece of architecture — the textile that holds the void.
+                Each piece is composed of three materials, drawn from three origins, and fitted by one hand. This is the
+                journal of that work.</p>
+            <a href="#seri-atlas" class="seri-hero__cta" data-link><span>Open the atlas</span><span
+                    class="arrow">→</span></a>
+        </section>
+
+        <!-- MATERIAL ATLAS -->
+        <section class="seri-section" id="seri-atlas">
+            <div class="seri-section__head reveal">
+                <span class="seri-section__eyebrow">— Section 01 / Material Atlas</span>
+                <h2 class="seri-section__title">Tap a material. <em>Read its story.</em></h2>
+                <p class="seri-section__lede">Every net is made from six raw materials. Each one has an origin, a
+                    tensile strength, and a story. Tap any card to read it — the way you'd open a swatch book in a
+                    tailor's atelier.</p>
+            </div>
+            <div class="atlas reveal">
+                <article class="atlas__card" data-material="hdpe">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-hdpe/400/300" alt="">
+                    </div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 01</span>
+                        <h3 class="atlas__card-name">HDPE</h3>
+                        <p class="atlas__card-full">High-Density Polyethylene</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Petroleum resin · extruded to 0.3mm twine</dd>
+                                <dt>Tensile</dt>
+                                <dd>120–300 kg</dd>
+                                <dt>UV Resistance</dt>
+                                <dd>Stabilised at extrusion</dd>
+                                <dt>Used in</dt>
+                                <dd>Bird nets · roof nets · pet nets</dd>
+                            </dl>
+                            <p class="atlas__card-desc">The workhorse. The same polymer used in marine rope — drawn
+                                fine, twisted three-ply, and UV-stabilised at the extrusion stage so the protection runs
+                                through the core, not just the surface.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="atlas__card" data-material="nylon">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-nylon/400/300" alt="">
+                    </div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 02</span>
+                        <h3 class="atlas__card-name">Nylon <em>6</em></h3>
+                        <p class="atlas__card-full">Polyamide 6</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Polymerised caprolactam · 0.5mm twine</dd>
+                                <dt>Tensile</dt>
+                                <dd>250–600 kg</dd>
+                                <dt>UV Resistance</dt>
+                                <dd>Coated after weaving</dd>
+                                <dt>Used in</dt>
+                                <dd>Child safety · atrium nets · fall arrest</dd>
+                            </dl>
+                            <p class="atlas__card-desc">The polymer that holds. Stronger than HDPE by a factor of two,
+                                softer to the touch, and elastic enough to absorb the shock of a falling body without
+                                snapping. The choice for anything that must hold a person.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="atlas__card" data-material="polyester">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-polyester/400/300"
+                            alt=""></div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 03</span>
+                        <h3 class="atlas__card-name">Polyester</h3>
+                        <p class="atlas__card-full">PET filament · woven fine</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Extruded PET · drawn to 0.1mm</dd>
+                                <dt>Tensile</dt>
+                                <dd>40–80 kg</dd>
+                                <dt>UV Resistance</dt>
+                                <dd>Inherent</dd>
+                                <dt>Used in</dt>
+                                <dd>Mosquito mesh · insect screen</dd>
+                            </dl>
+                            <p class="atlas__card-desc">The finest weave. A filament thinner than a human hair, woven
+                                tight enough to stop a mosquito. Framed in aluminium, it disappears into the window it
+                                protects — the room breathes, the insect doesn't enter.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="atlas__card" data-material="ss316">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-ss316/400/300" alt="">
+                    </div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 04</span>
+                        <h3 class="atlas__card-name">SS <em>316L</em></h3>
+                        <p class="atlas__card-full">Stainless Steel 316L</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Austenitic steel · molybdenum-alloyed</dd>
+                                <dt>Tensile</dt>
+                                <dd>≥ 800 kg per anchor</dd>
+                                <dt>Corrosion</dt>
+                                <dd>Marine-grade · salt-resistant</dd>
+                                <dt>Used in</dt>
+                                <dd>All anchors · perimeter fixing</dd>
+                            </dl>
+                            <p class="atlas__card-desc">What holds the net to the wall. 316L — the L for low carbon,
+                                which means it won't crack at the weld. Drilled 60mm into masonry, torque-sealed, and
+                                individually logged. The net is only as strong as the anchor.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="atlas__card" data-material="coating">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-coating/400/300" alt="">
+                    </div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 05</span>
+                        <h3 class="atlas__card-name">UV <em>Coating</em></h3>
+                        <p class="atlas__card-full">Warm-polymer bath</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Sailcloth marine coating · adapted</dd>
+                                <dt>Performance</dt>
+                                <dd>30-year colourfast</dd>
+                                <dt>Salt Resistance</dt>
+                                <dd>Coastal-rated</dd>
+                                <dt>Used in</dt>
+                                <dd>All exterior nets</dd>
+                            </dl>
+                            <p class="atlas__card-desc">The bath the fibre drinks. A warm-polymer coating originally
+                                developed for sailcloth — UV-stabilised, salt-resistant, colourfast for three decades.
+                                The net that leaves the bath is not the net that entered it.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="atlas__card" data-material="rope">
+                    <div class="atlas__card-swatch"><img src="https://picsum.photos/seed/atlas-rope/400/300" alt="">
+                    </div>
+                    <div class="atlas__card-body">
+                        <span class="atlas__card-num">Material 06</span>
+                        <h3 class="atlas__card-name">Border <em>Rope</em></h3>
+                        <p class="atlas__card-full">Polypropylene · 6mm</p>
+                        <div class="atlas__card-expand">
+                            <dl class="atlas__detail">
+                                <dt>Origin</dt>
+                                <dd>Extruded PP · braided 12-strand</dd>
+                                <dt>Tensile</dt>
+                                <dd>400 kg</dd>
+                                <dt>Function</dt>
+                                <dd>Edge tension distribution</dd>
+                                <dt>Used in</dt>
+                                <dd>All perimeter edges</dd>
+                            </dl>
+                            <p class="atlas__card-desc">The edge that holds the mesh. A 6mm braided rope sewn into the
+                                perimeter of every net — distributes the load from mesh to anchor, so no single point
+                                carries the whole. The border is the net's handshake with the wall.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- FIELD JOURNAL -->
+        <section class="seri-section" id="seri-journal" style="background:var(--cream)">
+            <div class="seri-section__head reveal">
+                <span class="seri-section__eyebrow">— Section 02 / Field Journal</span>
+                <h2 class="seri-section__title">Three <em>installations.</em></h2>
+                <p class="seri-section__lede">A field journal of three recent commissions — the balcony, the staircase,
+                    the atrium. Each one a different problem, a different mesh, a different hand on the tensioning jig.
+                </p>
+            </div>
+            <div class="journal reveal">
+                <article class="journal__entry">
+                    <div class="journal__img"><img src="https://picsum.photos/seed/journal-balcony/800/1000" alt="">
+                    </div>
+                    <div class="journal__text">
+                        <span class="journal__num">Entry 01 · The Balcony</span>
+                        <h3 class="journal__title">A <em>pigeon</em> problem on the fourteenth floor.</h3>
+                        <p class="journal__body">The resident had tried spikes, reflective tape, and an ultrasonic
+                            device. The pigeons ignored all three. We fitted 25mm HDPE in two hours — the birds left by
+                            sunset and have not returned in three years. The net is invisible from the living room.</p>
+                        <p class="journal__pull">"The birds left by sunset. The net is invisible from the sofa."</p>
+                    </div>
+                </article>
+                <article class="journal__entry" data-reverse>
+                    <div class="journal__img"><img src="https://picsum.photos/seed/journal-staircase/800/1000" alt="">
+                    </div>
+                    <div class="journal__text">
+                        <span class="journal__num">Entry 02 · The Staircase</span>
+                        <h3 class="journal__title">A <em>toddler</em> who learned to open the gate.</h3>
+                        <p class="journal__body">The parents had a stair gate. The child learned to open it at nineteen
+                            months. We fitted 40mm nylon across the mezzanine — 250kg tensile, soft to the touch, and
+                            tensioned drum-taut. The child presses against it every morning. It gives, then returns.</p>
+                        <p class="journal__pull">"It gives, then returns. That is what a safety net is for."</p>
+                    </div>
+                </article>
+                <article class="journal__entry">
+                    <div class="journal__img"><img src="https://picsum.photos/seed/journal-atrium/800/1000" alt="">
+                    </div>
+                    <div class="journal__text">
+                        <span class="journal__num">Entry 03 · The Atrium</span>
+                        <h3 class="journal__title">A <em>void</em> in the centre of the house.</h3>
+                        <p class="journal__body">A duplex apartment with a six-metre atrium — the architect's
+                            centrepiece, the family's anxiety. We fitted a 45mm nylon net across the span, edge-bound in
+                            PP rope, anchored every 50cm into the limestone. From below, it reads as a faint shadow
+                            against the skylight.</p>
+                        <p class="journal__pull">"From below, it reads as a faint shadow against the skylight."</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ATELIER -->
+        <section class="seri-atelier" id="seri-atelier">
+            <div class="seri-atelier__inner reveal">
+                <div class="seri-atelier__img"><img src="https://picsum.photos/seed/seri-atelier/800/1000" alt=""></div>
+                <div class="seri-atelier__text">
+                    <span class="seri-section__eyebrow">— Section 03 / The Atelier</span>
+                    <h3 style="margin-top:1rem">The bench in <em>Peenya</em> where every net begins.</h3>
+                    <p>Our workshop sits in Peenya, Bangalore's industrial estate. Three benches, six fitters, one
+                        tensioning jig. Every net is cut, edge-bound, and pre-tensioned on the bench before it travels
+                        to site.</p>
+                    <p>The bench is the important part. A net that leaves the bench untensioned will never be tensioned
+                        on the wall. So we tension twice — once on the bench, once on the building — and the net does
+                        not leave until both readings match.</p>
+                    <div class="seri-atelier__stats">
+                        <div class="seri-atelier__stat"><span class="num">14</span><span class="lab">years on the
+                                bench</span></div>
+                        <div class="seri-atelier__stat"><span class="num">9.4k</span><span class="lab">nets
+                                fitted</span></div>
+                        <div class="seri-atelier__stat"><span class="num">6</span><span class="lab">fitters</span></div>
+                        <div class="seri-atelier__stat"><span class="num">15y</span><span class="lab">warranty</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="seri-contact" id="seri-contact">
+            <div class="seri-contact__inner reveal">
+                <h2 class="seri-contact__title">Begin a <em>conversation.</em></h2>
+                <p class="seri-contact__lede">Send us a photograph of the void, a section drawing, or simply the address
+                    of the room. We'll reply within the working day and a fitter will be at your door within forty-eight
+                    hours.</p>
+                <form class="seri-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.seri-contact__submit').textContent='Sent · thank you'">
+                    <div class="seri-contact__field">
+                        <label class="seri-contact__label">Your name</label>
+                        <input class="seri-contact__input" type="text" required>
+                    </div>
+                    <div class="seri-contact__field">
+                        <label class="seri-contact__label">Email</label>
+                        <input class="seri-contact__input" type="email" required>
+                    </div>
+                    <div class="seri-contact__field">
+                        <label class="seri-contact__label">What needs weaving?</label>
+                        <select class="seri-contact__select">
+                            <option>A balcony</option>
+                            <option>A window</option>
+                            <option>A staircase</option>
+                            <option>An atrium</option>
+                            <option>A roof</option>
+                            <option>Something else</option>
+                        </select>
+                    </div>
+                    <button class="seri-contact__submit" type="submit">Send enquiry</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand"
+                        style="font-family:'Fraunces',serif;font-style:italic;font-weight:400;letter-spacing:0">Serif
+                        &amp; Twine</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2014</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Atelier</h5>
+                    <ul>
+                        <li>The bench</li>
+                        <li>The journal</li>
+                        <li>The fitters</li>
+                        <li>Press</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Materials</h5>
+                    <ul>
+                        <li>HDPE</li>
+                        <li>Nylon 6</li>
+                        <li>Polyester</li>
+                        <li>SS 316L</li>
+                        <li>UV Coating</li>
+                        <li>Border Rope</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>hello@seriftwine.in</li>
+                        <li>+91 80 4120 2014</li>
+                        <li>Peenya · Bangalore</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Serif &amp; Twine 2024</span><span>Woven, not built</span></div>
+        </footer>
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- ========== BLUEPRINT ======================================= -->
+    <!-- ============================================================ -->
+    <main class="site site-blueprint" data-site="blueprint">
+        <nav class="bp-nav">
+            <div class="bp-nav__logo">BLUEPRINT<span>Engineering Safety</span></div>
+            <ul class="bp-nav__links">
+                <li><a href="#bp-diagram" data-link>Diagram</a></li>
+                <li><a href="#bp-standards" data-link>Standards</a></li>
+                <li><a href="#bp-specs" data-link>Specs</a></li>
+                <li><a href="#bp-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#bp-contact" class="bp-nav__cta" data-link>Request specs</a>
+        </nav>
+
+        <section class="bp-hero">
+            <div class="bp-hero__grid">
+                <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="bp-grid-pat" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.06" />
+                        </pattern>
+                    </defs>
+                    <rect width="1200" height="400" fill="url(#bp-grid-pat)" />
+                </svg>
+            </div>
+            <div class="bp-hero__meta">
+                <span>BP / 2024.01</span>
+                <span>Engineering Safety Nets</span>
+                <span>Bangalore · India</span>
+            </div>
+            <h1 class="bp-hero__title display">
+                <span class="line"><span class="line-inner">Safety,</span></span>
+                <span class="line"><span class="line-inner">specified.</span></span>
+            </h1>
+            <p class="bp-hero__sub">// Every net leaves our studio with a serial number, a tensile certificate, and a
+                compliance sheet. Engineering first, aesthetics second, compromise never. Toggle the diagram. Read the
+                specifications. Request the data.</p>
+            <div class="bp-hero__specs">
+                <div class="bp-hero__spec"><span class="lab">Min tensile</span><span class="val">120<span
+                            class="unit">kg</span></span></div>
+                <div class="bp-hero__spec"><span class="lab">Anchor depth</span><span class="val">60<span
+                            class="unit">mm</span></span></div>
+                <div class="bp-hero__spec"><span class="lab">Warranty</span><span class="val">15<span
+                            class="unit">yrs</span></span></div>
+                <div class="bp-hero__spec"><span class="lab">Standards</span><span class="val">4<span
+                            class="unit">certified</span></span></div>
+            </div>
+        </section>
+
+        <!-- NET DIAGRAM -->
+        <section class="bp-section" id="bp-diagram">
+            <div class="bp-section__head reveal">
+                <span class="bp-section__num">— 01 / DIAGRAM</span>
+                <h2 class="bp-section__title">Toggle the <em>layers.</em></h2>
+            </div>
+            <div class="bp-diagram reveal">
+                <div class="bp-diagram__main">
+                    <div class="bp-diagram__toggles">
+                        <button class="bp-diagram__toggle active" data-layer="mesh">Mesh</button>
+                        <button class="bp-diagram__toggle active" data-layer="border">Border Rope</button>
+                        <button class="bp-diagram__toggle active" data-layer="anchors">Anchors</button>
+                        <button class="bp-diagram__toggle" data-layer="tension">Tension</button>
+                        <button class="bp-diagram__toggle active" data-layer="labels">Dimensions</button>
+                    </div>
+                    <div class="bp-diagram__svg-wrap">
+                        <svg class="bp-diagram__svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <pattern id="bp-mesh-pat" width="30" height="30" patternUnits="userSpaceOnUse">
+                                    <path d="M0,0 L30,0 M0,0 L0,30 M0,0 L30,30 M30,0 L0,30" stroke="#2D5F8A"
+                                        stroke-width="0.7" fill="none" opacity="0.5" />
+                                </pattern>
+                                <pattern id="bp-grid-fine" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-width="0.3"
+                                        opacity="0.05" />
+                                </pattern>
+                            </defs>
+                            <rect width="600" height="400" fill="url(#bp-grid-fine)" />
+
+                            <!-- Wall indicators -->
+                            <g class="layer-wall">
+                                <line x1="40" y1="40" x2="40" y2="360" stroke="currentColor" stroke-width="2"
+                                    opacity="0.3" />
+                                <line x1="560" y1="40" x2="560" y2="360" stroke="currentColor" stroke-width="2"
+                                    opacity="0.3" />
+                                <line x1="40" y1="40" x2="560" y2="40" stroke="currentColor" stroke-width="2"
+                                    opacity="0.3" />
+                                <line x1="40" y1="360" x2="560" y2="360" stroke="currentColor" stroke-width="2"
+                                    opacity="0.3" />
+                            </g>
+
+                            <!-- Mesh layer -->
+                            <g class="layer layer-mesh">
+                                <rect x="40" y="40" width="520" height="320" fill="url(#bp-mesh-pat)" />
+                            </g>
+
+                            <!-- Border rope -->
+                            <g class="layer layer-border">
+                                <rect x="40" y="40" width="520" height="320" fill="none" stroke="#1A1A1A"
+                                    stroke-width="3" />
+                            </g>
+
+                            <!-- Anchors -->
+                            <g class="layer layer-anchors">
+                                <circle cx="40" cy="70" r="4" fill="#1A1A1A" />
+                                <circle cx="40" cy="130" r="4" fill="#1A1A1A" />
+                                <circle cx="40" cy="190" r="4" fill="#1A1A1A" />
+                                <circle cx="40" cy="250" r="4" fill="#1A1A1A" />
+                                <circle cx="40" cy="310" r="4" fill="#1A1A1A" />
+                                <circle cx="560" cy="70" r="4" fill="#1A1A1A" />
+                                <circle cx="560" cy="130" r="4" fill="#1A1A1A" />
+                                <circle cx="560" cy="190" r="4" fill="#1A1A1A" />
+                                <circle cx="560" cy="250" r="4" fill="#1A1A1A" />
+                                <circle cx="560" cy="310" r="4" fill="#1A1A1A" />
+                                <circle cx="100" cy="40" r="4" fill="#1A1A1A" />
+                                <circle cx="200" cy="40" r="4" fill="#1A1A1A" />
+                                <circle cx="300" cy="40" r="4" fill="#1A1A1A" />
+                                <circle cx="400" cy="40" r="4" fill="#1A1A1A" />
+                                <circle cx="500" cy="40" r="4" fill="#1A1A1A" />
+                                <circle cx="100" cy="360" r="4" fill="#1A1A1A" />
+                                <circle cx="200" cy="360" r="4" fill="#1A1A1A" />
+                                <circle cx="300" cy="360" r="4" fill="#1A1A1A" />
+                                <circle cx="400" cy="360" r="4" fill="#1A1A1A" />
+                                <circle cx="500" cy="360" r="4" fill="#1A1A1A" />
+                            </g>
+
+                            <!-- Tension arrows -->
+                            <g class="layer layer-tension">
+                                <path d="M 20 200 L 38 200 M 34 196 L 38 200 L 34 204" stroke="#2D5F8A"
+                                    stroke-width="1.2" fill="none" />
+                                <text x="14" y="195" font-family="JetBrains Mono" font-size="7" fill="#2D5F8A"
+                                    text-anchor="end">→</text>
+                                <path d="M 580 200 L 562 200 M 566 196 L 562 200 L 566 204" stroke="#2D5F8A"
+                                    stroke-width="1.2" fill="none" />
+                                <path d="M 300 20 L 300 38 M 296 34 L 300 38 L 304 34" stroke="#2D5F8A"
+                                    stroke-width="1.2" fill="none" />
+                                <path d="M 300 380 L 300 362 M 296 366 L 300 362 L 304 366" stroke="#2D5F8A"
+                                    stroke-width="1.2" fill="none" />
+                            </g>
+
+                            <!-- Labels -->
+                            <g class="layer layer-labels">
+                                <line x1="40" y1="375" x2="560" y2="375" stroke="currentColor" stroke-width="0.4"
+                                    opacity="0.4" />
+                                <line x1="40" y1="372" x2="40" y2="378" stroke="currentColor" stroke-width="0.4"
+                                    opacity="0.4" />
+                                <line x1="560" y1="372" x2="560" y2="378" stroke="currentColor" stroke-width="0.4"
+                                    opacity="0.4" />
+                                <text x="300" y="390" text-anchor="middle" font-family="JetBrains Mono" font-size="8"
+                                    opacity="0.5">5200mm</text>
+                                <line x1="15" y1="40" x2="15" y2="360" stroke="currentColor" stroke-width="0.4"
+                                    opacity="0.4" />
+                                <text x="12" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="8"
+                                    opacity="0.5" transform="rotate(-90 12 200)">3200mm</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="bp-diagram__panel">
+                    <div class="bp-diagram__panel-label">— Active layers</div>
+                    <div class="bp-diagram__panel-title" id="bp-diagram-title">Mesh · Border · Anchors · Labels</div>
+                    <dl class="bp-diagram__panel-specs">
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Mesh size</dt>
+                            <dd>25mm</dd>
+                        </div>
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Twine</dt>
+                            <dd>HDPE 0.3mm</dd>
+                        </div>
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Border rope</dt>
+                            <dd>PP 6mm</dd>
+                        </div>
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Anchors</dt>
+                            <dd>SS-316 · 60mm</dd>
+                        </div>
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Spacing</dt>
+                            <dd>500mm o.c.</dd>
+                        </div>
+                        <div class="bp-diagram__panel-spec">
+                            <dt>Tensile</dt>
+                            <dd>120 kg/m²</dd>
+                        </div>
+                    </dl>
+                    <p class="bp-diagram__panel-note">// Toggle layers to isolate components. Each layer's specification
+                        appears in the panel above. All values are measured on the CV-2 jig before shipping.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STANDARDS -->
+        <section class="bp-section" id="bp-standards" style="background:var(--cream)">
+            <div class="bp-section__head reveal">
+                <span class="bp-section__num">— 02 / STANDARDS</span>
+                <h2 class="bp-section__title">Compliance <em>checker.</em></h2>
+            </div>
+            <div class="bp-standards reveal">
+                <div class="bp-standards__select-wrap">
+                    <span class="bp-standards__label">Select standard:</span>
+                    <select class="bp-standards__select" id="bp-standards-select">
+                        <option value="all">All standards</option>
+                        <option value="IS">IS 16333 (India)</option>
+                        <option value="EN">EN 1263-2 (Europe)</option>
+                        <option value="ASTM">ASTM F558 (USA)</option>
+                        <option value="AS">AS/NZS 1171.2 (Australia)</option>
+                    </select>
+                </div>
+                <table class="bp-standards__table">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Application</th>
+                            <th>Mesh</th>
+                            <th>Tensile</th>
+                            <th>Standards</th>
+                            <th>Compliance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bp-standards__row" data-standards="IS EN ASTM AS">
+                            <td>BP-01 Bird Net</td>
+                            <td>Balcony / window</td>
+                            <td>25mm</td>
+                            <td>120kg</td>
+                            <td>IS · EN · ASTM · AS</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="IS EN AS">
+                            <td>BP-02 Mosquito Mesh</td>
+                            <td>Window / vent</td>
+                            <td>0.8mm</td>
+                            <td>40kg</td>
+                            <td>IS · EN · AS</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="IS EN ASTM AS">
+                            <td>BP-03 Child Safety</td>
+                            <td>Staircase / mezzanine</td>
+                            <td>40mm</td>
+                            <td>250kg</td>
+                            <td>IS · EN · ASTM · AS</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="EN ASTM">
+                            <td>BP-04 Fall Arrest</td>
+                            <td>Construction / atrium</td>
+                            <td>32mm</td>
+                            <td>600kg</td>
+                            <td>EN · ASTM</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="IS EN AS">
+                            <td>BP-05 Atrium Net</td>
+                            <td>Wide-span / mezzanine</td>
+                            <td>45mm</td>
+                            <td>250kg</td>
+                            <td>IS · EN · AS</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="IS ASTM">
+                            <td>BP-06 Roof Canopy</td>
+                            <td>Roof / terrace</td>
+                            <td>50mm</td>
+                            <td>300kg</td>
+                            <td>IS · ASTM</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--yes">Compliant</span></td>
+                        </tr>
+                        <tr class="bp-standards__row" data-standards="IS">
+                            <td>BP-07 Coconut Net</td>
+                            <td>Palm / garden</td>
+                            <td>100mm</td>
+                            <td>800kg</td>
+                            <td>IS</td>
+                            <td><span class="bp-standards__comply bp-standards__comply--no">IS only</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SPECS -->
+        <section class="bp-section" id="bp-specs">
+            <div class="bp-section__head reveal">
+                <span class="bp-section__num">— 03 / SPECIFICATIONS</span>
+                <h2 class="bp-section__title">Full <em>data.</em></h2>
+            </div>
+            <div class="bp-specs reveal">
+                <table class="bp-specs__table">
+                    <thead>
+                        <tr>
+                            <th>Ref</th>
+                            <th>Application</th>
+                            <th>Mesh</th>
+                            <th>Material</th>
+                            <th>Tensile</th>
+                            <th>Anchor</th>
+                            <th>Warranty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BP-01</td>
+                            <td>Bird Net</td>
+                            <td>25mm</td>
+                            <td>HDPE 60gsm</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:15px"></span>120kg</div>
+                            </td>
+                            <td>SS-316 · 60mm</td>
+                            <td>5 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-02</td>
+                            <td>Mosquito Mesh</td>
+                            <td>0.8mm</td>
+                            <td>Polyester</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:5px"></span>40kg</div>
+                            </td>
+                            <td>Aluminium frame</td>
+                            <td>3 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-03</td>
+                            <td>Child Safety</td>
+                            <td>40mm</td>
+                            <td>Nylon 250kg</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:31px"></span>250kg</div>
+                            </td>
+                            <td>SS-316 · 60mm</td>
+                            <td>8 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-04</td>
+                            <td>Fall Arrest</td>
+                            <td>32mm</td>
+                            <td>Nylon 600kg</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:75px"></span>600kg</div>
+                            </td>
+                            <td>SS-316 · 96mm</td>
+                            <td>10 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-05</td>
+                            <td>Atrium Net</td>
+                            <td>45mm</td>
+                            <td>Nylon 250kg</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:31px"></span>250kg</div>
+                            </td>
+                            <td>SS-316 · 60mm</td>
+                            <td>8 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-06</td>
+                            <td>Roof Canopy</td>
+                            <td>50mm</td>
+                            <td>HDPE UV</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:37px"></span>300kg</div>
+                            </td>
+                            <td>SS-316 · 60mm</td>
+                            <td>7 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>BP-07</td>
+                            <td>Coconut Net</td>
+                            <td>100mm</td>
+                            <td>HDPE 4mm</td>
+                            <td>
+                                <div class="bp-specs__bar-wrap"><span class="bp-specs__bar"
+                                        style="width:100px"></span>800kg</div>
+                            </td>
+                            <td>SS-316 · 96mm</td>
+                            <td>10 yrs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="bp-contact" id="bp-contact">
+            <div class="bp-contact__inner reveal">
+                <h2 class="bp-contact__title">Request <em>specifications.</em></h2>
+                <p class="bp-contact__lede">// For architects, contractors, and facility managers. Send your drawing or
+                    BOQ — we'll respond with a data sheet, a tensile certificate, and a fabrication schedule within five
+                    working days.</p>
+                <form class="bp-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.bp-contact__submit').textContent='// Received — responding within 5 days'">
+                    <div class="bp-contact__field">
+                        <label class="bp-contact__label">Name</label>
+                        <input class="bp-contact__input" type="text" required>
+                    </div>
+                    <div class="bp-contact__field">
+                        <label class="bp-contact__label">Organisation</label>
+                        <input class="bp-contact__input" type="text">
+                    </div>
+                    <div class="bp-contact__field">
+                        <label class="bp-contact__label">Email</label>
+                        <input class="bp-contact__input" type="email" required>
+                    </div>
+                    <div class="bp-contact__field">
+                        <label class="bp-contact__label">Phone</label>
+                        <input class="bp-contact__input" type="tel">
+                    </div>
+                    <div class="bp-contact__field bp-contact__field--full">
+                        <label class="bp-contact__label">Project type</label>
+                        <select class="bp-contact__select">
+                            <option>Residential — balcony / window</option>
+                            <option>Residential — staircase / atrium</option>
+                            <option>Commercial — façade / atrium</option>
+                            <option>Industrial — fall arrest / debris</option>
+                            <option>Sports — cricket / football</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <button class="bp-contact__submit" type="submit">Submit request</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand">BLUEPRINT</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2018</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Engineering</h5>
+                    <ul>
+                        <li>Diagram</li>
+                        <li>Standards</li>
+                        <li>Specifications</li>
+                        <li>Certificates</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Products</h5>
+                    <ul>
+                        <li>BP-01 Bird Net</li>
+                        <li>BP-03 Child Safety</li>
+                        <li>BP-04 Fall Arrest</li>
+                        <li>BP-07 Coconut Net</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>specs@blueprint.in</li>
+                        <li>+91 80 4120 2018</li>
+                        <li>Whitefield · Bangalore</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Blueprint Engineering 2024</span><span>Safety, specified</span>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+        /* Lenis */
+        let lenis = null;
+        if (!prefersReduce && typeof Lenis !== 'undefined') {
+            lenis = new Lenis({ duration: 1.1, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add(t => lenis.raf(t * 1000));
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        /* Smooth scroll for in-site nav */
+        document.addEventListener('click', e => {
+            const a = e.target.closest('a[data-link]');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (!target) return;
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+            if (lenis) lenis.scrollTo(top, { duration: 1.2 });
+            else window.scrollTo({ top, behavior: 'smooth' });
+        });
+
+        /* Reveals */
+        const revealIO = new IntersectionObserver(entries => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        function observeReveals() {
+            document.querySelectorAll('.reveal:not(.is-in), .journal__entry:not(.is-in)').forEach(el => revealIO.observe(el));
+        }
+        observeReveals();
+
+        function triggerHeroEntrance(site) {
+            const el = document.querySelector(`.site[data-site="${site}"]`);
+            if (!el) return;
+            el.classList.remove('is-loaded');
+            void el.offsetWidth;
+            requestAnimationFrame(() => el.classList.add('is-loaded'));
+        }
+
+        /* Cursors */
+        const cursors = {
+            nocturne: { el: document.querySelector('.cursor-1'), x: 0, y: 0, rx: 0, ry: 0 },
+            serif: { el: document.querySelector('.cursor-2'), x: 0, y: 0, rx: 0, ry: 0 },
+            blueprint: { el: document.querySelector('.cursor-3'), x: 0, y: 0 }
+        };
+
+        if (isFinePointer) {
+            window.addEventListener('mousemove', e => {
+                const site = document.body.dataset.site;
+                const c = cursors[site]; if (!c) return;
+                c.x = e.clientX; c.y = e.clientY;
+                const dot = c.el.querySelector('.dot');
+                if (dot) dot.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                if (site === 'blueprint') {
+                    const tick = c.el.querySelector('.tick');
+                    if (tick) tick.textContent = `${Math.round(c.x)},${Math.round(c.y)}`;
+                }
+            });
+            function trailLoop() {
+                const site = document.body.dataset.site;
+                if (site === 'nocturne') {
+                    const c = cursors.nocturne;
+                    c.rx += (c.x - c.rx) * 0.12; c.ry += (c.y - c.ry) * 0.12;
+                    const glow = c.el.querySelector('.glow');
+                    if (glow) glow.style.transform = `translate(${c.rx}px, ${c.ry}px)`;
+                } else if (site === 'serif') {
+                    const c = cursors.serif;
+                    c.rx += (c.x - c.rx) * 0.15; c.ry += (c.y - c.ry) * 0.15;
+                    const trail = c.el.querySelector('.trail');
+                    if (trail) trail.style.transform = `translate(${c.rx}px, ${c.ry}px)`;
+                }
+                requestAnimationFrame(trailLoop);
+            }
+            trailLoop();
+            document.querySelectorAll('a, button, .noc-card, .atlas__card, .noc-heatmap__zone, input, select').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.querySelector('.cursor-1 .glow')?.classList.add('hover');
+                    document.querySelector('.cursor-2 .trail')?.classList.add('hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.querySelector('.cursor-1 .glow')?.classList.remove('hover');
+                    document.querySelector('.cursor-2 .trail')?.classList.remove('hover');
+                });
+            });
+        }
+
+        /* ========== NOCTURNE: THREAT HEATMAP ========== */
+        (function initHeatmap() {
+            const zones = document.querySelectorAll('.noc-heatmap__zone');
+            if (!zones.length) return;
+            const data = {
+                roof: { name: 'Roof <em>Terrace</em>', threats: ['Monkeys', 'Falling leaves', 'Falling fruit', 'Pigeons'], net: 'Canopy N°06', mesh: '50mm', material: 'HDPE UV', tensile: '300kg' },
+                balcony: { name: 'The <em>Balcony</em>', threats: ['Pigeons', 'Crows', 'Pets falling', 'Children climbing'], net: 'Night Veil N°01', mesh: '25mm', material: 'HDPE 60gsm', tensile: '120kg' },
+                window: { name: 'The <em>Window</em>', threats: ['Mosquitoes', 'Fruit flies', 'Bees', 'Dust'], net: 'Nocturne Mesh N°02', mesh: '0.8mm', material: 'Polyester', tensile: '40kg' },
+                atrium: { name: 'The <em>Atrium</em>', threats: ['Fall arrest', 'Children', 'Dropped objects'], net: 'Atrium Shield N°05', mesh: '45mm', material: 'Nylon 250kg', tensile: '250kg' },
+                staircase: { name: 'The <em>Staircase</em>', threats: ['Children falling', 'Pets', 'Dropped objects'], net: 'Sentinel N°03', mesh: '40mm', material: 'Nylon 250kg', tensile: '250kg' }
+            };
+            const nameEl = document.getElementById('noc-zone-name');
+            const threatsEl = document.getElementById('noc-zone-threats');
+            const threatsWrap = document.getElementById('noc-zone-threats-wrap');
+            const specsEl = document.getElementById('noc-zone-specs');
+            const hintEl = document.getElementById('noc-zone-hint');
+            const netEl = document.getElementById('noc-zone-net');
+            const meshEl = document.getElementById('noc-zone-mesh');
+            const matEl = document.getElementById('noc-zone-material');
+            const tensEl = document.getElementById('noc-zone-tensile');
+
+            zones.forEach(zone => {
+                zone.addEventListener('click', () => {
+                    const key = zone.dataset.zone;
+                    const d = data[key]; if (!d) return;
+                    zones.forEach(z => z.classList.remove('is-active'));
+                    zone.classList.add('is-active');
+                    nameEl.innerHTML = d.name;
+                    threatsEl.innerHTML = d.threats.map(t => `<span class="noc-heatmap__panel-threat">${t}</span>`).join('');
+                    threatsWrap.style.display = 'block';
+                    specsEl.style.display = 'grid';
+                    hintEl.style.display = 'none';
+                    netEl.textContent = d.net;
+                    meshEl.textContent = d.mesh;
+                    matEl.textContent = d.material;
+                    tensEl.textContent = d.tensile;
+                });
+            });
+        })();
+
+        /* ========== SERIF & TWINE: MATERIAL ATLAS ========== */
+        (function initAtlas() {
+            const cards = document.querySelectorAll('.atlas__card');
+            if (!cards.length) return;
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const isOpen = card.classList.contains('is-open');
+                    cards.forEach(c => c.classList.remove('is-open'));
+                    if (!isOpen) card.classList.add('is-open');
+                });
+            });
+        })();
+
+        /* ========== BLUEPRINT: NET DIAGRAM ========== */
+        (function initDiagram() {
+            const toggles = document.querySelectorAll('.bp-diagram__toggle');
+            const titleEl = document.getElementById('bp-diagram-title');
+            if (!toggles.length) return;
+            const layerNames = { mesh: 'Mesh', border: 'Border', anchors: 'Anchors', tension: 'Tension', labels: 'Labels' };
+            function updateTitle() {
+                const active = [];
+                toggles.forEach(t => { if (t.classList.contains('active')) active.push(layerNames[t.dataset.layer]); });
+                titleEl.textContent = active.length ? active.join(' · ') : 'No layers active';
+            }
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    toggle.classList.toggle('active');
+                    const layer = toggle.dataset.layer;
+                    const g = document.querySelector(`.layer-${layer}`);
+                    if (g) g.classList.toggle('is-hidden');
+                    updateTitle();
+                });
+            });
+        })();
+
+        /* ========== BLUEPRINT: STANDARDS CHECKER ========== */
+        (function initStandards() {
+            const select = document.getElementById('bp-standards-select');
+            const rows = document.querySelectorAll('.bp-standards__row');
+            if (!select) return;
+            select.addEventListener('change', () => {
+                const val = select.value;
+                rows.forEach(row => {
+                    if (val === 'all') {
+                        row.classList.remove('is-hidden');
+                    } else {
+                        const standards = row.dataset.standards || '';
+                        row.classList.toggle('is-hidden', !standards.includes(val));
+                    }
+                });
+            });
+        })();
+
+        /* ========== SITE SWITCHER ========== */
+        let currentSite = 'nocturne';
+        function activateSite(name) {
+            if (name === currentSite) return;
+            const cur = document.querySelector(`.site[data-site="${currentSite}"]`);
+            const next = document.querySelector(`.site[data-site="${name}"]`);
+            if (!next) return;
+            ScrollTrigger.getAll().forEach(t => t.kill());
+            cur.classList.remove('active');
+            next.classList.add('active');
+            document.body.dataset.site = name;
+            document.querySelectorAll('.brand-tab').forEach(t => t.classList.toggle('active', t.dataset.brand === name));
+            if (lenis) lenis.scrollTo(0, { immediate: true });
+            else window.scrollTo(0, 0);
+            observeReveals();
+            triggerHeroEntrance(name);
+            setTimeout(() => { ScrollTrigger.refresh(); }, 100);
+            currentSite = name;
+        }
+        document.querySelectorAll('.brand-tab').forEach(t => { t.addEventListener('click', () => activateSite(t.dataset.brand)); });
+
+        window.addEventListener('load', () => {
+            document.body.classList.add('is-loaded');
+            document.querySelector('.site-nocturne').classList.add('is-loaded');
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+
+</html>

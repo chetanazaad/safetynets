@@ -1,0 +1,3853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Safety-Net Ateliers — Kavach · Para · Ferrum</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Manrope:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js"></script>
+    <style>
+        :root {
+            --bg: #EAE4D9;
+            --cream: #F3F0EB;
+            --charcoal: #1C1C1C;
+            --earth: #2A2A2A;
+            --accent: #8C7B6B;
+            --text: #1C1C1C;
+            --text-dim: rgba(28, 28, 28, .55);
+            --rule: rgba(28, 28, 28, .12);
+            --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+            --ease-emphasis: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        body[data-site="kavach"] {
+            --bg: #161528;
+            --cream: #1E1D38;
+            --charcoal: #0E0D1B;
+            --earth: #252342;
+            --accent: #C4A04A;
+            --text: #E8E0CC;
+            --text-dim: rgba(232, 224, 204, .5);
+            --rule: rgba(232, 224, 204, .1);
+        }
+
+        body[data-site="para"] {
+            --bg: #E4E2DD;
+            --cream: #F2F0EC;
+            --charcoal: #2C2C2C;
+            --earth: #3A3A3A;
+            --accent: #5B8C8A;
+            --text: #2C2C2C;
+            --text-dim: rgba(44, 44, 44, .5);
+            --rule: rgba(44, 44, 44, .1);
+        }
+
+        body[data-site="ferrum"] {
+            --bg: #D1CCC4;
+            --cream: #EDEAE4;
+            --charcoal: #1A1A1A;
+            --earth: #2A2A2A;
+            --accent: #B85C38;
+            --text: #1A1A1A;
+            --text-dim: rgba(26, 26, 26, .5);
+            --rule: rgba(26, 26, 26, .12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            max-width: 100vw
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            transition: background .6s var(--ease-quiet), color .6s var(--ease-quiet)
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font-family: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer
+        }
+
+        ul {
+            list-style: none
+        }
+
+        input,
+        select {
+            font-family: inherit
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--cream)
+        }
+
+        .brand-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--cream);
+            border-bottom: 1px solid var(--rule);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 1rem 2rem;
+            transition: background .6s var(--ease-quiet), border-color .6s var(--ease-quiet)
+        }
+
+        .brand-bar__left {
+            font-size: .65rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            opacity: .5;
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace
+        }
+
+        .brand-bar__center {
+            display: flex;
+            gap: .4rem
+        }
+
+        .brand-bar__right {
+            font-size: .6rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            opacity: .4;
+            text-align: right;
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace
+        }
+
+        .brand-tab {
+            border: 1px solid transparent;
+            cursor: pointer;
+            padding: .5rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--text);
+            opacity: .4;
+            transition: opacity .4s var(--ease-quiet), border-color .4s var(--ease-quiet)
+        }
+
+        .brand-tab:hover {
+            opacity: .75
+        }
+
+        .brand-tab.active {
+            opacity: 1;
+            border-color: var(--text)
+        }
+
+        @media(max-width:768px) {
+            .brand-bar {
+                padding: .6rem .8rem;
+                grid-template-columns: 1fr;
+                gap: .4rem
+            }
+
+            .brand-bar__left,
+            .brand-bar__right {
+                display: none
+            }
+
+            .brand-bar__center {
+                justify-content: center
+            }
+
+            .brand-tab {
+                padding: .35rem .55rem;
+                font-size: .55rem;
+                letter-spacing: .1em
+            }
+        }
+
+        .site {
+            display: none;
+            padding-top: 60px;
+            min-height: 100vh
+        }
+
+        .site.active {
+            display: block;
+            animation: siteFade .8s var(--ease-quiet)
+        }
+
+        @keyframes siteFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @media(max-width:768px) {
+            .site {
+                padding-top: 64px
+            }
+        }
+
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            will-change: transform
+        }
+
+        @media(pointer:fine) {
+
+            body[data-site="kavach"] .cursor[data-for="kavach"],
+            body[data-site="para"] .cursor[data-for="para"],
+            body[data-site="ferrum"] .cursor[data-for="ferrum"] {
+                display: block
+            }
+
+            body[data-site="kavach"],
+            body[data-site="para"],
+            body[data-site="ferrum"] {
+                cursor: none
+            }
+
+            body[data-site="kavach"] a,
+            body[data-site="para"] a,
+            body[data-site="ferrum"] a,
+            body[data-site="kavach"] button,
+            body[data-site="para"] button,
+            body[data-site="ferrum"] button,
+            body[data-site="kavach"] input,
+            body[data-site="para"] input,
+            body[data-site="ferrum"] input,
+            body[data-site="kavach"] select,
+            body[data-site="para"] select,
+            body[data-site="ferrum"] select {
+                cursor: none
+            }
+        }
+
+        .cursor .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+            margin-left: -3px;
+            margin-top: -3px
+        }
+
+        .cursor-1 .diamond {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            margin-left: -12px;
+            margin-top: -12px;
+            transition: transform .4s var(--ease-quiet), opacity .4s var(--ease-quiet);
+            opacity: .5
+        }
+
+        .cursor-1 .diamond svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .cursor-1 .diamond.hover {
+            transform: rotate(45deg) scale(1.3);
+            opacity: 1
+        }
+
+        .cursor-2 .measure {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            margin-left: -16px;
+            margin-top: -16px;
+            opacity: .5;
+            transition: opacity .3s var(--ease-quiet), width .4s var(--ease-quiet), height .4s var(--ease-quiet)
+        }
+
+        .cursor-2 .measure svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .cursor-2 .measure.hover {
+            opacity: 1;
+            width: 48px;
+            height: 48px;
+            margin-left: -24px;
+            margin-top: -24px
+        }
+
+        .cursor-3 .square {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 1px solid var(--accent);
+            transition: transform .4s var(--ease-quiet), border-color .4s var(--ease-quiet)
+        }
+
+        .cursor-3 .square.hover {
+            transform: rotate(45deg);
+            border-color: var(--text)
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-quiet), transform 1s var(--ease-quiet)
+        }
+
+        .reveal.is-in {
+            opacity: 1;
+            transform: none
+        }
+
+        .reveal--delay-1 {
+            transition-delay: .15s
+        }
+
+        .reveal--delay-2 {
+            transition-delay: .3s
+        }
+
+        /* ========== KAVACH ========== */
+        .kavach .display {
+            font-family: 'Libre Caslon Display', serif;
+            font-weight: 400;
+            letter-spacing: -.01em;
+            line-height: 1.1
+        }
+
+        .kavach .sans {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400
+        }
+
+        .kav-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(22, 21, 40, .92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .kav-nav__logo {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: .15em
+        }
+
+        .kav-nav__links {
+            display: flex;
+            gap: 1.8rem
+        }
+
+        .kav-nav__links a {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .55;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .kav-nav__links a:hover {
+            opacity: 1
+        }
+
+        .kav-nav__cta {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 500;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: .55rem 1.2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .kav-nav__cta:hover {
+            background: var(--accent);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .kav-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .kav-nav__links {
+                gap: .6rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .kav-nav__links a {
+                font-size: .5rem
+            }
+
+            .kav-nav__cta {
+                padding: .4rem .7rem;
+                font-size: .5rem
+            }
+
+            .kavach {
+                padding-top: 130px
+            }
+        }
+
+        .kav-hero {
+            padding: 8rem 2rem 5rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .kav-hero__bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 60% 40%, rgba(196, 160, 74, .05) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        .kav-hero__pattern {
+            position: absolute;
+            inset: 0;
+            opacity: .04;
+            pointer-events: none
+        }
+
+        .kav-hero__pattern svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .kav-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Manrope', sans-serif;
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .kav-hero__title {
+            font-size: clamp(3rem, 10vw, 9rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .kav-hero__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .kav-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .kav-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.5s var(--ease-emphasis)
+        }
+
+        .is-loaded .kav-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .kav-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .2s
+        }
+
+        .kav-hero__lede {
+            max-width: 38rem;
+            margin: 3rem 0;
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s var(--ease-quiet) .7s, transform 1.2s var(--ease-quiet) .7s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .kav-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .kav-hero__cta-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .9s, transform 1s var(--ease-quiet) .9s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .kav-hero__cta-row {
+            opacity: 1;
+            transform: none
+        }
+
+        .kav-hero__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: .8rem;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 500;
+            font-size: .75rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: .4rem
+        }
+
+        .kav-hero__cta .arrow {
+            transition: transform .4s var(--ease-quiet)
+        }
+
+        .kav-hero__cta:hover .arrow {
+            transform: translateX(6px)
+        }
+
+        .kav-hero__stats {
+            display: flex;
+            gap: 2.5rem
+        }
+
+        .kav-hero__stat .num {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 2rem;
+            display: block;
+            line-height: 1
+        }
+
+        .kav-hero__stat .lab {
+            font-family: 'Manrope', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-top: .3rem;
+            display: block
+        }
+
+        @media(max-width:768px) {
+            .kav-hero {
+                padding: 3rem 1.2rem 2rem;
+                min-height: auto
+            }
+
+            .kav-hero__meta {
+                margin-bottom: 2rem;
+                font-size: .5rem
+            }
+
+            .kav-hero__lede {
+                font-size: 1.05rem;
+                margin: 2rem 0
+            }
+
+            .kav-hero__stats {
+                gap: 1.2rem
+            }
+
+            .kav-hero__stat .num {
+                font-size: 1.4rem
+            }
+        }
+
+        .kav-section {
+            padding: 7rem 2rem;
+            position: relative
+        }
+
+        .kav-section__head {
+            max-width: 900px;
+            margin: 0 auto 4rem;
+            text-align: center
+        }
+
+        .kav-section__eyebrow {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 500;
+            font-size: .65rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: inline-block
+        }
+
+        .kav-section__title {
+            font-family: 'Libre Caslon Display', serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .kav-section__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .kav-section__lede {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 34rem;
+            margin: 1.5rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .kav-section {
+                padding: 4rem 1.2rem
+            }
+
+            .kav-section__head {
+                margin-bottom: 3rem
+            }
+        }
+
+        .kav-matrix {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            overflow: hidden
+        }
+
+        .kav-matrix__header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--rule);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .kav-matrix__title {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.4rem
+        }
+
+        .kav-matrix__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .kav-matrix__hint {
+            font-family: 'Manrope', sans-serif;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4
+        }
+
+        .kav-matrix__threats {
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .kav-matrix__threat {
+            flex: 1;
+            min-width: 100px;
+            padding: 1.2rem .8rem;
+            border: none;
+            border-right: 1px solid var(--rule);
+            background: transparent;
+            color: var(--text);
+            font-family: 'Manrope', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            transition: all .3s var(--ease-quiet);
+            cursor: pointer;
+            text-align: center;
+            position: relative
+        }
+
+        .kav-matrix__threat:hover {
+            opacity: .8
+        }
+
+        .kav-matrix__threat.active {
+            opacity: 1;
+            background: var(--accent);
+            color: var(--charcoal)
+        }
+
+        .kav-matrix__threat svg {
+            display: block;
+            width: 24px;
+            height: 24px;
+            margin: 0 auto .5rem;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.2
+        }
+
+        .kav-matrix__body {
+            padding: 0
+        }
+
+        .kav-matrix__row {
+            display: grid;
+            grid-template-columns: 200px 1fr auto;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--rule);
+            transition: background .3s var(--ease-quiet)
+        }
+
+        .kav-matrix__row:last-child {
+            border-bottom: none
+        }
+
+        .kav-matrix__row.is-best {
+            background: rgba(196, 160, 74, .06)
+        }
+
+        .kav-matrix__row.is-best .kav-matrix__net-name {
+            color: var(--accent)
+        }
+
+        .kav-matrix__net-name {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.05rem;
+            transition: color .3s var(--ease-quiet)
+        }
+
+        .kav-matrix__net-name em {
+            font-style: italic
+        }
+
+        .kav-matrix__bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .kav-matrix__bar {
+            height: 4px;
+            background: var(--rule);
+            flex: 1;
+            position: relative;
+            overflow: hidden
+        }
+
+        .kav-matrix__bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--accent);
+            width: 0;
+            transition: width .8s var(--ease-quiet)
+        }
+
+        .kav-matrix__pct {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .75rem;
+            font-weight: 400;
+            min-width: 3rem;
+            text-align: right
+        }
+
+        .kav-matrix__badge {
+            font-family: 'Manrope', sans-serif;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            padding: .25rem .6rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .kav-matrix__row.is-best .kav-matrix__badge {
+            opacity: 1
+        }
+
+        .kav-matrix__panel {
+            padding: 2rem;
+            border-top: 1px solid var(--rule);
+            background: var(--bg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem
+        }
+
+        .kav-matrix__panel-left h4 {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: .5rem
+        }
+
+        .kav-matrix__panel-left h4 em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .kav-matrix__panel-left p {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: .95rem;
+            line-height: 1.6;
+            color: var(--text-dim)
+        }
+
+        .kav-matrix__panel-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .8rem
+        }
+
+        .kav-matrix__panel-spec dt {
+            font-family: 'Manrope', sans-serif;
+            font-size: .5rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: .15rem
+        }
+
+        .kav-matrix__panel-spec dd {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .85rem
+        }
+
+        @media(max-width:768px) {
+            .kav-matrix__threat {
+                min-width: 80px;
+                padding: .8rem .4rem;
+                font-size: .55rem
+            }
+
+            .kav-matrix__threat svg {
+                width: 18px;
+                height: 18px
+            }
+
+            .kav-matrix__row {
+                grid-template-columns: 1fr;
+                gap: .5rem;
+                padding: 1rem
+            }
+
+            .kav-matrix__bar-wrap {
+                width: 100%
+            }
+
+            .kav-matrix__panel {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1.5rem
+            }
+
+            .kav-matrix__badge {
+                display: none
+            }
+        }
+
+        .kav-collection {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem
+        }
+
+        .kav-card {
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            overflow: hidden;
+            position: relative;
+            transition: transform .5s var(--ease-quiet)
+        }
+
+        .kav-card:hover {
+            transform: translateY(-5px)
+        }
+
+        .kav-card__img {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            position: relative
+        }
+
+        .kav-card__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(.75);
+            transition: transform 1s var(--ease-quiet), filter .8s var(--ease-quiet)
+        }
+
+        .kav-card:hover .kav-card__img img {
+            transform: scale(1.05);
+            filter: brightness(.9)
+        }
+
+        .kav-card__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(14, 13, 27, .9) 0%, transparent 55%);
+            pointer-events: none
+        }
+
+        .kav-card__body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            z-index: 2
+        }
+
+        .kav-card__num {
+            font-family: 'Manrope', sans-serif;
+            font-size: .5rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .4rem;
+            display: block
+        }
+
+        .kav-card__name {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.3rem;
+            line-height: 1.1;
+            margin-bottom: .2rem
+        }
+
+        .kav-card__name em {
+            font-style: italic
+        }
+
+        .kav-card__for {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: .85rem;
+            opacity: .6
+        }
+
+        .kav-card__specs {
+            display: flex;
+            gap: 1rem;
+            margin-top: .8rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .4
+        }
+
+        @media(max-width:1024px) {
+            .kav-collection {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:600px) {
+            .kav-collection {
+                grid-template-columns: 1fr
+            }
+
+            .kav-card__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        .kav-heritage {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .kav-heritage__text {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+            margin-bottom: 2rem
+        }
+
+        .kav-heritage__text em {
+            font-style: normal;
+            color: var(--accent)
+        }
+
+        .kav-heritage__divider {
+            width: 1px;
+            height: 50px;
+            background: var(--rule);
+            margin: 0 auto
+        }
+
+        .kav-heritage__quote {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-top: 2rem;
+            opacity: .5
+        }
+
+        .kav-contact {
+            padding: 7rem 2rem;
+            background: var(--charcoal);
+            border-top: 1px solid var(--rule)
+        }
+
+        .kav-contact__inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start
+        }
+
+        .kav-contact__title {
+            font-family: 'Libre Caslon Display', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.05
+        }
+
+        .kav-contact__title em {
+            font-style: italic;
+            color: var(--accent)
+        }
+
+        .kav-contact__lede {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.55;
+            color: var(--text-dim);
+            margin-top: 1.5rem
+        }
+
+        .kav-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem
+        }
+
+        .kav-form__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .kav-form__label {
+            font-family: 'Manrope', sans-serif;
+            font-size: .55rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .4
+        }
+
+        .kav-form__input,
+        .kav-form__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            color: var(--text);
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .kav-form__input:focus,
+        .kav-form__select:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .kav-form__select option {
+            background: var(--charcoal)
+        }
+
+        .kav-form__submit {
+            margin-top: 1rem;
+            align-self: flex-start;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 500;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: .9rem 1.8rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .kav-form__submit:hover {
+            background: var(--accent);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .kav-contact {
+                padding: 4rem 1.2rem
+            }
+
+            .kav-contact__inner {
+                grid-template-columns: 1fr;
+                gap: 2rem
+            }
+        }
+
+        /* ========== PARA ========== */
+        .para .display {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 200;
+            letter-spacing: -.01em;
+            line-height: 1.1
+        }
+
+        .para .serif {
+            font-family: 'Newsreader', serif;
+            font-weight: 300
+        }
+
+        .par-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(228, 226, 221, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .par-nav__logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            font-size: 1.1rem;
+            letter-spacing: .3em;
+            text-transform: uppercase
+        }
+
+        .par-nav__links {
+            display: flex;
+            gap: 1.8rem
+        }
+
+        .par-nav__links a {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .55;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .par-nav__links a:hover {
+            opacity: 1
+        }
+
+        .par-nav__cta {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 400;
+            font-size: .65rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .55rem 1.1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .par-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .par-nav {
+                padding: .7rem 1rem;
+                flex-wrap: wrap;
+                gap: .5rem
+            }
+
+            .par-nav__links {
+                gap: .6rem;
+                order: 3;
+                width: 100%;
+                padding-top: .5rem;
+                border-top: 1px solid var(--rule)
+            }
+
+            .par-nav__links a {
+                font-size: .5rem
+            }
+
+            .par-nav__cta {
+                padding: .4rem .7rem;
+                font-size: .5rem
+            }
+
+            .para {
+                padding-top: 130px
+            }
+        }
+
+        .par-hero {
+            padding: 7rem 2rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .par-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 4rem
+        }
+
+        .par-hero__title {
+            font-size: clamp(2.5rem, 8vw, 7rem)
+        }
+
+        .par-hero__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Newsreader', serif;
+            font-weight: 300
+        }
+
+        .par-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .par-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.4s var(--ease-emphasis)
+        }
+
+        .is-loaded .par-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .par-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .18s
+        }
+
+        .par-hero__lede {
+            max-width: 34rem;
+            margin: 2rem 0;
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .6s, transform 1s var(--ease-quiet) .6s
+        }
+
+        .is-loaded .par-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .par-hero__specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            margin-top: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .8s, transform 1s var(--ease-quiet) .8s
+        }
+
+        .is-loaded .par-hero__specs {
+            opacity: 1;
+            transform: none
+        }
+
+        .par-hero__spec {
+            background: var(--cream);
+            padding: 1.2rem
+        }
+
+        .par-hero__spec .lab {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            display: block;
+            margin-bottom: .3rem
+        }
+
+        .par-hero__spec .val {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            font-size: 1.5rem;
+            display: block
+        }
+
+        .par-hero__spec .unit {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            opacity: .5;
+            margin-left: .2rem
+        }
+
+        @media(max-width:768px) {
+            .par-hero {
+                padding: 2rem 1.2rem
+            }
+
+            .par-hero__meta {
+                margin-bottom: 2rem;
+                font-size: .5rem
+            }
+
+            .par-hero__lede {
+                font-size: 1.05rem
+            }
+
+            .par-hero__specs {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .par-hero__spec {
+                padding: .8rem
+            }
+
+            .par-hero__spec .val {
+                font-size: 1.1rem
+            }
+        }
+
+        .par-section {
+            padding: 6rem 2rem;
+            position: relative
+        }
+
+        .par-section__head {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            text-align: center
+        }
+
+        .par-section__eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: inline-block
+        }
+
+        .par-section__title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 200;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .par-section__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Newsreader', serif
+        }
+
+        .par-section__lede {
+            font-family: 'Newsreader', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 34rem;
+            margin: 1rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .par-section {
+                padding: 4rem 1.2rem
+            }
+
+            .par-section__head {
+                margin-bottom: 2.5rem
+            }
+        }
+
+        .par-span {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            background: var(--cream);
+            border: 1px solid var(--rule)
+        }
+
+        .par-span__visual {
+            padding: 2rem
+        }
+
+        .par-span__svg-wrap {
+            background: var(--bg);
+            border: 1px solid var(--rule);
+            aspect-ratio: 2/1;
+            overflow: hidden;
+            position: relative
+        }
+
+        .par-span__svg {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        .par-span__readout {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .65rem;
+            color: var(--text);
+            background: rgba(242, 240, 236, .85);
+            padding: .4rem .7rem;
+            border: 1px solid var(--rule)
+        }
+
+        .par-span__readout span {
+            color: var(--accent)
+        }
+
+        .par-span__controls {
+            padding: 1.5rem 0 0
+        }
+
+        .par-span__control {
+            margin-bottom: 1.5rem
+        }
+
+        .par-span__control-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: .5rem
+        }
+
+        .par-span__control-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .6
+        }
+
+        .par-span__control-value {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            font-size: 1.4rem;
+            color: var(--accent)
+        }
+
+        .par-span__control-value span {
+            font-size: .7rem;
+            opacity: .5;
+            margin-left: .2rem
+        }
+
+        .par-span__slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 2px;
+            background: var(--rule);
+            outline: none
+        }
+
+        .par-span__slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--cream);
+            box-shadow: 0 0 0 1px var(--accent)
+        }
+
+        .par-span__slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--cream);
+            box-shadow: 0 0 0 1px var(--accent)
+        }
+
+        .par-span__panel {
+            background: var(--bg);
+            border-left: 1px solid var(--rule);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column
+        }
+
+        .par-span__gauge {
+            margin-bottom: 2rem
+        }
+
+        .par-span__gauge-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .6rem
+        }
+
+        .par-span__gauge-bar {
+            height: 6px;
+            background: var(--rule);
+            position: relative;
+            overflow: hidden
+        }
+
+        .par-span__gauge-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            background: var(--accent);
+            transition: width .4s var(--ease-quiet), background .4s var(--ease-quiet)
+        }
+
+        .par-span__gauge-status {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 400;
+            font-size: .85rem;
+            margin-top: .5rem;
+            text-transform: uppercase;
+            letter-spacing: .05em
+        }
+
+        .par-span__stats {
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+            flex: 1
+        }
+
+        .par-span__stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: .4rem;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .par-span__stat dt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .par-span__stat dd {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .8rem
+        }
+
+        .par-span__note {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: .8rem;
+            line-height: 1.5;
+            color: var(--text-dim);
+            margin-top: 1.5rem
+        }
+
+        @media(max-width:900px) {
+            .par-span {
+                grid-template-columns: 1fr
+            }
+
+            .par-span__panel {
+                border-left: none;
+                border-top: 1px solid var(--rule)
+            }
+        }
+
+        .par-products {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem
+        }
+
+        .par-product {
+            background: var(--cream);
+            border: 1px solid var(--rule);
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: center;
+            transition: border-color .4s var(--ease-quiet)
+        }
+
+        .par-product:hover {
+            border-color: var(--accent)
+        }
+
+        .par-product__img {
+            aspect-ratio: 1;
+            overflow: hidden
+        }
+
+        .par-product__img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .8s var(--ease-quiet)
+        }
+
+        .par-product:hover .par-product__img img {
+            transform: scale(1.05)
+        }
+
+        .par-product__num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .4rem;
+            display: block
+        }
+
+        .par-product__name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 300;
+            font-size: 1.3rem;
+            line-height: 1.1;
+            margin-bottom: .3rem
+        }
+
+        .par-product__name em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Newsreader', serif
+        }
+
+        .par-product__desc {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: .9rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem
+        }
+
+        .par-product__specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            padding-top: .8rem;
+            border-top: 1px solid var(--rule)
+        }
+
+        .par-product__spec dt {
+            font-size: .45rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4;
+            margin-bottom: .1rem
+        }
+
+        .par-product__spec dd {
+            font-size: .75rem
+        }
+
+        @media(max-width:768px) {
+            .par-products {
+                grid-template-columns: 1fr
+            }
+
+            .par-product {
+                grid-template-columns: 1fr;
+                padding: 1.5rem
+            }
+
+            .par-product__img {
+                aspect-ratio: 4/3
+            }
+        }
+
+        .par-contact {
+            padding: 6rem 2rem;
+            background: var(--cream);
+            text-align: center
+        }
+
+        .par-contact__inner {
+            max-width: 600px;
+            margin: 0 auto
+        }
+
+        .par-contact__title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 200;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1
+        }
+
+        .par-contact__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Newsreader', serif
+        }
+
+        .par-contact__lede {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin: 1.5rem auto 2.5rem;
+            max-width: 28rem
+        }
+
+        .par-contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 28rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .par-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .par-contact__label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .par-contact__input {
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            padding: .5rem 0;
+            font-family: 'Newsreader', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .par-contact__input:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .par-contact__submit {
+            margin-top: 1rem;
+            align-self: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 400;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .par-contact__submit:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .par-contact {
+                padding: 4rem 1.2rem
+            }
+        }
+
+        /* ========== FERRUM ========== */
+        .ferrum .display {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 400;
+            letter-spacing: -.02em;
+            line-height: 1.05
+        }
+
+        .ferrum .serif {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400
+        }
+
+        .ferrum .mono {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 300
+        }
+
+        .fer-nav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(209, 204, 196, .93);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+            padding: .8rem 2rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 2rem
+        }
+
+        .fer-nav__logo {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 600;
+            font-size: .95rem;
+            letter-spacing: .05em;
+            text-transform: uppercase
+        }
+
+        .fer-nav__logo span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 300;
+            font-size: .55rem;
+            opacity: .5;
+            margin-left: .5rem
+        }
+
+        .fer-nav__links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center
+        }
+
+        .fer-nav__links a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 300;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .55;
+            transition: opacity .3s var(--ease-quiet)
+        }
+
+        .fer-nav__links a:hover {
+            opacity: 1
+        }
+
+        .fer-nav__cta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            border: 1px solid var(--text);
+            padding: .5rem 1rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .fer-nav__cta:hover {
+            background: var(--text);
+            color: var(--bg)
+        }
+
+        @media(max-width:768px) {
+            .fer-nav {
+                padding: .6rem 1rem;
+                grid-template-columns: 1fr;
+                gap: .4rem;
+                text-align: center
+            }
+
+            .fer-nav__links {
+                justify-content: center;
+                gap: .6rem;
+                order: 3;
+                padding-top: .3rem
+            }
+
+            .fer-nav__links a {
+                font-size: .5rem
+            }
+
+            .fer-nav__cta {
+                justify-self: center;
+                padding: .35rem .7rem;
+                font-size: .5rem
+            }
+
+            .ferrum {
+                padding-top: 130px
+            }
+        }
+
+        .fer-hero {
+            padding: 6rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .fer-hero__grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: .3
+        }
+
+        .fer-hero__grid svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .fer-hero__meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .fer-hero__title {
+            font-size: clamp(2.5rem, 8vw, 7rem);
+            position: relative;
+            z-index: 2
+        }
+
+        .fer-hero__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Instrument Serif', serif
+        }
+
+        .fer-hero__title .line {
+            display: block;
+            overflow: hidden
+        }
+
+        .fer-hero__title .line-inner {
+            display: block;
+            transform: translateY(110%);
+            transition: transform 1.3s var(--ease-emphasis)
+        }
+
+        .is-loaded .fer-hero__title .line-inner {
+            transform: translateY(0)
+        }
+
+        .is-loaded .fer-hero__title .line:nth-child(2) .line-inner {
+            transition-delay: .18s
+        }
+
+        .fer-hero__lede {
+            max-width: 36rem;
+            margin: 2rem 0;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s var(--ease-quiet) .5s, transform 1s var(--ease-quiet) .5s;
+            position: relative;
+            z-index: 2
+        }
+
+        .is-loaded .fer-hero__lede {
+            opacity: 1;
+            transform: none
+        }
+
+        .fer-hero__specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule);
+            margin-top: 2.5rem;
+            position: relative;
+            z-index: 2
+        }
+
+        .fer-hero__spec {
+            background: var(--cream);
+            padding: 1.2rem
+        }
+
+        .fer-hero__spec .lab {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5;
+            display: block;
+            margin-bottom: .3rem
+        }
+
+        .fer-hero__spec .val {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            display: block
+        }
+
+        .fer-hero__spec .unit {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            opacity: .5;
+            margin-left: .2rem
+        }
+
+        @media(max-width:768px) {
+            .fer-hero {
+                padding: 2rem 1.2rem
+            }
+
+            .fer-hero__meta {
+                margin-bottom: 1.5rem;
+                font-size: .5rem
+            }
+
+            .fer-hero__lede {
+                font-size: 1.05rem
+            }
+
+            .fer-hero__specs {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .fer-hero__spec {
+                padding: .8rem
+            }
+
+            .fer-hero__spec .val {
+                font-size: 1rem
+            }
+        }
+
+        .fer-section {
+            padding: 6rem 2rem;
+            position: relative
+        }
+
+        .fer-section__head {
+            max-width: 1100px;
+            margin: 0 auto 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: end;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1.5rem
+        }
+
+        .fer-section__num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .15em;
+            color: var(--accent);
+            white-space: nowrap
+        }
+
+        .fer-section__title {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            line-height: 1.05
+        }
+
+        .fer-section__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Instrument Serif', serif
+        }
+
+        .fer-section__lede {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .8rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+            max-width: 36rem;
+            margin: 1rem auto 0
+        }
+
+        @media(max-width:768px) {
+            .fer-section {
+                padding: 4rem 1.2rem
+            }
+
+            .fer-section__head {
+                grid-template-columns: 1fr;
+                gap: .5rem
+            }
+        }
+
+        .fer-forge {
+            max-width: 1300px;
+            margin: 0 auto
+        }
+
+        .fer-forge__track {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1px;
+            background: var(--rule);
+            border: 1px solid var(--rule)
+        }
+
+        .fer-forge__stage {
+            background: var(--cream);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: background .3s var(--ease-quiet);
+            position: relative
+        }
+
+        .fer-forge__stage:hover {
+            background: var(--bg)
+        }
+
+        .fer-forge__stage.is-active {
+            background: var(--bg);
+            border-bottom: 3px solid var(--accent)
+        }
+
+        .fer-forge__stage-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .2em;
+            color: var(--accent);
+            margin-bottom: .5rem;
+            display: block
+        }
+
+        .fer-forge__stage-name {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 500;
+            font-size: .85rem;
+            line-height: 1.2;
+            margin-bottom: .3rem
+        }
+
+        .fer-forge__stage-time {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .55rem;
+            opacity: .5
+        }
+
+        .fer-forge__detail {
+            background: var(--bg);
+            border: 1px solid var(--rule);
+            border-top: none;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            align-items: start
+        }
+
+        .fer-forge__detail-left h4 {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 400;
+            font-size: 1.6rem;
+            line-height: 1.1;
+            margin-bottom: .5rem
+        }
+
+        .fer-forge__detail-left h4 em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Instrument Serif', serif
+        }
+
+        .fer-forge__detail-left p {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dim)
+        }
+
+        .fer-forge__detail-mid {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem
+        }
+
+        .fer-forge__detail-spec {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: .4rem;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .fer-forge__detail-spec dt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .fer-forge__detail-spec dd {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .8rem
+        }
+
+        .fer-forge__detail-right {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem
+        }
+
+        .fer-forge__detail-equip {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: .3rem
+        }
+
+        .fer-forge__detail-tool {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 400;
+            font-size: .85rem;
+            padding: .4rem 0;
+            border-bottom: 1px solid var(--rule)
+        }
+
+        .fer-forge__detail-tool:last-child {
+            border-bottom: none
+        }
+
+        @media(max-width:1024px) {
+            .fer-forge__track {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .fer-forge__detail {
+                grid-template-columns: 1fr;
+                gap: 1.5rem
+            }
+        }
+
+        @media(max-width:600px) {
+            .fer-forge__track {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .fer-forge__stage {
+                padding: 1rem
+            }
+
+            .fer-forge__stage-name {
+                font-size: .75rem
+            }
+        }
+
+        .fer-specs {
+            max-width: 1100px;
+            margin: 0 auto
+        }
+
+        .fer-specs__table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .fer-specs__table th,
+        .fer-specs__table td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--rule);
+            vertical-align: middle
+        }
+
+        .fer-specs__table th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .fer-specs__table td {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 300;
+            font-size: .85rem
+        }
+
+        .fer-specs__table td:first-child {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 500;
+            font-size: .9rem
+        }
+
+        .fer-specs__bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: .6rem
+        }
+
+        .fer-specs__bar {
+            display: inline-block;
+            height: 4px;
+            background: var(--accent);
+            min-width: 4px
+        }
+
+        @media(max-width:768px) {
+            .fer-specs__table {
+                font-size: .75rem
+            }
+
+            .fer-specs__table th,
+            .fer-specs__table td {
+                padding: .7rem .5rem
+            }
+
+            .fer-specs__table th:nth-child(5),
+            .fer-specs__table td:nth-child(5) {
+                display: none
+            }
+        }
+
+        .fer-contact {
+            padding: 6rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream)
+        }
+
+        .fer-contact__inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center
+        }
+
+        .fer-contact__title {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 400;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.05
+        }
+
+        .fer-contact__title em {
+            font-style: italic;
+            color: var(--accent);
+            font-family: 'Instrument Serif', serif
+        }
+
+        .fer-contact__lede {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            opacity: .6;
+            margin: 1.5rem auto 2.5rem;
+            max-width: 34rem
+        }
+
+        .fer-contact__form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 44rem;
+            margin: 0 auto;
+            text-align: left
+        }
+
+        .fer-contact__field {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem
+        }
+
+        .fer-contact__field--full {
+            grid-column: span 2
+        }
+
+        .fer-contact__label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .5rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .5
+        }
+
+        .fer-contact__input,
+        .fer-contact__select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid rgba(237, 234, 228, .2);
+            padding: .5rem 0;
+            color: var(--cream);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .85rem;
+            transition: border-color .3s var(--ease-quiet)
+        }
+
+        .fer-contact__input:focus,
+        .fer-contact__select:focus {
+            outline: none;
+            border-color: var(--cream)
+        }
+
+        .fer-contact__select option {
+            background: var(--charcoal)
+        }
+
+        .fer-contact__submit {
+            grid-column: span 2;
+            justify-self: center;
+            margin-top: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .65rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            border: 1px solid var(--cream);
+            padding: .9rem 2rem;
+            transition: background .4s var(--ease-quiet), color .4s var(--ease-quiet)
+        }
+
+        .fer-contact__submit:hover {
+            background: var(--cream);
+            color: var(--charcoal)
+        }
+
+        @media(max-width:768px) {
+            .fer-contact {
+                padding: 4rem 1.2rem
+            }
+
+            .fer-contact__form {
+                grid-template-columns: 1fr
+            }
+
+            .fer-contact__field--full {
+                grid-column: auto
+            }
+        }
+
+        .site-footer {
+            padding: 4rem 2rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            border-top: 1px solid var(--rule)
+        }
+
+        .site-footer__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem
+        }
+
+        .site-footer__col h5 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 1.5rem
+        }
+
+        .site-footer__col ul li {
+            margin-bottom: .7rem;
+            font-size: .85rem;
+            opacity: .7;
+            transition: opacity .3s var(--ease-quiet);
+            cursor: pointer
+        }
+
+        .site-footer__col ul li:hover {
+            opacity: 1
+        }
+
+        .site-footer__brand {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            letter-spacing: .05em;
+            margin-bottom: 1rem
+        }
+
+        .site-footer__bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(237, 234, 228, .12);
+            display: flex;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: .55rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            opacity: .4;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        @media(max-width:768px) {
+            .site-footer__inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem
+            }
+
+            .site-footer__bottom {
+                flex-direction: column;
+                text-align: center
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                animation-iteration-count: 1 !important
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none
+            }
+
+            .kav-hero__title .line-inner,
+            .par-hero__title .line-inner,
+            .fer-hero__title .line-inner {
+                transform: none
+            }
+        }
+    </style>
+</head>
+
+<body data-site="kavach">
+
+    <header class="brand-bar">
+        <div class="brand-bar__left">Three Ateliers · One Craft</div>
+        <div class="brand-bar__center">
+            <button class="brand-tab active" data-brand="kavach">Kavach</button>
+            <button class="brand-tab" data-brand="para">Para</button>
+            <button class="brand-tab" data-brand="ferrum">Ferrum</button>
+        </div>
+        <div class="brand-bar__right">Safety Netting · Premium</div>
+    </header>
+
+    <div class="cursor cursor-1" data-for="kavach">
+        <div class="diamond"><svg viewBox="0 0 24 24">
+                <path d="M12 2 L22 12 L12 22 L2 12 Z" fill="none" stroke="currentColor" stroke-width="1" />
+            </svg></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-2" data-for="para">
+        <div class="measure"><svg viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="6" fill="none" stroke="currentColor" stroke-width="1" />
+                <line x1="0" y1="16" x2="8" y2="16" stroke="currentColor" stroke-width="1" />
+                <line x1="24" y1="16" x2="32" y2="16" stroke="currentColor" stroke-width="1" />
+            </svg></div>
+        <div class="dot"></div>
+    </div>
+    <div class="cursor cursor-3" data-for="ferrum">
+        <div class="square"></div>
+        <div class="dot"></div>
+    </div>
+
+    <!-- ========== KAVACH ========== -->
+    <main class="site site-kavach active" data-site="kavach">
+        <nav class="kav-nav">
+            <div class="kav-nav__logo">KAVACH</div>
+            <ul class="kav-nav__links">
+                <li><a href="#kav-matrix" data-link>Protection Matrix</a></li>
+                <li><a href="#kav-collection" data-link>Collection</a></li>
+                <li><a href="#kav-heritage" data-link>Heritage</a></li>
+                <li><a href="#kav-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#kav-contact" class="kav-nav__cta" data-link>Request survey</a>
+        </nav>
+
+        <section class="kav-hero">
+            <div class="kav-hero__bg"></div>
+            <div class="kav-hero__pattern">
+                <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="kav-pat" width="25" height="25" patternUnits="userSpaceOnUse">
+                            <path d="M12.5 2 L23 12.5 L12.5 23 L2 12.5 Z" fill="none" stroke="currentColor"
+                                stroke-width="0.3" />
+                        </pattern>
+                    </defs>
+                    <rect width="400" height="200" fill="url(#kav-pat)" />
+                </svg>
+            </div>
+            <div class="kav-hero__meta">
+                <span>KAVACH / 01</span>
+                <span>Premium Safety Nets</span>
+                <span>Bangalore · MMXXIV</span>
+            </div>
+            <h1 class="kav-hero__title display">
+                <span class="line"><span class="line-inner">Armor for</span></span>
+                <span class="line"><span class="line-inner"><em>the modern home.</em></span></span>
+            </h1>
+            <p class="kav-hero__lede">Bird netting, mosquito mesh, child safety, fall arrest — each piece hand-fitted in
+                HDPE or nylon, anchored in stainless 316, and warranted for fifteen years. The protective craft, drawn
+                from Indian tradition and engineered to global standard.</p>
+            <div class="kav-hero__cta-row">
+                <a href="#kav-matrix" class="kav-hero__cta" data-link><span>Find your protection</span><span
+                        class="arrow">→</span></a>
+                <div class="kav-hero__stats">
+                    <div class="kav-hero__stat"><span class="num">15y</span><span class="lab">warranty</span></div>
+                    <div class="kav-hero__stat"><span class="num">12k</span><span class="lab">homes fitted</span></div>
+                    <div class="kav-hero__stat"><span class="num">6</span><span class="lab">net types</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="kav-section" id="kav-matrix">
+            <div class="kav-section__head reveal">
+                <div class="kav-section__eyebrow">— Section 01 / Protection Matrix</div>
+                <h2 class="kav-section__title">What are you <em>stopping?</em></h2>
+                <p class="kav-section__lede">Every threat asks for a different weave. Click a threat across the top —
+                    the matrix reveals how each of our six net types performs against it, and which one we recommend.
+                </p>
+            </div>
+            <div class="kav-matrix reveal">
+                <div class="kav-matrix__header">
+                    <div class="kav-matrix__title">Protection <em>Matrix</em></div>
+                    <div class="kav-matrix__hint">Click a threat →</div>
+                </div>
+                <div class="kav-matrix__threats" id="kav-threats">
+                    <button class="kav-matrix__threat active" data-threat="birds">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 11v6m0 0l-3 3m3-3l3 3" />
+                        </svg>
+                        Birds
+                    </button>
+                    <button class="kav-matrix__threat" data-threat="mosquitoes">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 4v8m0 0l-4-3m4 3l4-3m-4 3l-2 5m2-5l2 5M8 8L4 6m4 2l-4 4m12-4l4-2m-4 2l4 4" />
+                        </svg>
+                        Mosquitoes
+                    </button>
+                    <button class="kav-matrix__threat" data-threat="children">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="6" r="2" />
+                            <path d="M12 8v8m0 0l-3 4m3-4l3 4M9 12H4m11 0h5" />
+                        </svg>
+                        Children
+                    </button>
+                    <button class="kav-matrix__threat" data-threat="monkeys">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M8 8L4 6M16 8l4-2M8 12l-3 8M16 12l3 8M10 14h4" />
+                        </svg>
+                        Monkeys
+                    </button>
+                    <button class="kav-matrix__threat" data-threat="coconuts">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="6" />
+                            <path d="M12 6v12M6 12h12" />
+                        </svg>
+                        Coconuts
+                    </button>
+                    <button class="kav-matrix__threat" data-threat="fall">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2v10m0 0l-4-4m4 4l4-4M4 18h16M6 18v3M18 18v3" />
+                        </svg>
+                        Fall Arrest
+                    </button>
+                </div>
+                <div class="kav-matrix__body" id="kav-matrix-body"></div>
+                <div class="kav-matrix__panel" id="kav-matrix-panel"></div>
+            </div>
+        </section>
+
+        <section class="kav-section" id="kav-collection">
+            <div class="kav-section__head reveal">
+                <div class="kav-section__eyebrow">— Section 02 / Collection</div>
+                <h2 class="kav-section__title">Six pieces of <em>armor.</em></h2>
+            </div>
+            <div class="kav-collection reveal">
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-bird/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 01</span>
+                        <h3 class="kav-card__name">Bird <em>Shield</em></h3>
+                        <p class="kav-card__for">Balcony · window</p>
+                        <div class="kav-card__specs"><span>25mm</span><span>HDPE</span><span>120kg</span></div>
+                    </div>
+                </article>
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-mosquito/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 02</span>
+                        <h3 class="kav-card__name">Mosquito <em>Veil</em></h3>
+                        <p class="kav-card__for">Window · vent</p>
+                        <div class="kav-card__specs"><span>0.8mm</span><span>Polyester</span><span>40kg</span></div>
+                    </div>
+                </article>
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-child/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 03</span>
+                        <h3 class="kav-card__name">Child <em>Guard</em></h3>
+                        <p class="kav-card__for">Staircase · mezzanine</p>
+                        <div class="kav-card__specs"><span>40mm</span><span>Nylon</span><span>250kg</span></div>
+                    </div>
+                </article>
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-pet/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 04</span>
+                        <h3 class="kav-card__name">Pet <em>Line</em></h3>
+                        <p class="kav-card__for">Balcony · stair</p>
+                        <div class="kav-card__specs"><span>32mm</span><span>HDPE</span><span>180kg</span></div>
+                    </div>
+                </article>
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-arrest/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 05</span>
+                        <h3 class="kav-card__name">Fall <em>Arrest</em></h3>
+                        <p class="kav-card__for">Atrium · construction</p>
+                        <div class="kav-card__specs"><span>32mm</span><span>Nylon</span><span>600kg</span></div>
+                    </div>
+                </article>
+                <article class="kav-card">
+                    <div class="kav-card__img"><img src="https://picsum.photos/seed/kav-card-coconut/600/750" alt="">
+                        <div class="kav-card__overlay"></div>
+                    </div>
+                    <div class="kav-card__body">
+                        <span class="kav-card__num">KAV / 06</span>
+                        <h3 class="kav-card__name">Coconut <em>Net</em></h3>
+                        <p class="kav-card__for">Palm · garden</p>
+                        <div class="kav-card__specs"><span>100mm</span><span>HDPE</span><span>800kg</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="kav-section" id="kav-heritage" style="background:var(--cream)">
+            <div class="kav-section__head reveal">
+                <div class="kav-section__eyebrow">— Section 03 / Heritage</div>
+                <h2 class="kav-section__title">The craft of <em>protection.</em></h2>
+            </div>
+            <div class="kav-heritage reveal">
+                <p class="kav-heritage__text">The word <em>kavach</em> comes from Sanskrit — armor, shield, that which
+                    guards. For three thousand years, the Indian craft tradition has woven protection: chainmail for
+                    warriors, netting for fishermen, mesh for granaries. We continue that tradition in HDPE and nylon,
+                    anchored in stainless steel, warranted for fifteen years.</p>
+                <div class="kav-heritage__divider"></div>
+                <p class="kav-heritage__quote">"A net is the quietest form of armor.<br>It holds without shouting."</p>
+            </div>
+        </section>
+
+        <section class="kav-contact" id="kav-contact">
+            <div class="kav-contact__inner">
+                <div class="reveal">
+                    <div class="kav-section__eyebrow">— Section 04 / Contact</div>
+                    <h2 class="kav-contact__title">Request a <em>survey.</em></h2>
+                    <p class="kav-contact__lede">A fitter visits within 48 hours, measures every opening, and confirms
+                        the spec. Free within Bangalore city limits.</p>
+                </div>
+                <form class="kav-form reveal reveal--delay-1"
+                    onsubmit="event.preventDefault();this.querySelector('.kav-form__submit').textContent='Received — calling within the hour'">
+                    <div class="kav-form__field">
+                        <label class="kav-form__label">Your name</label>
+                        <input class="kav-form__input" type="text" required>
+                    </div>
+                    <div class="kav-form__field">
+                        <label class="kav-form__label">Phone</label>
+                        <input class="kav-form__input" type="tel" required>
+                    </div>
+                    <div class="kav-form__field">
+                        <label class="kav-form__label">Locality</label>
+                        <input class="kav-form__input" type="text">
+                    </div>
+                    <div class="kav-form__field">
+                        <label class="kav-form__label">What needs guarding?</label>
+                        <select class="kav-form__select">
+                            <option>Balcony — birds</option>
+                            <option>Window — mosquitoes</option>
+                            <option>Staircase — child safety</option>
+                            <option>Atrium — fall arrest</option>
+                            <option>Roof — terrace</option>
+                            <option>Multiple openings</option>
+                        </select>
+                    </div>
+                    <button class="kav-form__submit" type="submit">Request survey</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand" style="font-family:'Libre Caslon Display',serif">KAVACH</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2012</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Atelier</h5>
+                    <ul>
+                        <li>Heritage</li>
+                        <li>Craft</li>
+                        <li>Warranty</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Collection</h5>
+                    <ul>
+                        <li>Bird Shield</li>
+                        <li>Mosquito Veil</li>
+                        <li>Child Guard</li>
+                        <li>Fall Arrest</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>hello@kavach.in</li>
+                        <li>+91 80 4120 2012</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Kavach Safety Nets 2024</span><span>Armor for the modern
+                    home</span></div>
+        </footer>
+    </main>
+
+    <!-- ========== PARA ========== -->
+    <main class="site site-para" data-site="para">
+        <nav class="par-nav">
+            <div class="par-nav__logo">PARA</div>
+            <ul class="par-nav__links">
+                <li><a href="#par-span" data-link>Span Calculator</a></li>
+                <li><a href="#par-products" data-link>Products</a></li>
+                <li><a href="#par-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#par-contact" class="par-nav__cta" data-link>Enquire</a>
+        </nav>
+
+        <section class="par-hero">
+            <div class="par-hero__meta">
+                <span>PARA / 2024</span>
+                <span>Span-Engineered Safety Nets</span>
+                <span>Bangalore · India</span>
+            </div>
+            <h1 class="par-hero__title display">
+                <span class="line"><span class="line-inner">The gap,</span></span>
+                <span class="line"><span class="line-inner"><em>calculated.</em></span></span>
+            </h1>
+            <p class="par-hero__lede">Every architectural opening has a width, a height, and a wind load. We engineer
+                the net that spans it — tensile-calibrated, anchor-mapped, and sag-tested before it leaves the workshop.
+            </p>
+            <div class="par-hero__specs">
+                <div class="par-hero__spec"><span class="lab">Max span</span><span class="val">20<span
+                            class="unit">m</span></span></div>
+                <div class="par-hero__spec"><span class="lab">Min tensile</span><span class="val">120<span
+                            class="unit">kg</span></span></div>
+                <div class="par-hero__spec"><span class="lab">Anchor depth</span><span class="val">60<span
+                            class="unit">mm</span></span></div>
+                <div class="par-hero__spec"><span class="lab">Warranty</span><span class="val">15<span
+                            class="unit">yrs</span></span></div>
+            </div>
+        </section>
+
+        <section class="par-section" id="par-span">
+            <div class="par-section__head reveal">
+                <div class="par-section__eyebrow">— 01 / Span Calculator</div>
+                <h2 class="par-section__title">Drag the <em>gap.</em></h2>
+                <p class="par-section__lede">Every gap asks for a different net. Drag the slider to match your opening —
+                    the calculator shows the sag curve, the required tensile, the anchor count, and whether the span is
+                    safe, marginal, or needs reinforcement.</p>
+            </div>
+            <div class="par-span reveal">
+                <div class="par-span__visual">
+                    <div class="par-span__svg-wrap">
+                        <svg class="par-span__svg" id="par-span-svg" viewBox="0 0 600 300"
+                            preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <pattern id="par-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-width="0.3"
+                                        opacity="0.05" />
+                                </pattern>
+                            </defs>
+                            <rect width="600" height="300" fill="url(#par-grid)" />
+                            <rect id="par-wall-l" x="60" y="80" width="12" height="140" fill="currentColor"
+                                opacity="0.15" />
+                            <rect id="par-wall-r" x="528" y="80" width="12" height="140" fill="currentColor"
+                                opacity="0.15" />
+                            <circle id="par-anchor-l" cx="66" cy="100" r="5" fill="currentColor" opacity="0.5" />
+                            <circle id="par-anchor-r" cx="534" cy="100" r="5" fill="currentColor" opacity="0.5" />
+                            <path id="par-sag-curve" d="M 66 100 Q 300 120 534 100" fill="none" stroke="var(--accent)"
+                                stroke-width="2" stroke-linecap="round" style="stroke:var(--accent)" />
+                            <circle id="par-mid-marker" cx="300" cy="120" r="4" fill="var(--accent)"
+                                style="fill:var(--accent)" />
+                            <line id="par-mid-line" x1="300" y1="100" x2="300" y2="120" stroke="var(--accent)"
+                                stroke-width="1" stroke-dasharray="2,3" opacity="0.5" style="stroke:var(--accent)" />
+                            <line id="par-dim-line" x1="66" y1="250" x2="534" y2="250" stroke="currentColor"
+                                stroke-width="0.4" opacity="0.3" />
+                            <line x1="66" y1="245" x2="66" y2="255" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.3" />
+                            <line x1="534" y1="245" x2="534" y2="255" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.3" />
+                            <text id="par-dim-text" x="300" y="270" text-anchor="middle" font-family="IBM Plex Mono"
+                                font-size="10" fill="currentColor" opacity="0.4">5.0 m</text>
+                        </svg>
+                        <div class="par-span__readout">SPAN: <span id="par-readout-span">5.0</span>m · SAG: <span
+                                id="par-readout-sag">2.0</span>cm</div>
+                    </div>
+                    <div class="par-span__controls">
+                        <div class="par-span__control">
+                            <div class="par-span__control-head">
+                                <span class="par-span__control-label">Gap width</span>
+                                <span class="par-span__control-value"><span
+                                        id="par-span-val">5.0</span><span>m</span></span>
+                            </div>
+                            <input type="range" min="1" max="20" value="5" step="0.5" class="par-span__slider"
+                                id="par-span-slider">
+                        </div>
+                    </div>
+                </div>
+                <div class="par-span__panel">
+                    <div class="par-span__gauge">
+                        <div class="par-span__gauge-label">— Safety gauge</div>
+                        <div class="par-span__gauge-bar">
+                            <div class="par-span__gauge-fill" id="par-gauge-fill"></div>
+                        </div>
+                        <div class="par-span__gauge-status" id="par-gauge-status">Safe</div>
+                    </div>
+                    <dl class="par-span__stats">
+                        <div class="par-span__stat">
+                            <dt>Required tensile</dt>
+                            <dd id="par-stat-tensile">120 kg</dd>
+                        </div>
+                        <div class="par-span__stat">
+                            <dt>Anchor count</dt>
+                            <dd id="par-stat-anchors">10</dd>
+                        </div>
+                        <div class="par-span__stat">
+                            <dt>Mid-span sag</dt>
+                            <dd id="par-stat-sag">2.0 cm</dd>
+                        </div>
+                        <div class="par-span__stat">
+                            <dt>Mesh size</dt>
+                            <dd id="par-stat-mesh">25 mm</dd>
+                        </div>
+                        <div class="par-span__stat">
+                            <dt>Estimated cost</dt>
+                            <dd id="par-stat-cost">₹325</dd>
+                        </div>
+                    </dl>
+                    <p class="par-span__note">Indicative only — site conditions vary. A site survey confirms the final
+                        specification.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="par-section" id="par-products" style="background:var(--cream)">
+            <div class="par-section__head reveal">
+                <div class="par-section__eyebrow">— 02 / Products</div>
+                <h2 class="par-section__title">Four <em>spans.</em></h2>
+            </div>
+            <div class="par-products reveal">
+                <article class="par-product">
+                    <div class="par-product__img"><img src="https://picsum.photos/seed/par-prod-01/400/400" alt="">
+                    </div>
+                    <div>
+                        <span class="par-product__num">PAR / 01</span>
+                        <h3 class="par-product__name">The <em>Balcony</em></h3>
+                        <p class="par-product__desc">For spans up to 4m — bird exclusion, pet safety,
+                            breeze-preservation.</p>
+                        <dl class="par-product__specs">
+                            <div class="par-product__spec">
+                                <dt>Mesh</dt>
+                                <dd>25mm</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Tensile</dt>
+                                <dd>120kg</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Material</dt>
+                                <dd>HDPE</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Span</dt>
+                                <dd>≤4m</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+                <article class="par-product">
+                    <div class="par-product__img"><img src="https://picsum.photos/seed/par-prod-02/400/400" alt="">
+                    </div>
+                    <div>
+                        <span class="par-product__num">PAR / 02</span>
+                        <h3 class="par-product__name">The <em>Staircase</em></h3>
+                        <p class="par-product__desc">For vertical spans — child safety, fall arrest, drum-taut nylon.
+                        </p>
+                        <dl class="par-product__specs">
+                            <div class="par-product__spec">
+                                <dt>Mesh</dt>
+                                <dd>40mm</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Tensile</dt>
+                                <dd>250kg</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Material</dt>
+                                <dd>Nylon</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Span</dt>
+                                <dd>≤6m</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+                <article class="par-product">
+                    <div class="par-product__img"><img src="https://picsum.photos/seed/par-prod-03/400/400" alt="">
+                    </div>
+                    <div>
+                        <span class="par-product__num">PAR / 03</span>
+                        <h3 class="par-product__name">The <em>Atrium</em></h3>
+                        <p class="par-product__desc">For wide horizontal spans — mezzanines, double-height voids,
+                            skylights.</p>
+                        <dl class="par-product__specs">
+                            <div class="par-product__spec">
+                                <dt>Mesh</dt>
+                                <dd>45mm</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Tensile</dt>
+                                <dd>250kg</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Material</dt>
+                                <dd>Nylon</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Span</dt>
+                                <dd>≤12m</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+                <article class="par-product">
+                    <div class="par-product__img"><img src="https://picsum.photos/seed/par-prod-04/400/400" alt="">
+                    </div>
+                    <div>
+                        <span class="par-product__num">PAR / 04</span>
+                        <h3 class="par-product__name">The <em>Façade</em></h3>
+                        <p class="par-product__desc">For external envelopes — UV-stabilised, salt-resistant, wind-rated.
+                        </p>
+                        <dl class="par-product__specs">
+                            <div class="par-product__spec">
+                                <dt>Mesh</dt>
+                                <dd>50mm</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Tensile</dt>
+                                <dd>300kg</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Material</dt>
+                                <dd>HDPE UV</dd>
+                            </div>
+                            <div class="par-product__spec">
+                                <dt>Span</dt>
+                                <dd>≤20m</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="par-contact" id="par-contact">
+            <div class="par-contact__inner reveal">
+                <h2 class="par-contact__title">Measure your <em>gap.</em></h2>
+                <p class="par-contact__lede">Send us the width of your opening. We'll reply with a span calculation, a
+                    spec sheet, and a quote within one working day.</p>
+                <form class="par-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.par-contact__submit').textContent='Sent · thank you'">
+                    <div class="par-contact__field">
+                        <label class="par-contact__label">Your name</label>
+                        <input class="par-contact__input" type="text" required>
+                    </div>
+                    <div class="par-contact__field">
+                        <label class="par-contact__label">Email</label>
+                        <input class="par-contact__input" type="email" required>
+                    </div>
+                    <div class="par-contact__field">
+                        <label class="par-contact__label">Gap width (m)</label>
+                        <input class="par-contact__input" type="number" step="0.5" placeholder="e.g. 5.0">
+                    </div>
+                    <button class="par-contact__submit" type="submit">Send enquiry</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand"
+                        style="font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:.2em">PARA</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2019</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Studio</h5>
+                    <ul>
+                        <li>Span calculator</li>
+                        <li>Products</li>
+                        <li>Engineering</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Products</h5>
+                    <ul>
+                        <li>Balcony</li>
+                        <li>Staircase</li>
+                        <li>Atrium</li>
+                        <li>Façade</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>hello@para.in</li>
+                        <li>+91 80 4120 2019</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Para 2024</span><span>The gap, calculated</span></div>
+        </footer>
+    </main>
+
+    <!-- ========== FERRUM ========== -->
+    <main class="site site-ferrum" data-site="ferrum">
+        <nav class="fer-nav">
+            <div class="fer-nav__logo">FERRUM<span>Forged Nets</span></div>
+            <ul class="fer-nav__links">
+                <li><a href="#fer-forge" data-link>Forge</a></li>
+                <li><a href="#fer-specs" data-link>Specs</a></li>
+                <li><a href="#fer-contact" data-link>Contact</a></li>
+            </ul>
+            <a href="#fer-contact" class="fer-nav__cta" data-link>Request specs</a>
+        </nav>
+
+        <section class="fer-hero">
+            <div class="fer-hero__grid">
+                <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+                    <defs>
+                        <pattern id="fer-grid-pat" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.4"
+                                opacity="0.06" />
+                        </pattern>
+                    </defs>
+                    <rect width="1200" height="400" fill="url(#fer-grid-pat)" />
+                </svg>
+            </div>
+            <div class="fer-hero__meta">
+                <span>FER / 2024.01</span>
+                <span>Forged Safety Nets</span>
+                <span>Bangalore · India</span>
+            </div>
+            <h1 class="fer-hero__title display">
+                <span class="line"><span class="line-inner">Forged,</span></span>
+                <span class="line"><span class="line-inner"><em>not found.</em></span></span>
+            </h1>
+            <p class="fer-hero__lede">Every Ferrum net is made — raw polymer drawn, woven, coated, cut, and tested on
+                our own bench. Six stages, one workshop, no outsourcing. The material is honest, the process is visible,
+                and the spec sheet is real.</p>
+            <div class="fer-hero__specs">
+                <div class="fer-hero__spec"><span class="lab">Min tensile</span><span class="val">120<span
+                            class="unit">kg</span></span></div>
+                <div class="fer-hero__spec"><span class="lab">Anchor depth</span><span class="val">60<span
+                            class="unit">mm</span></span></div>
+                <div class="fer-hero__spec"><span class="lab">Forge stages</span><span class="val">06<span
+                            class="unit">steps</span></span></div>
+                <div class="fer-hero__spec"><span class="lab">Warranty</span><span class="val">15<span
+                            class="unit">yrs</span></span></div>
+            </div>
+        </section>
+
+        <section class="fer-section" id="fer-forge">
+            <div class="fer-section__head reveal">
+                <span class="fer-section__num">— 01 / FORGE</span>
+                <h2 class="fer-section__title">Six stages of the <em>forge.</em></h2>
+            </div>
+            <div class="fer-forge reveal">
+                <div class="fer-forge__track" id="fer-forge-track">
+                    <div class="fer-forge__stage is-active" data-stage="0">
+                        <span class="fer-forge__stage-num">STAGE 01</span>
+                        <h4 class="fer-forge__stage-name">Raw Polymer</h4>
+                        <span class="fer-forge__stage-time">— 1 day</span>
+                    </div>
+                    <div class="fer-forge__stage" data-stage="1">
+                        <span class="fer-forge__stage-num">STAGE 02</span>
+                        <h4 class="fer-forge__stage-name">Extrusion</h4>
+                        <span class="fer-forge__stage-time">— 2 days</span>
+                    </div>
+                    <div class="fer-forge__stage" data-stage="2">
+                        <span class="fer-forge__stage-num">STAGE 03</span>
+                        <h4 class="fer-forge__stage-name">Weaving</h4>
+                        <span class="fer-forge__stage-time">— 3 days</span>
+                    </div>
+                    <div class="fer-forge__stage" data-stage="3">
+                        <span class="fer-forge__stage-num">STAGE 04</span>
+                        <h4 class="fer-forge__stage-name">Coating</h4>
+                        <span class="fer-forge__stage-time">— 1 day</span>
+                    </div>
+                    <div class="fer-forge__stage" data-stage="4">
+                        <span class="fer-forge__stage-num">STAGE 05</span>
+                        <h4 class="fer-forge__stage-name">Cutting &amp; Edge</h4>
+                        <span class="fer-forge__stage-time">— 1 day</span>
+                    </div>
+                    <div class="fer-forge__stage" data-stage="5">
+                        <span class="fer-forge__stage-num">STAGE 06</span>
+                        <h4 class="fer-forge__stage-name">Quality Test</h4>
+                        <span class="fer-forge__stage-time">— 1 day</span>
+                    </div>
+                </div>
+                <div class="fer-forge__detail" id="fer-forge-detail"></div>
+            </div>
+        </section>
+
+        <section class="fer-section" id="fer-specs" style="background:var(--cream)">
+            <div class="fer-section__head reveal">
+                <span class="fer-section__num">— 02 / SPECIFICATIONS</span>
+                <h2 class="fer-section__title">Full <em>data.</em></h2>
+            </div>
+            <div class="fer-specs reveal">
+                <table class="fer-specs__table">
+                    <thead>
+                        <tr>
+                            <th>Ref</th>
+                            <th>Application</th>
+                            <th>Mesh</th>
+                            <th>Material</th>
+                            <th>Tensile</th>
+                            <th>Warranty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FER-01</td>
+                            <td>Bird Net</td>
+                            <td>25mm</td>
+                            <td>HDPE 60gsm</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:15px"></span>120kg</div>
+                            </td>
+                            <td>5 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>FER-02</td>
+                            <td>Mosquito Mesh</td>
+                            <td>0.8mm</td>
+                            <td>Polyester</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:5px"></span>40kg</div>
+                            </td>
+                            <td>3 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>FER-03</td>
+                            <td>Child Safety</td>
+                            <td>40mm</td>
+                            <td>Nylon 250kg</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:31px"></span>250kg</div>
+                            </td>
+                            <td>8 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>FER-04</td>
+                            <td>Fall Arrest</td>
+                            <td>32mm</td>
+                            <td>Nylon 600kg</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:75px"></span>600kg</div>
+                            </td>
+                            <td>10 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>FER-05</td>
+                            <td>Façade Net</td>
+                            <td>50mm</td>
+                            <td>HDPE UV</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:37px"></span>300kg</div>
+                            </td>
+                            <td>7 yrs</td>
+                        </tr>
+                        <tr>
+                            <td>FER-06</td>
+                            <td>Coconut Net</td>
+                            <td>100mm</td>
+                            <td>HDPE 4mm</td>
+                            <td>
+                                <div class="fer-specs__bar-wrap"><span class="fer-specs__bar"
+                                        style="width:100px"></span>800kg</div>
+                            </td>
+                            <td>10 yrs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="fer-contact" id="fer-contact">
+            <div class="fer-contact__inner reveal">
+                <h2 class="fer-contact__title">Request <em>specs.</em></h2>
+                <p class="fer-contact__lede">For architects, contractors, and facility managers. Send your drawing —
+                    we'll respond with a data sheet, a tensile certificate, and a fabrication schedule within five
+                    working days.</p>
+                <form class="fer-contact__form"
+                    onsubmit="event.preventDefault();this.querySelector('.fer-contact__submit').textContent='// Received — 5 day response'">
+                    <div class="fer-contact__field">
+                        <label class="fer-contact__label">Name</label>
+                        <input class="fer-contact__input" type="text" required>
+                    </div>
+                    <div class="fer-contact__field">
+                        <label class="fer-contact__label">Organisation</label>
+                        <input class="fer-contact__input" type="text">
+                    </div>
+                    <div class="fer-contact__field">
+                        <label class="fer-contact__label">Email</label>
+                        <input class="fer-contact__input" type="email" required>
+                    </div>
+                    <div class="fer-contact__field">
+                        <label class="fer-contact__label">Phone</label>
+                        <input class="fer-contact__input" type="tel">
+                    </div>
+                    <div class="fer-contact__field fer-contact__field--full">
+                        <label class="fer-contact__label">Project type</label>
+                        <select class="fer-contact__select">
+                            <option>Residential — balcony / window</option>
+                            <option>Residential — staircase / atrium</option>
+                            <option>Commercial — façade / atrium</option>
+                            <option>Industrial — fall arrest / debris</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <button class="fer-contact__submit" type="submit">Submit request</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <div class="site-footer__col">
+                    <div class="site-footer__brand">FERRUM</div>
+                    <p style="font-size:.85rem;opacity:.6">Bangalore · since 2018</p>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Engineering</h5>
+                    <ul>
+                        <li>Forge</li>
+                        <li>Specs</li>
+                        <li>Certificates</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Products</h5>
+                    <ul>
+                        <li>FER-01 Bird Net</li>
+                        <li>FER-03 Child Safety</li>
+                        <li>FER-04 Fall Arrest</li>
+                    </ul>
+                </div>
+                <div class="site-footer__col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>specs@ferrum.in</li>
+                        <li>+91 80 4120 2018</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-footer__bottom"><span>© Ferrum Engineering 2024</span><span>Forged, not found</span></div>
+        </footer>
+    </main>
+
+    <script>
+        // Safe GSAP/Lenis setup
+        const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+        const hasGSAP = typeof gsap !== 'undefined';
+        const hasST = typeof ScrollTrigger !== 'undefined';
+        const hasLenis = typeof Lenis !== 'undefined';
+
+        if (hasGSAP && hasST) {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+
+        let lenis = null;
+        if (!prefersReduce && hasLenis && hasGSAP && hasST) {
+            lenis = new Lenis({ duration: 1.1, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add(t => lenis.raf(t * 1000));
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        // Smooth scroll for in-site nav
+        document.addEventListener('click', e => {
+            const a = e.target.closest('a[data-link]');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (!target) return;
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+            if (lenis) lenis.scrollTo(top, { duration: 1.2 });
+            else window.scrollTo({ top, behavior: 'smooth' });
+        });
+
+        // Reveals
+        const revealIO = new IntersectionObserver(entries => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        function observeReveals() {
+            document.querySelectorAll('.reveal:not(.is-in)').forEach(el => revealIO.observe(el));
+        }
+        observeReveals();
+
+        function triggerHeroEntrance(site) {
+            const el = document.querySelector(`.site[data-site="${site}"]`);
+            if (!el) return;
+            el.classList.remove('is-loaded');
+            void el.offsetWidth;
+            requestAnimationFrame(() => el.classList.add('is-loaded'));
+        }
+
+        // Cursors
+        const cursors = {
+            kavach: { el: document.querySelector('.cursor-1'), x: 0, y: 0 },
+            para: { el: document.querySelector('.cursor-2'), x: 0, y: 0, rx: 0, ry: 0 },
+            ferrum: { el: document.querySelector('.cursor-3'), x: 0, y: 0 }
+        };
+        if (isFinePointer) {
+            window.addEventListener('mousemove', e => {
+                const site = document.body.dataset.site;
+                const c = cursors[site]; if (!c) return;
+                c.x = e.clientX; c.y = e.clientY;
+                const dot = c.el.querySelector('.dot');
+                if (dot) dot.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                if (site === 'kavach') {
+                    const diamond = c.el.querySelector('.diamond');
+                    if (diamond) diamond.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                } else if (site === 'ferrum') {
+                    const square = c.el.querySelector('.square');
+                    if (square) square.style.transform = `translate(${c.x}px, ${c.y}px)`;
+                }
+            });
+            function trailLoop() {
+                const site = document.body.dataset.site;
+                if (site === 'para') {
+                    const c = cursors.para;
+                    c.rx += (c.x - c.rx) * 0.15; c.ry += (c.y - c.ry) * 0.15;
+                    const measure = c.el.querySelector('.measure');
+                    if (measure) measure.style.transform = `translate(${c.rx}px, ${c.ry}px)`;
+                }
+                requestAnimationFrame(trailLoop);
+            }
+            trailLoop();
+            document.querySelectorAll('a, button, input, select').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.querySelector('.cursor-1 .diamond')?.classList.add('hover');
+                    document.querySelector('.cursor-2 .measure')?.classList.add('hover');
+                    document.querySelector('.cursor-3 .square')?.classList.add('hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.querySelector('.cursor-1 .diamond')?.classList.remove('hover');
+                    document.querySelector('.cursor-2 .measure')?.classList.remove('hover');
+                    document.querySelector('.cursor-3 .square')?.classList.remove('hover');
+                });
+            });
+        }
+
+        // ========== KAVACH: PROTECTION MATRIX ==========
+        (function initMatrix() {
+            const threats = document.querySelectorAll('.kav-matrix__threat');
+            const bodyEl = document.getElementById('kav-matrix-body');
+            const panelEl = document.getElementById('kav-matrix-panel');
+            if (!threats.length || !bodyEl || !panelEl) return;
+
+            const nets = [
+                { name: 'Bird <em>Shield</em>', mesh: '25mm', mat: 'HDPE', tensile: '120kg' },
+                { name: 'Mosquito <em>Veil</em>', mesh: '0.8mm', mat: 'Polyester', tensile: '40kg' },
+                { name: 'Child <em>Guard</em>', mesh: '40mm', mat: 'Nylon', tensile: '250kg' },
+                { name: 'Pet <em>Line</em>', mesh: '32mm', mat: 'HDPE', tensile: '180kg' },
+                { name: 'Fall <em>Arrest</em>', mesh: '32mm', mat: 'Nylon', tensile: '600kg' },
+                { name: 'Coconut <em>Net</em>', mesh: '100mm', mat: 'HDPE', tensile: '800kg' }
+            ];
+
+            const data = {
+                birds: [95, 0, 30, 80, 20, 10],
+                mosquitoes: [0, 100, 0, 0, 0, 0],
+                children: [10, 0, 95, 20, 85, 5],
+                monkeys: [60, 0, 40, 50, 30, 70],
+                coconuts: [0, 0, 5, 0, 20, 100],
+                fall: [5, 0, 70, 10, 100, 40]
+            };
+
+            const recommendations = {
+                birds: { idx: 0, desc: 'The Bird Shield in 25mm HDPE is calibrated to exclude pigeons and crows without blocking the breeze. UV-stabilised for 15 years on the balcony.' },
+                mosquitoes: { idx: 1, desc: 'The Mosquito Veil in 0.8mm polyester — finer than a human hair, framed in aluminium. Stops mosquitoes, fruit flies, and no-see-ums. The room breathes.' },
+                children: { idx: 2, desc: 'The Child Guard in 40mm nylon — soft to the touch, drum-taut under load, holds 250kg at the centre of a six-metre span. For staircases and mezzanines.' },
+                monkeys: { idx: 5, desc: 'The Coconut Net in 100mm HDPE is the heavy-duty choice for monkey exclusion — 4mm twine, 800kg tensile, holds against primate pulling and wind sway.' },
+                coconuts: { idx: 5, desc: 'The Coconut Net in 100mm HDPE — catches a 2kg falling coconut from 12 metres, holds against wind sway, warranted for 10 years.' },
+                fall: { idx: 4, desc: 'The Fall Arrest in 32mm nylon — certified to EN-1263-2, catches a 100kg mass at 6 metres. For atriums, construction sites, and cantilevered edges.' }
+            };
+
+            function render(threat) {
+                const scores = data[threat];
+                const rec = recommendations[threat];
+                bodyEl.innerHTML = nets.map((net, i) => {
+                    const pct = scores[i];
+                    const isBest = i === rec.idx;
+                    return `<div class="kav-matrix__row ${isBest ? 'is-best' : ''}">
+        <div class="kav-matrix__net-name">${net.name}</div>
+        <div class="kav-matrix__bar-wrap">
+          <div class="kav-matrix__bar"><div class="kav-matrix__bar-fill" style="width:${pct}%"></div></div>
+          <span class="kav-matrix__pct">${pct}%</span>
+        </div>
+        <span class="kav-matrix__badge">Recommended</span>
+      </div>`;
+                }).join('');
+                const bestNet = nets[rec.idx];
+                panelEl.innerHTML = `
+      <div class="kav-matrix__panel-left">
+        <h4>Recommended: <em>${bestNet.name.replace(/<\/?em>/g, '')}</em></h4>
+        <p>${rec.desc}</p>
+      </div>
+      <dl class="kav-matrix__panel-specs">
+        <div class="kav-matrix__panel-spec"><dt>Mesh</dt><dd>${bestNet.mesh}</dd></div>
+        <div class="kav-matrix__panel-spec"><dt>Material</dt><dd>${bestNet.mat}</dd></div>
+        <div class="kav-matrix__panel-spec"><dt>Tensile</dt><dd>${bestNet.tensile}</dd></div>
+        <div class="kav-matrix__panel-spec"><dt>Warranty</dt><dd>5–15 years</dd></div>
+      </dl>
+    `;
+            }
+
+            threats.forEach(threat => {
+                threat.addEventListener('click', () => {
+                    threats.forEach(t => t.classList.remove('active'));
+                    threat.classList.add('active');
+                    render(threat.dataset.threat);
+                });
+            });
+            render('birds');
+        })();
+
+        // ========== PARA: SPAN CALCULATOR ==========
+        (function initSpanCalc() {
+            const slider = document.getElementById('par-span-slider');
+            if (!slider) return;
+            const svg = document.getElementById('par-span-svg');
+            const sagCurve = document.getElementById('par-sag-curve');
+            const midMarker = document.getElementById('par-mid-marker');
+            const midLine = document.getElementById('par-mid-line');
+            const dimText = document.getElementById('par-dim-text');
+            const anchorR = document.getElementById('par-anchor-r');
+            const wallR = document.getElementById('par-wall-r');
+            const spanVal = document.getElementById('par-span-val');
+            const readoutSpan = document.getElementById('par-readout-span');
+            const readoutSag = document.getElementById('par-readout-sag');
+            const gaugeFill = document.getElementById('par-gauge-fill');
+            const gaugeStatus = document.getElementById('par-gauge-status');
+            const statTensile = document.getElementById('par-stat-tensile');
+            const statAnchors = document.getElementById('par-stat-anchors');
+            const statSag = document.getElementById('par-stat-sag');
+            const statMesh = document.getElementById('par-stat-mesh');
+            const statCost = document.getElementById('par-stat-cost');
+
+            function update() {
+                const span = +slider.value;
+                const leftX = 66;
+                const maxRightX = 534;
+                const minRightX = 120;
+                const rightX = maxRightX - ((span - 1) / 19) * (maxRightX - minRightX);
+                const midX = (leftX + rightX) / 2;
+                const sagPx = Math.max(4, (span / 20) * 60);
+                const sagCm = (span * span * 0.08).toFixed(1);
+                const tensile = Math.round(100 + span * 25);
+                const anchors = Math.ceil(span * 2 / 0.5);
+                const mesh = span <= 4 ? '25mm' : span <= 8 ? '40mm' : span <= 14 ? '45mm' : '50mm';
+                const cost = Math.round(span * span * 65);
+
+                if (anchorR) anchorR.setAttribute('cx', rightX);
+                if (wallR) wallR.setAttribute('x', rightX - 6);
+                if (sagCurve) sagCurve.setAttribute('d', `M ${leftX} 100 Q ${midX} ${100 + sagPx} ${rightX} 100`);
+                if (midMarker) {
+                    midMarker.setAttribute('cx', midX);
+                    midMarker.setAttribute('cy', 100 + sagPx);
+                }
+                if (midLine) {
+                    midLine.setAttribute('x1', midX);
+                    midLine.setAttribute('x2', midX);
+                    midLine.setAttribute('y2', 100 + sagPx);
+                }
+                if (dimText) {
+                    dimText.setAttribute('x', midX);
+                    dimText.textContent = span.toFixed(1) + ' m';
+                }
+                const dimLine = svg.querySelector('#par-dim-line');
+                if (dimLine) { dimLine.setAttribute('x2', rightX); }
+
+                if (spanVal) spanVal.textContent = span.toFixed(1);
+                if (readoutSpan) readoutSpan.textContent = span.toFixed(1);
+                if (readoutSag) readoutSag.textContent = sagCm;
+                if (statTensile) statTensile.textContent = tensile + ' kg';
+                if (statAnchors) statAnchors.textContent = anchors;
+                if (statSag) statSag.textContent = sagCm + ' cm';
+                if (statMesh) statMesh.textContent = mesh;
+                if (statCost) statCost.textContent = '₹' + cost.toLocaleString('en-IN');
+
+                const pct = (span / 20) * 100;
+                if (gaugeFill) gaugeFill.style.width = pct + '%';
+                if (gaugeStatus) {
+                    if (span <= 8) {
+                        gaugeFill.style.background = 'var(--accent)';
+                        gaugeStatus.textContent = 'Safe';
+                        gaugeStatus.style.color = 'var(--accent)';
+                    } else if (span <= 14) {
+                        gaugeFill.style.background = '#C4A04A';
+                        gaugeStatus.textContent = 'Marginal — reinforce';
+                        gaugeStatus.style.color = '#C4A04A';
+                    } else {
+                        gaugeFill.style.background = '#B85C38';
+                        gaugeStatus.textContent = 'Needs substructure';
+                        gaugeStatus.style.color = '#B85C38';
+                    }
+                }
+            }
+            slider.addEventListener('input', update);
+            update();
+        })();
+
+        // ========== FERRUM: FORGE TIMELINE ==========
+        (function initForge() {
+            const stages = document.querySelectorAll('.fer-forge__stage');
+            const detailEl = document.getElementById('fer-forge-detail');
+            if (!stages.length || !detailEl) return;
+
+            const data = [
+                { name: 'Raw <em>Polymer</em>', desc: 'HDPE or nylon granules arrive in 25kg sacks. Each batch is tested for melt-flow index and tensile potential before it enters the extruder.', specs: { Material: 'HDPE / Nylon 6', Form: 'Granule', Batch: '25 kg', Test: 'Melt-flow index' }, equip: 'Incoming QC', tools: ['Melt-flow indexer', 'Moisture analyser', 'Batch ledger'] },
+                { name: 'The <em>Extrusion</em>', desc: 'Granules are melted at 180°C and drawn through a die to 0.3mm twine. The twine is water-cooled, stretched to orient the molecules, and wound onto spools.', specs: { Temp: '180°C', Twine: '0.3mm', Stretch: '3:1', Winding: '3-ply' }, equip: 'Extrusion Line', tools: ['Extruder die', 'Water bath', 'Stretching godet', 'Winding spool'] },
+                { name: 'The <em>Weaving</em>', desc: 'Twine is loaded onto the loom and woven into mesh — hexagonal for load distribution, square for fine insect exclusion. Every junction is a reef knot.', specs: { Pattern: 'Hex / Square', Knot: 'Reef knot', Density: '8/m²', Loom: 'CV-2' }, equip: 'Weaving Floor', tools: ['Hex loom', 'Square loom', 'CV-2 tensioning jig', 'Knotting bench'] },
+                { name: 'The <em>Coating</em>', desc: 'The woven mesh is dipped in a warm-polymer bath at 64°C — UV-stabilised, salt-resistant, colourfast for 30 years. The mesh drinks the coating slowly.', specs: { Bath: '64°C', Coating: 'UV-polymer', Colourfast: '30 years', Salt: 'Resistant' }, equip: 'Coating Tank', tools: ['Dip tank', 'Drying rack', 'UV spectrometer', 'Colour meter'] },
+                { name: 'Cutting &amp; <em>Edge</em>', desc: 'The coated mesh is cut to the project dimensions, edge-bound in 6mm braided PP rope, and pre-tensioned on the bench. The border is the net handshake with the wall.', specs: { Cut: 'Project-specific', Edge: 'PP 6mm rope', Tension: 'Bench-pre', Border: 'Braided' }, equip: 'Cutting Bench', tools: ['Cutting table', 'Edge-stitcher', 'Tensioning jig', 'Border reel'] },
+                { name: 'Quality <em>Test</em>', desc: 'Every net is tested to failure on the CV-2 jig — loaded to 1.5x its rated tensile, measured for sag, and signed by the maker. Only then does it ship.', specs: { Test: '1.5x tensile', 'Sag test': 'Mid-span', 'Sign-off': 'Maker', 'Serial': 'Logged' }, equip: 'CV-2 Test Rig', tools: ['CV-2 jig', 'Load cell', 'Sag laser', 'Serial stamp'] }
+            ];
+
+            function render(idx) {
+                const d = data[idx];
+                detailEl.innerHTML = `
+      <div class="fer-forge__detail-left">
+        <h4>${d.name}</h4>
+        <p>${d.desc}</p>
+      </div>
+      <div class="fer-forge__detail-mid">
+        ${Object.entries(d.specs).map(([k, v]) => `<div class="fer-forge__detail-spec"><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
+      </div>
+      <div class="fer-forge__detail-right">
+        <div class="fer-forge__detail-equip">— ${d.equip}</div>
+        ${d.tools.map(t => `<div class="fer-forge__detail-tool">${t}</div>`).join('')}
+      </div>
+    `;
+            }
+
+            stages.forEach(stage => {
+                stage.addEventListener('click', () => {
+                    stages.forEach(s => s.classList.remove('is-active'));
+                    stage.classList.add('is-active');
+                    render(+stage.dataset.stage);
+                });
+            });
+            render(0);
+        })();
+
+        // ========== SITE SWITCHER ==========
+        let currentSite = 'kavach';
+        function activateSite(name) {
+            if (name === currentSite) return;
+            const cur = document.querySelector(`.site[data-site="${currentSite}"]`);
+            const next = document.querySelector(`.site[data-site="${name}"]`);
+            if (!next) return;
+            if (hasST) ScrollTrigger.getAll().forEach(t => t.kill());
+            cur.classList.remove('active');
+            next.classList.add('active');
+            document.body.dataset.site = name;
+            document.querySelectorAll('.brand-tab').forEach(t => t.classList.toggle('active', t.dataset.brand === name));
+            if (lenis) lenis.scrollTo(0, { immediate: true });
+            else window.scrollTo(0, 0);
+            observeReveals();
+            triggerHeroEntrance(name);
+            setTimeout(() => { if (hasST) ScrollTrigger.refresh(); }, 100);
+            currentSite = name;
+        }
+        document.querySelectorAll('.brand-tab').forEach(t => { t.addEventListener('click', () => activateSite(t.dataset.brand)); });
+
+        // Initialize immediately (DOM is already parsed since script is at the bottom)
+        document.body.classList.add('is-loaded');
+        const initialSite = document.querySelector('.site-kavach');
+        if (initialSite) initialSite.classList.add('is-loaded');
+        if (hasST) ScrollTrigger.refresh();
+    </script>
+</body>
+
+</html>

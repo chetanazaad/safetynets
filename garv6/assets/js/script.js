@@ -662,4 +662,66 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // 6. MixItUp Works Gallery Initialization & Smooth Fallback
+    const mixitContainer = document.getElementById("mixitGrid");
+    const mixitFilterBtns = document.querySelectorAll(".mixit-filter-btn");
+
+    if (mixitContainer) {
+        if (typeof mixitup !== "undefined") {
+            try {
+                const mixer = mixitup(mixitContainer, {
+                    selectors: {
+                        target: '.mix',
+                        control: '.mixit-filter-btn'
+                    },
+                    animation: {
+                        duration: 350,
+                        nudge: true,
+                        reverseOut: false,
+                        effects: 'fade translateY(16px)'
+                    },
+                    callbacks: {
+                        onMixClick: function(state, e) {
+                            mixitFilterBtns.forEach(btn => btn.classList.remove("active"));
+                            if (e.target) {
+                                const targetBtn = e.target.closest('.mixit-filter-btn');
+                                if (targetBtn) targetBtn.classList.add("active");
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn("MixItUp initialization notice, using native filter fallback:", err);
+                initNativeGalleryFilter();
+            }
+        } else {
+            initNativeGalleryFilter();
+        }
+
+        function initNativeGalleryFilter() {
+            const cards = mixitContainer.querySelectorAll(".mix");
+            mixitFilterBtns.forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    mixitFilterBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    const filter = btn.getAttribute("data-filter");
+
+                    cards.forEach(card => {
+                        if (filter === "all") {
+                            card.style.display = "flex";
+                        } else {
+                            const selector = filter.replace(".", "");
+                            if (card.classList.contains(selector)) {
+                                card.style.display = "flex";
+                            } else {
+                                card.style.display = "none";
+                            }
+                        }
+                    });
+                });
+            });
+        }
+    }
 });
+
